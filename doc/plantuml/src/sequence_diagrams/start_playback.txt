@@ -1,0 +1,20 @@
+@startuml
+
+title Start Playback
+
+PlaybackView->"playButton : PushButton": isPressed()
+"playButton : PushButton"-->PlaybackView: true
+
+PlaybackView->PlaybackController: startPlayback()
+PlaybackController->RhythmPatternManager: resetAllPlaybackPositions()
+
+loop for each pattern in manager
+
+	RhythmPatternManager->"pattern : RhythmPattern": resetPlaybackPosition()
+
+end
+
+PlaybackController->TempoTimer: clearCounter()
+PlaybackController->TempoTimer: start()
+
+@enduml

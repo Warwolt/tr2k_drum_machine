@@ -1,0 +1,60 @@
+@startuml
+
+skinparam linetype ortho
+
+title Start Playback
+
+
+''' Class definitions '''
+
+Package Presentation
+{
+	class PlaybackView
+}
+
+Package Application
+{
+	class PlaybackController
+	{
+		startPlayback()
+	}
+}
+
+Package "Hardware Abstraction Layer"
+{
+	class PushButton
+	{
+		isPressed() : Boolean
+	}
+
+	interface TempoTimer
+	{
+		clearCounter()
+		start()
+	}
+}
+
+Package "Domain"
+{
+	class RhythmPatternManager
+	{
+		rhythmPatterns : Array<RhythmPattern>
+		resetAllPlaybackPositions()
+	}
+
+	class RhythmPattern
+	{
+		resetPlaybackPosition()
+	}
+}
+
+
+''' Class relations '''
+
+PlaybackView *--> PushButton
+PlaybackView -down-> PlaybackController
+PlaybackController --> TempoTimer
+PlaybackController -left-> RhythmPatternManager
+RhythmPatternManager *--> RhythmPattern
+
+@enduml
