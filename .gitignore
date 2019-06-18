@@ -28,6 +28,7 @@
 # Avr files
 *.elf
 *.hex
+*.bin
 
 # Sublime projectfiles
 *.sublime-project
