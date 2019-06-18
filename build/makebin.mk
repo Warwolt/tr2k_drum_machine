@@ -6,15 +6,23 @@ LIB_DIR = $(PROJ_ROOT)/lib
 INC :=
 OBJ := $(OBJ_DIR)/main.o
 LIB :=
-BIN := pong.exe
+
+CC = avr-g++
 
 FLAGS := -Wall -std=c++11
 FLAGS += -fmax-errors=5
 
-# SDL2
-LIB += -L$(LIB_DIR)/SDL2/lib
-INC += -I$(LIB_DIR)/SDL2/include
-LINK_FLAGS := -lSDL2main -lSDL2
+# AVR specific
+MCU = atmega328p
+F_CPU = 16000000
+FLAGS += -g -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)
+TARGET := main
+BIN  := $(OBJ_DIR)/$(TARGET).bin
+HEXFILE := $(OBJ_DIR)/$(TARGET).hex
+OBJCOPY  := avr-objcopy
+COM_PORT := com5 # NOTE: This must correspond to the usb port you use!
+
+LIB += $(LIB_DIR)/newdelete/newdelete.a
 
 .PHONY: clean directories
 all: $(OBJ_DIR) $(BIN)
@@ -26,17 +34,17 @@ all: $(OBJ_DIR) $(BIN)
 DEP = $(OBJ:%.o=%.d)
 -include $(DEP)
 
-debug:
-	@echo DEP = $(DEP)
-
-# Compile main
-$(OBJ_DIR)/main.o: $(APP_ROOT)/main.cpp
-	g++ $(INC) -c $< -MMD -o $@
-
-# Link program executable
+# Make avr binary
 $(BIN): $(OBJ)
-	@echo Building executable $@
-	g++ $(FLAGS) $(INC) $^ $(LIB) $(LINK_FLAGS) -o $@
+	$(CC) $(FLAGS) $(OBJ) $(LIB) -MMD -o $(BIN)
+	$(OBJCOPY) -j .text -j .data -O ihex $(BIN) $(HEXFILE)
+
+$(OBJ_DIR)/main.o: $(APP_ROOT)/main.cpp
+	$(CC) $(FLAGS) $(INC) $^ -MMD -c -o $@
+
+# Flash program to microcontroller
+flash:
+	avrdude -p $(MCU) -c arduino -U flash:w:$(HEXFILE):i -F -P $(COM_PORT)
 
 # Make folder if missing
 $(OBJ_DIR):
@@ -45,3 +53,7 @@ $(OBJ_DIR):
 clean:
 	@echo Cleaning folder
 	rm -rf $(BIN) $(OBJ_DIR)
+
+debug:
+	@echo OBJ_DIR = $(OBJ_DIR)
+	@echo OBJ = $(OBJ)

@@ -15,6 +15,6 @@ OBJ += $(patsubst %.cpp,%.o, $(patsubst $(TEST_DIR)/%, $(OBJ_DIR)/%, $(TEST_SRC)
 # Rule for compiling local test files
 $(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	@echo "Compiling unit test"
-	g++ $(INC) $(FLAGS) -c $< -MMD -o $@
+	$(CC) $(INC) $(FLAGS) -c $< -MMD -o $@
 
 endif

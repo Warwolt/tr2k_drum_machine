@@ -13,6 +13,8 @@ OBJ :=
 LIB :=
 BIN := test.exe
 
+CC := g++
+
 FLAGS := -Wall
 FLAGS += -fmax-errors=5
 FLAGS += -std=gnu++11
@@ -24,11 +26,7 @@ LIB += $(LIB_DIR)/googletest/gtest_main.a
 # Add google test and google mock libraries
 INC += -I$(LIB_DIR)/googlemock/include
 LIB += $(LIB_DIR)/googlemock/gmock.a
-
-# SDL2
-LIB += -L$(LIB_DIR)/SDL2/lib
-INC += -I$(LIB_DIR)/SDL2/include
-LINK_FLAGS := -lSDL2main -lSDL2
+INC += -I$(LIB_DIR)/mockheaders # used to mock out avi library headers
 
 .PHONY: clean directories
 all: $(OBJ_DIR) $(BIN)
@@ -42,7 +40,7 @@ DEP = $(OBJ:%.o=%.d)
 
 $(BIN): $(OBJ)
 	@echo Building executable $@
-	g++ $(FLAGS) $(INC) $^ $(LIB) $(LINK_FLAGS) -o $@
+	$(CC) $(FLAGS) $(INC) $^ $(LIB) $(LINK_FLAGS) -o $@
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR) # Makes folder if missing
