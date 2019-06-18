@@ -11,11 +11,12 @@ int main()
 
 	while(1)
 	{
-		ledPin.toggle();
+		// ledPin.toggle();
+		// _delay_ms(100);
 	}
 }
 
 void init()
 {
-	// empty init;
+	// empty init
 }

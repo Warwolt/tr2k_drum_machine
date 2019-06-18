@@ -40,7 +40,7 @@ $(BIN): $(OBJ)
 	$(OBJCOPY) -j .text -j .data -O ihex $(BIN) $(HEXFILE)
 
 $(OBJ_DIR)/main.o: $(APP_ROOT)/main.cpp
-	$(CC) $(FLAGS) $(INC) $^ -MMD -c -o $@
+	$(CC) $(FLAGS) $(INC) $< -MMD -c -o $@
 
 # Flash program to microcontroller
 flash:
