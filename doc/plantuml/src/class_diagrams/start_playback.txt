@@ -7,30 +7,16 @@ title Start Playback
 
 ''' Class definitions '''
 
-Package Presentation
+Package "Presentation"
 {
 	class PlaybackView
 }
 
-Package Application
+Package "Application"
 {
 	class PlaybackController
 	{
 		startPlayback()
-	}
-}
-
-Package "Hardware Abstraction Layer"
-{
-	class PushButton
-	{
-		isPressed() : Boolean
-	}
-
-	interface TempoTimer
-	{
-		clearCounter()
-		start()
 	}
 }
 
@@ -46,6 +32,20 @@ Package "Domain"
 	{
 		resetPlaybackPosition()
 	}
+
+	interface TempoTimer
+	{
+		clearCounter()
+		start()
+	}
+}
+
+Package "Hardware Abstraction Layer"
+{
+	class PushButton
+	{
+		isPressed() : Boolean
+	}
 }
 
 
@@ -55,6 +55,6 @@ PlaybackView *--> PushButton
 PlaybackView -down-> PlaybackController
 PlaybackController --> TempoTimer
 PlaybackController -left-> RhythmPatternManager
-RhythmPatternManager *--> RhythmPattern
+RhythmPatternManager "1..*"*-->"1" RhythmPattern
 
 @enduml
