@@ -1,0 +1,40 @@
+@startuml
+
+skinparam linetype ortho
+
+title Execute Playback
+
+
+''' Class definitions '''
+
+Package "Domain"
+{
+	class PlaybackManager
+	{
+		executePlayback()
+	}
+
+	class RhythmPatternManager
+	{
+		currentStepActiveInPattern(InstrumentId) : Boolean
+		moveToNextStep()
+	}
+
+	class PlaybackActionManager
+	{
+		executePlaybackAction(InstrumentId)
+	}
+
+	interface TempoTimer
+	{
+		playbackStepIsDue() : Boolean
+	}
+}
+
+''' Class relations '''
+
+PlaybackManager --> TempoTimer
+PlaybackManager --> RhythmPatternManager
+PlaybackManager -right-> PlaybackActionManager
+
+@enduml
