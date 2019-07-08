@@ -1,0 +1,26 @@
+@startuml
+
+title Execute Playback
+
+PlaybackManager->TempoTimer : isDue = playbackStepIsDue()
+TempoTimer-->PlaybackManager : true
+note left: if false, do nothing
+
+loop for each instrumentId in instruments
+
+	PlaybackManager->RhythmPatternManager : stepIsActive = currentStepActiveInPattern(instrumentId)
+
+	' PlaybackManager->RhythmPatternManager : currentPattern = getPattern(instrumentId)
+	' PlaybackManager->"currentPattern : RhythmPattern" : stepIsActive = isCurrentStepActive()
+
+	opt stepIsActive = true
+
+		PlaybackManager->PlaybackActionManager : executePlaybackAction(instrumentId)
+
+	end
+
+end
+
+PlaybackManager->RhythmPatternManager : moveToNextStep()
+
+@enduml
