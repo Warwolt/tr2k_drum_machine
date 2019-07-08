@@ -42,7 +42,7 @@ Package "Hardware Abstraction Layer"
 
 Package "Drivers"
 {
-	class Timer0
+	class Timer1
 	{
 		setPeriod(Period : Integer)
 		setPrescaler(PrescaleOption)
@@ -58,6 +58,6 @@ Package "Drivers"
 PlaybackManager --> TempoTimer
 TempoTimer <|.. TempoTimer16Bit
 TempoTimer16Bit --> Timer16Bit
-Timer16Bit <|.. Timer0
+Timer16Bit <|.. Timer1
 
 @enduml
