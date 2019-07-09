@@ -7,34 +7,82 @@ title Execute Playback
 
 ''' Class definitions '''
 
+Package "Presentation"
+{
+	class PlaybackPositionView
+	{
+		handlePlaybackStep()
+	}
+}
+
+Package "Application"
+{
+	class PatternEditController
+	{
+		getSelectedInstrumentId() : Integer
+	}
+}
+
 Package "Domain"
 {
-	class PlaybackManager
+	Package "Playback"
 	{
-		executePlayback()
+		class PlaybackTimingManager
+		{
+			handlePlayback()
+		}
+
+		interface PlaybackTimingSubscriber
+		{
+			handlePlaybackStep()
+		}
+
+		class InstrumentPlaybackManager
+		{
+			handlePlaybackStep()
+		}
+
+		interface TempoTimer
+		{
+			playbackStepIsDue() : Boolean
+		}
+
+		class PlaybackActionManager
+		{
+			executePlaybackAction(InstrumentId)
+		}
 	}
 
-	class RhythmPatternManager
+	Package "Pattern"
 	{
-		currentStepActiveInPattern(InstrumentId) : Boolean
-		moveToNextStep()
+		class RhythmPatternManager
+		{
+			currentStepActiveInPattern(InstrumentId) : Boolean
+			advanceAllPlaybackPositions()
+		}
 	}
+}
 
-	class PlaybackActionManager
+Package "HardwareAbstractionLayer"
+{
+	class LedGroup
 	{
-		executePlaybackAction(InstrumentId)
-	}
-
-	interface TempoTimer
-	{
-		playbackStepIsDue() : Boolean
+		blinkLed(ledNum : Integer)
 	}
 }
 
 ''' Class relations '''
 
-PlaybackManager --> TempoTimer
-PlaybackManager --> RhythmPatternManager
-PlaybackManager -right-> PlaybackActionManager
+PlaybackTimingManager --> TempoTimer
+PlaybackTimingManager --> PlaybackTimingSubscriber
+
+PlaybackTimingSubscriber <|.. InstrumentPlaybackManager
+PlaybackTimingSubscriber <|.. PlaybackPositionView
+
+InstrumentPlaybackManager -left-> RhythmPatternManager
+InstrumentPlaybackManager --> PlaybackActionManager
+
+PlaybackPositionView --> PatternEditController
+PlaybackPositionView --> LedGroup
 
 @enduml

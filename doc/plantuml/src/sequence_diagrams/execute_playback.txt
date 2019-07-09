@@ -1,23 +1,16 @@
 @startuml
 
-title Execute Playback
+title Execute Playback Step
 
-PlaybackManager->TempoTimer : isDue = playbackStepIsDue()
-TempoTimer-->PlaybackManager : true
+Client->PlaybackTimingManager : handlePlayback()
+PlaybackTimingManager->TempoTimer : playbackStepIsDue()
+TempoTimer-->PlaybackTimingManager : true
 note left: if false, do nothing
 
-loop for each instrumentId in instruments
+loop for each subcriber in subscribers
 
-	PlaybackManager->RhythmPatternManager : stepIsActive = currentStepActiveInPattern(instrumentId)
-
-	opt stepIsActive = true
-
-		PlaybackManager->PlaybackActionManager : executePlaybackAction(instrumentId)
-
-	end
+	PlaybackTimingManager->PlaybackTimingSubscriber : handlePlaybackStep()
 
 end
-
-PlaybackManager->RhythmPatternManager : moveToNextStep()
 
 @enduml

@@ -1,0 +1,10 @@
+@startuml
+
+title Playback Position Viewing
+
+PlaybackTimingManager->PlaybackPositionView : handlePlaybackStep()
+PlaybackPositionView->PatternEditController : id = getSelectedInstrumentId()
+PlaybackPositionView->RhythmPatternManager : pos = getPlaybackPosition(id)
+PlaybackPositionView->"stepLeds :\n LedGroup" : blinkLed(pos)
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml
+
+title Instrument Playback Step
+
+PlaybackTimingManager->InstrumentPlaybackManager : handlePlaybackStep()
+
+loop for each instrumentId in instruments
+
+	InstrumentPlaybackManager->RhythmPatternManager : stepIsActive = currentStepActiveInPattern(instrumentId)
+
+	opt stepIsActive = true
+
+		InstrumentPlaybackManager->PlaybackActionManager : executePlaybackAction(instrumentId)
+
+	end
+
+end
+
+InstrumentPlaybackManager->RhythmPatternManager : advanceAllPlaybackPositions()
+
+
+@enduml
