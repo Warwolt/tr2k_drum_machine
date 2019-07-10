@@ -19,7 +19,15 @@ Package "Application"
 {
 	class PatternEditController
 	{
-		getSelectedInstrumentId() : Integer
+		selectedInstrumentId : Integer
+
+		getSelectedInstrumentId() : InstrumentId
+		selectInstrumentForEditing(InstrumentId)
+	}
+
+	class RhythmPlaybackController
+	{
+		getPatternPlaybackPosition(InstrumentId) : Integer
 	}
 }
 
@@ -29,6 +37,7 @@ Package "Domain"
 	{
 		class PlaybackTimingManager
 		{
+			addSubscriber(PlaybackTimingSubscriber)
 			handlePlayback()
 		}
 
@@ -49,15 +58,18 @@ Package "Domain"
 
 		class PlaybackActionManager
 		{
+			playbackActions : List<CallbackFunction>
+			setActionForInstrument(CallbackFunction, InstrumentId)
 			executePlaybackAction(InstrumentId)
 		}
 	}
 
-	Package "Pattern"
+	Package "RhythmPattern"
 	{
 		class RhythmPatternManager
 		{
 			currentStepActiveInPattern(InstrumentId) : Boolean
+			getPatternPlaybackPosition(InstrumentId) : Integer
 			advanceAllPlaybackPositions()
 		}
 	}
@@ -65,9 +77,11 @@ Package "Domain"
 
 Package "HardwareAbstractionLayer"
 {
-	class LedGroup
+	interface LedGroup
 	{
-		blinkLed(ledNum : Integer)
+		turnOn(LedNumber)
+		turnOff(LedNumber)
+		blinkLed(LedNumber, Milliseconds)
 	}
 }
 
@@ -83,6 +97,9 @@ InstrumentPlaybackManager -left-> RhythmPatternManager
 InstrumentPlaybackManager --> PlaybackActionManager
 
 PlaybackPositionView --> PatternEditController
+PlaybackPositionView --> RhythmPlaybackController
 PlaybackPositionView --> LedGroup
+
+RhythmPlaybackController --> RhythmPatternManager
 
 @enduml
