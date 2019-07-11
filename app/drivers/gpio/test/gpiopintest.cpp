@@ -45,7 +45,7 @@ TEST_F(TestGpioPin, Configuring_pin_as_output_should_set_correct_bit_in_datadir_
 
 	testPin.setDirection(DIGITAL_OUTPUT);
 
-	EXPECT_EQ(0x1, dataDirectionRegister) << "Expected datadir register bit to be set";
+	EXPECT_EQ(0x1, dataDirectionRegister) << ERROR_MSG_STR("Expected datadir register bit to be set");
 }
 
 TEST_F(TestGpioPin, Configuring_pin_as_input_should_clear_correct_bit_in_datadir_reg)
@@ -54,7 +54,7 @@ TEST_F(TestGpioPin, Configuring_pin_as_input_should_clear_correct_bit_in_datadir
 
 	testPin.setDirection(DIGITAL_INPUT);
 
-	EXPECT_EQ(0xFE, dataDirectionRegister) << "Expected datadir register bit to be cleared";
+	EXPECT_EQ(0xFE, dataDirectionRegister) << ERROR_MSG_STR("Expected datadir register bit to be cleared");
 }
 
 TEST_F(TestGpioPin, Configuring_pin_as_input_should_clear_correct_bit_in_output_reg)
@@ -63,7 +63,7 @@ TEST_F(TestGpioPin, Configuring_pin_as_input_should_clear_correct_bit_in_output_
 
 	testPin.setDirection(DIGITAL_INPUT);
 
-	EXPECT_EQ(0xFE, outputRegister) << "Expected output register bit to be cleared";
+	EXPECT_EQ(0xFE, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 /* Pin output tests ------------------------------------------------------------------------------*/
@@ -73,7 +73,7 @@ TEST_F(TestGpioPin, Setting_pin_sets_correct_bit_in_output_register)
 
 	testPin.set();
 
-	EXPECT_EQ(0x1, outputRegister) << "Expected output register bit to be set";
+	EXPECT_EQ(0x1, outputRegister) << ERROR_MSG_STR("Expected output register bit to be set");
 }
 
 TEST_F(TestGpioPin, Setting_several_pins_sets_correct_bits_in_output_register)
@@ -83,7 +83,7 @@ TEST_F(TestGpioPin, Setting_several_pins_sets_correct_bits_in_output_register)
 	for(auto &pin : testPins)
 		pin.set();
 
-	EXPECT_EQ(0x7, outputRegister) << "Expected output register bits to be set";
+	EXPECT_EQ(0x7, outputRegister) << ERROR_MSG_STR("Expected output register bits to be set");
 }
 
 TEST_F(TestGpioPin, Setting_input_pin_does_nothing_to_output_register)
@@ -93,7 +93,7 @@ TEST_F(TestGpioPin, Setting_input_pin_does_nothing_to_output_register)
 	testPin.setDirection(DIGITAL_INPUT);
 	testPin.set();
 
-	EXPECT_EQ(0, outputRegister) << "Expected output register bit to be cleared";
+	EXPECT_EQ(0, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 TEST_F(TestGpioPin, Clearing_pin_resets_correct_bit_in_output_register)
@@ -102,7 +102,7 @@ TEST_F(TestGpioPin, Clearing_pin_resets_correct_bit_in_output_register)
 
 	testPin.clear();
 
-	EXPECT_EQ(0xFE, outputRegister) << "Expected output register bit to be cleared";
+	EXPECT_EQ(0xFE, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 TEST_F(TestGpioPin, Clearing_several_pins_resets_correct_bits_in_output_register)
@@ -112,7 +112,7 @@ TEST_F(TestGpioPin, Clearing_several_pins_resets_correct_bits_in_output_register
 	for(auto &pin : testPins)
 		pin.clear();
 
-	EXPECT_EQ(0xF8, outputRegister) << "Expected output register bits to be cleared";
+	EXPECT_EQ(0xF8, outputRegister) << ERROR_MSG_STR("Expected output register bits to be cleared");
 }
 
 TEST_F(TestGpioPin, Write_pin_method_can_set_a_pin)
@@ -121,7 +121,7 @@ TEST_F(TestGpioPin, Write_pin_method_can_set_a_pin)
 
 	testPin.write(LOGIC_HIGH);
 
-	EXPECT_EQ(0x1, outputRegister) << "Expected output register bit to be set";
+	EXPECT_EQ(0x1, outputRegister) << ERROR_MSG_STR("Expected output register bit to be set");
 }
 
 TEST_F(TestGpioPin, Write_pin_method_cannot_set_an_input_pin)
@@ -131,7 +131,7 @@ TEST_F(TestGpioPin, Write_pin_method_cannot_set_an_input_pin)
 	testPin.setDirection(DIGITAL_INPUT);
 	testPin.write(LOGIC_HIGH);
 
-	EXPECT_EQ(0x0, outputRegister) << "Expected output register bit to be cleared";
+	EXPECT_EQ(0x0, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 TEST_F(TestGpioPin, Write_pin_method_can_clear_a_pin)
@@ -140,7 +140,7 @@ TEST_F(TestGpioPin, Write_pin_method_can_clear_a_pin)
 
 	testPin.write(LOGIC_LOW);
 
-	EXPECT_EQ(0xFE, outputRegister) << "Expected output register bit to be cleared";
+	EXPECT_EQ(0xFE, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 TEST_F(TestGpioPin, Toggling_initially_low_pin_sets_it)
@@ -149,7 +149,7 @@ TEST_F(TestGpioPin, Toggling_initially_low_pin_sets_it)
 
 	testPin.toggle();
 
-	EXPECT_EQ(0x1, outputRegister) << "Expected output register bit to be set";
+	EXPECT_EQ(0x1, outputRegister) << ERROR_MSG_STR("Expected output register bit to be set");
 }
 
 TEST_F(TestGpioPin, Toggling_initially_high_pin_clears_it)
@@ -158,7 +158,7 @@ TEST_F(TestGpioPin, Toggling_initially_high_pin_clears_it)
 
 	testPin.toggle();
 
-	EXPECT_EQ(0xFE, outputRegister) << "Expected output register bit to be cleared";
+	EXPECT_EQ(0xFE, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 TEST_F(TestGpioPin, Toggling_input_pin_does_nothing)
@@ -168,7 +168,7 @@ TEST_F(TestGpioPin, Toggling_input_pin_does_nothing)
 	testPin.setDirection(DIGITAL_INPUT);
 	testPin.toggle();
 
-	EXPECT_EQ(0x0, outputRegister) << "Expected output register bit to be cleared";
+	EXPECT_EQ(0x0, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 /* Pin input tests -------------------------------------------------------------------------------*/
@@ -178,7 +178,7 @@ TEST_F(TestGpioPin, Reading_pin_returns_low_if_input_register_is_empty)
 
 	LogicState actualLogicState = testPin.read();
 
-	EXPECT_EQ(LOGIC_LOW, actualLogicState) << "Expected pin state to have been read low";
+	EXPECT_EQ(LOGIC_LOW, actualLogicState) << ERROR_MSG_STR("Expected pin state to have been read low");
 }
 
 TEST_F(TestGpioPin, Reading_pin_returns_low_if_wrong_bit_in_input_register_is_set)
@@ -187,7 +187,7 @@ TEST_F(TestGpioPin, Reading_pin_returns_low_if_wrong_bit_in_input_register_is_se
 
 	LogicState actualLogicState = testPin.read();
 
-	EXPECT_EQ(LOGIC_LOW, actualLogicState) << "Expected pin state to have been read low";
+	EXPECT_EQ(LOGIC_LOW, actualLogicState) << ERROR_MSG_STR("Expected pin state to have been read low");
 }
 
 TEST_F(TestGpioPin, Reading_pin_returns_high_if_input_register_has_set_bit)
@@ -196,5 +196,5 @@ TEST_F(TestGpioPin, Reading_pin_returns_high_if_input_register_has_set_bit)
 
 	LogicState actualLogicState = testPin.read();
 
-	EXPECT_EQ(LOGIC_HIGH, actualLogicState) << "Expected pin state to have been read high";
+	EXPECT_EQ(LOGIC_HIGH, actualLogicState) << ERROR_MSG_STR("Expected pin state to have been read high");
 }
