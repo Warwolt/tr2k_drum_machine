@@ -51,7 +51,7 @@ Package "HardwareAbstractionLayer"
 {
 	interface Timer16Bit
 	{
-		setPeriod(Period : Integer)
+		setPeriod(Integer)
 		setPrescaler(PrescaleOption)
 		start()
 		stop()
@@ -70,7 +70,7 @@ Package "Drivers"
 	class Timer1
 	{
 		enablePeriodicInterrupts()
-		setPeriod(Period : Integer)
+		setPeriod(Integer)
 		setPrescaler(PrescaleOption)
 		start()
 		stop()

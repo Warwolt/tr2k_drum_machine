@@ -32,7 +32,7 @@ Package "Hardware Abstraction Layer"
 
 	interface Timer16Bit
 	{
-		setPeriod(Period : Integer)
+		setPeriod(Integer)
 		setPrescaler(PrescaleOption)
 		clearCounter()
 		start()
@@ -44,7 +44,7 @@ Package "Drivers"
 {
 	class Timer1
 	{
-		setPeriod(Period : Integer)
+		setPeriod(Integer)
 		setPrescaler(PrescaleOption)
 		clearCounter()
 		start()
