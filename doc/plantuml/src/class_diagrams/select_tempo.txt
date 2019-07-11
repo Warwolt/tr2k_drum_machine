@@ -1,0 +1,95 @@
+@startuml
+
+skinparam linetype ortho
+
+title Select Tempo
+
+
+''' Class definitions '''
+
+Package "Presentation"
+{
+	Package "TempoControl"
+	{
+		class TempoControlView
+		{
+			update()
+		}
+
+		interface TempoKnob
+		{
+			beatsPerMinuteRange : BeatsPerMinute
+			getSelectedTempo() : BeatsPerMinute
+		}
+
+		class AnalogTempoKnob
+		{
+			beatsPerMinuteRange : BeatsPerMinute
+			getSelectedTempo() : BeatsPerMinute
+		}
+	}
+}
+
+Package "Application"
+{
+	class RhythmPlaybackController
+	{
+		selectTempo(BeatsPerMinute)
+	}
+}
+
+Package "Domain"
+{
+	Package "Playback"
+	{
+		interface TempoTimer
+		{
+			selectTempo(BeatsPerMinute)
+		}
+	}
+}
+
+Package "HardwareAbstractionLayer"
+{
+	interface NumericDisplay
+	{
+		displayNumber(Integer)
+	}
+}
+
+Package "Drivers"
+{
+	class AnalogPin
+	{
+		read() : float
+	}
+
+	class SevenSegmentDisplay
+	{
+		displayNumber(Integer)
+	}
+
+	class SerialSPI
+	{
+		send(Byte)
+		receive() : Byte
+	}
+}
+
+''' Class relations '''
+
+TempoControlView -down-> NumericDisplay
+TempoControlView -down-> TempoKnob
+TempoControlView -right-> RhythmPlaybackController
+
+TempoKnob <|.. AnalogTempoKnob
+AnalogTempoKnob -down-> AnalogPin
+
+RhythmPlaybackController -down-> TempoTimer
+
+NumericDisplay <|.. SevenSegmentDisplay
+
+SevenSegmentDisplay -> SerialSPI
+
+
+@enduml

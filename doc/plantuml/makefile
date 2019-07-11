@@ -4,8 +4,8 @@ IMG_DIR := img
 SEQ_DIR := sequence_diagrams
 CLASS_DIR := class_diagrams
 
-SRC := $(wildcard $(SRC_DIR)/$(SEQ_DIR)/*.txt)
-SRC += $(wildcard $(SRC_DIR)/$(CLASS_DIR)/*.txt)
+SRC := $(wildcard $(SRC_DIR)/$(SEQ_DIR)**/*.txt)
+SRC += $(wildcard $(SRC_DIR)/$(CLASS_DIR)**/*.txt)
 IMG := $(patsubst %.txt,%.png, $(patsubst $(SRC_DIR)/%, $(IMG_DIR)/%, $(SRC)))
 
 .PHONY: clean doc
@@ -13,6 +13,10 @@ all: $(IMG_DIR) doc
 
 # Phony target for all images
 doc: $(IMG)
+
+# Todo: Generalize the two rules below into one single rule that takes any
+# .txt file in any depth relative to the src folder and produces a .png image
+# file with the same path relative to the img folder.
 
 # Create png from txt source in sequence_diagrams subdirectory
 $(IMG_DIR)/$(SEQ_DIR)%.png: $(SRC_DIR)/$(SEQ_DIR)%.txt

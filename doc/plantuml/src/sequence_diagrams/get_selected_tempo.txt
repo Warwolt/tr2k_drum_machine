@@ -1,0 +1,11 @@
+@startuml
+
+title Get Selected Tempo
+
+Client->TempoKnob : getSelectedTempo() : BeatsPerMinute
+TempoKnob->AnalogPin : read() : float
+AnalogPin-->TempoKnob : normalizedAnalogValue
+note left : normalizedAnalogValue in range [0,1]
+TempoKnob-->Client : normalizedAnalogValue * beatsPerMinuteRange
+note right : beatsPerMinuteRange = maxBpm - minBpm
+@enduml

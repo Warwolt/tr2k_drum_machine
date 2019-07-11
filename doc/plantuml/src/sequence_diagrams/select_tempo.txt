@@ -1,0 +1,12 @@
+@startuml
+
+title Select Tempo
+
+Client->TempoControlView: update()
+TempoControlView->TempoKnob : getSelectedTempo()
+TempoKnob-->TempoControlView : selectedTempo : BeatsPerMinute
+TempoControlView->RhythmPlaybackController : setTempo(selectedTempo)
+RhythmPlaybackController->TempoTimer : setTempo(selectedTempo)
+TempoControlView->NumericDisplay : displayNumber(selectedTempo)
+
+@enduml
