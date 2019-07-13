@@ -59,5 +59,4 @@ clean:
 	rm -rf $(BIN) $(OBJ_DIR)
 
 debug:
-	@echo OBJ_DIR = $(OBJ_DIR)
-	@echo OBJ = $(OBJ)
+	$(CC) -E $(FLAGS) $(INC) $(PROJ_ROOT)/app/main.cpp $(LIB) $(LINK_FLAGS)

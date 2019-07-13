@@ -2,7 +2,6 @@
 #include "timer1.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <util/delay.h>
 
 static GpioPin ledPin = GpioPin(PIN_5, PORT_B, DIGITAL_OUTPUT);
 static Timer1 tim1;
@@ -20,6 +19,7 @@ int main()
 
 	while(1)
 	{
+		//
 	}
 }
 

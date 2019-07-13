@@ -26,17 +26,23 @@ LIB += $(LIB_DIR)/googletest/gtest_main.a
 # Add google test and google mock libraries
 INC += -I$(LIB_DIR)/googlemock/include
 LIB += $(LIB_DIR)/googlemock/gmock.a
-INC += -I$(LIB_DIR)/mockheaders # used to mock out avi library headers
 
 # Embedded template library
 INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include
 INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include/etl/profiles
+
+# Add avr header mocks
+-include $(LIB_DIR)/mockheaders/avr/makefile.mk
 
 .PHONY: clean directories
 all: $(OBJ_DIR) $(BIN)
 
 # Include all module-specific makefiles
 -include modules.mk
+
+# Avr header mocks
+$(OBJ_DIR)/%.o: $(AVR_MOCK_DIR)/%.cpp
+	$(CC) $(INC) $(FLAGS) -c $< -MMD -o $@
 
 # Include all dependency .d files
 DEP = $(OBJ:%.o=%.d)
@@ -54,4 +60,4 @@ clean:
 	rm -rf $(OBJ_DIR) $(BIN)
 
 debug:
-	@echo OBJ = $(OBJ)
+	$(CC) -E $(FLAGS) $(PROJ_ROOT)/app/infrastructure/ihm/src/ihm.cpp $(INC) $(LIB) $(LINK_FLAGS)
