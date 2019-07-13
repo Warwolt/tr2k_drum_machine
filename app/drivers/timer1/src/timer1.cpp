@@ -18,42 +18,6 @@ Timer1::Timer1()
 }
 
 /**
- * Used for testing.
- * @param reg  pointer to variable mocking TCCR1B register.
- */
-void Timer1::setControlRegister(u8* reg)
-{
-	controlRegister = reg;
-}
-
-/**
- * Used for testing.
- * @param reg  pointer to variable mocking TIMSK1 register.
- */
-void Timer1::setInterruptMaskRegister(u8* reg)
-{
-	interruptMaskRegister = reg;
-}
-
-/**
- * Used for testing.
- * @param reg  pointer to variable mocking the OCR1A register.
- */
-void Timer1::setOutputCompareRegister(u16* reg)
-{
-	outputCompareRegister = reg;
-}
-
-/**
- * Used for testing.
- * @param reg  pointer to variable mocking the TCNT1 register.
- */
-void Timer1::setCounterValueRegister(u16* reg)
-{
-	counterValueRegister = reg;
-}
-
-/**
  * Enables the timer to generate TIMER1_COMPA interrupts at a frequency
  * determined by the last argument given to Timer1::setPeriod().
  */
@@ -136,4 +100,40 @@ void Timer1::stop()
 void Timer1::clear()
 {
 	*counterValueRegister = 0;
+}
+
+/**
+ * Used for testing.
+ * @param reg  pointer to variable mocking TCCR1B register.
+ */
+void Timer1::setControlRegister(u8* reg)
+{
+	controlRegister = reg;
+}
+
+/**
+ * Used for testing.
+ * @param reg  pointer to variable mocking TIMSK1 register.
+ */
+void Timer1::setInterruptMaskRegister(u8* reg)
+{
+	interruptMaskRegister = reg;
+}
+
+/**
+ * Used for testing.
+ * @param reg  pointer to variable mocking the OCR1A register.
+ */
+void Timer1::setOutputCompareRegister(u16* reg)
+{
+	outputCompareRegister = reg;
+}
+
+/**
+ * Used for testing.
+ * @param reg  pointer to variable mocking the TCNT1 register.
+ */
+void Timer1::setCounterValueRegister(u16* reg)
+{
+	counterValueRegister = reg;
 }

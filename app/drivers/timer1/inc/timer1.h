@@ -16,11 +16,6 @@ class Timer1 : public Timer16Bit
 public:
 	Timer1();
 
-	void setControlRegister(u8* reg);
-	void setInterruptMaskRegister(u8* reg);
-	void setOutputCompareRegister(u16* reg);
-	void setCounterValueRegister(u16* reg);
-
 	void enablePeriodicInterrupts();
 	void setPrescaler(PrescaleOption prescaler);
 	void setPeriod(u16 period);
@@ -28,6 +23,11 @@ public:
 	void start();
 	void stop();
 	void clear();
+
+	void setControlRegister(u8* reg);
+	void setInterruptMaskRegister(u8* reg);
+	void setOutputCompareRegister(u16* reg);
+	void setCounterValueRegister(u16* reg);
 
 private:
 	volatile u8* controlRegister;
