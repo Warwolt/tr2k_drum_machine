@@ -18,8 +18,6 @@ void resetSeiWasCalled()
 	seiCalled = false;
 }
 
-
-
 bool cliWasCalled()
 {
 	return cliCalled;

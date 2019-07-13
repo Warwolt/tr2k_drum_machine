@@ -1,24 +1,24 @@
 /*
 ****************************************************************************************************
-* brief : InterruptHandlerManager allows user defined functions to be attached to interrupt signals
+* brief : InterruptManager allows user defined functions to be attached to interrupt signals
 *         by calling the user defined function from the associated interrupt service routine.
 ****************************************************************************************************
 */
 
-#ifndef INTERRUPT_HANDLER_MANAGER_H
-#define INTERRUPT_HANDLER_MANAGER_H
+#ifndef INTERRUPT_MANAGER_H
+#define INTERRUPT_MANAGER_H
 
 #include <avr/interrupt.h>
 
-enum class InterruptRequest {TIMER1_COMPA};
+enum class InterruptRequest {TIMER1_COMPA, SPI_STC};
 using InterruptHandler = void(*)();
 
-class InterruptHandlerManager
+class InterruptManager
 {
 public:
 	void enableInterruptsGlobally();
 	void disableInterruptsGlobally();
-	void attachHandler(InterruptHandler handler, InterruptRequest request);
+	void setHandler(InterruptRequest request, InterruptHandler handler);
 };
 
-#endif /* INTERRUPT_HANDLER_MANAGER_H */
+#endif /* INTERRUPT_MANAGER_H */
