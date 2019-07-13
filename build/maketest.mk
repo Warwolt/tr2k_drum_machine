@@ -28,6 +28,10 @@ INC += -I$(LIB_DIR)/googlemock/include
 LIB += $(LIB_DIR)/googlemock/gmock.a
 INC += -I$(LIB_DIR)/mockheaders # used to mock out avi library headers
 
+# Embedded template library
+INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include
+INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include/etl/profiles
+
 .PHONY: clean directories
 all: $(OBJ_DIR) $(BIN)
 
