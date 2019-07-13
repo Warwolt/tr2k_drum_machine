@@ -23,10 +23,10 @@ int main()
 
 void init()
 {
-	/* trial code: initialize timer 1 */
 	// enable global interrupts
 	sei();
 
+	/* trial code: initialize timer 1 */
 	// set mode to Clear on Compare Match (CTC)
 	TCCR1B |= 0x1 << WGM12;
 
