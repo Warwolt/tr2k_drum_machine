@@ -1,6 +1,6 @@
 /*
 ****************************************************************************************************
-* brief : Unit tests for InterrupManager
+* brief : Unit tests for Interrupf
 ****************************************************************************************************
 */
 
@@ -8,58 +8,76 @@
 #include "traceprint.h"
 #include "linuxtypes.h"
 #include "interruptmanager.h"
-#include <unordered_map>
 
 /* Import interrupt handlers, made possible by a mocked implementation of avr/interrupt.h */
 extern void TIMER1_COMPA_vect (void);
 extern void SPI_STC_vect (void);
 
-static bool timer1CallbackCalled;
-static bool spiStcCallbackCalled;
+static bool handlerWasCalled;
 
-class TestInterruptHandlerManager : public ::testing::Test
+using InterruptServiceRoutine = void(*)();
+
+class TestInterruptManager : public ::testing::Test
 {
 public:
-	InterruptManager manager;
+	InterruptManager interruptManager;
 
 	void SetUp()
 	{
-		timer1CallbackCalled = false;
-		spiStcCallbackCalled = false;
-
+		handlerWasCalled = false;
 		avrmock::resetSeiWasCalled();
 		avrmock::resetCliWasCalled();
 	}
+
+	/**
+	 * Helper function for testing that handlers attached to an interrupt gets called from the
+	 * corresponding service routine (which is the destination from the interrupt vector).
+	 * @param interruptRequest  enum specifying interrupt signal to attach handler to
+	 * @param interruptHandler  pointer to function to be called from service routine
+	 * @param serviceRoutine    pointer to interrupt service routine belonging to interrupt
+	 * @param interruptName     name of interrupt to print out in assertion error message
+	 */
+	void testInterruptHandlerCallsCallback(InterruptRequest interruptRequest,
+		InterruptHandler interruptHandler, InterruptServiceRoutine serviceRoutine,
+		std::string interruptName)
+	{
+		interruptManager.setHandler(interruptRequest, interruptHandler);
+
+		serviceRoutine();
+
+		EXPECT_TRUE(handlerWasCalled) << ERROR_MSG_STR("Expected interrupt handler to have been "
+			"called from " << interruptName << " interrupt service routine, but it wasn't.");
+	}
 };
 
-TEST_F(TestInterruptHandlerManager, Global_interrupts_can_be_enabled)
+TEST_F(TestInterruptManager, Global_interrupts_can_be_enabled)
 {
-	manager.enableInterruptsGlobally();
+	interruptManager.enableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::seiWasCalled());
 }
 
-TEST_F(TestInterruptHandlerManager, Global_interrupts_can_be_disabled)
+TEST_F(TestInterruptManager, Global_interrupts_can_be_disabled)
 {
-	manager.disableInterruptsGlobally();
+	interruptManager.disableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::cliWasCalled());
 }
 
-TEST_F(TestInterruptHandlerManager, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)
+TEST_F(TestInterruptManager, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)
 {
-	manager.setHandler(InterruptRequest::TIMER1_COMPA, [](){ timer1CallbackCalled = true; });
+	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
+	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
+	InterruptServiceRoutine interruptServiceRoutine = TIMER1_COMPA_vect;
 
-	TIMER1_COMPA_vect(); // call interrupt handler
-
-	EXPECT_TRUE(timer1CallbackCalled) << ERROR_MSG_STR("Expected callback to have been called from "
-		"TIMER1_COMPA interrupt handler, but it wasn't.");
+	testInterruptHandlerCallsCallback(interruptRequest, interruptHandler, interruptServiceRoutine,
+		"TIMER1_COMPA");
 }
 
-TEST_F(TestInterruptHandlerManager, Callback_can_be_attached_to_interrupt_SPI_STC)
+TEST_F(TestInterruptManager, Callback_can_be_attached_to_interrupt_SPI_STC)
 {
-	manager.setHandler(InterruptRequest::SPI_STC, [](){ spiStcCallbackCalled = true; });
+	InterruptRequest interruptRequest = InterruptRequest::SPI_STC;
+	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
+	InterruptServiceRoutine interruptServiceRoutine = SPI_STC_vect;
 
-	SPI_STC_vect(); // call interrupt handler
-
-	EXPECT_TRUE(spiStcCallbackCalled) << ERROR_MSG_STR("Expected callback to have been called from "
-		"SPI_STC interrupt handler, but it wasn't.");
+	testInterruptHandlerCallsCallback(interruptRequest, interruptHandler, interruptServiceRoutine,
+		"SPI_STC");
 }
