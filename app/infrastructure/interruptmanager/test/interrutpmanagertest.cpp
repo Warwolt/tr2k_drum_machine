@@ -32,16 +32,16 @@ public:
 	/**
 	 * Helper function for testing that handlers attached to an interrupt gets called from the
 	 * corresponding service routine (which is the destination from the interrupt vector).
-	 * @param interruptRequest  enum specifying interrupt signal to attach handler to
 	 * @param interruptHandler  pointer to function to be called from service routine
+	 * @param interruptRequest  enum specifying interrupt signal to attach handler to
 	 * @param serviceRoutine    pointer to interrupt service routine belonging to interrupt
 	 * @param interruptName     name of interrupt to print out in assertion error message
 	 */
-	void testInterruptHandlerCallsCallback(InterruptRequest interruptRequest,
-		InterruptHandler interruptHandler, InterruptServiceRoutine serviceRoutine,
+	void testInterruptHandlerCallsCallback(InterruptHandler interruptHandler,
+		InterruptRequest interruptRequest, InterruptServiceRoutine serviceRoutine,
 		std::string interruptName)
 	{
-		interruptManager.setHandler(interruptRequest, interruptHandler);
+		interruptManager.setHandlerForInterrupt(interruptHandler, interruptRequest);
 
 		serviceRoutine();
 
@@ -64,20 +64,20 @@ TEST_F(TestInterruptManager, Global_interrupts_can_be_disabled)
 
 TEST_F(TestInterruptManager, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)
 {
-	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
 	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
+	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
 	InterruptServiceRoutine interruptServiceRoutine = TIMER1_COMPA_vect;
 
-	testInterruptHandlerCallsCallback(interruptRequest, interruptHandler, interruptServiceRoutine,
+	testInterruptHandlerCallsCallback(interruptHandler, interruptRequest, interruptServiceRoutine,
 		"TIMER1_COMPA");
 }
 
 TEST_F(TestInterruptManager, Callback_can_be_attached_to_interrupt_SPI_STC)
 {
-	InterruptRequest interruptRequest = InterruptRequest::SPI_STC;
 	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
+	InterruptRequest interruptRequest = InterruptRequest::SPI_STC;
 	InterruptServiceRoutine interruptServiceRoutine = SPI_STC_vect;
 
-	testInterruptHandlerCallsCallback(interruptRequest, interruptHandler, interruptServiceRoutine,
+	testInterruptHandlerCallsCallback(interruptHandler, interruptRequest, interruptServiceRoutine,
 		"SPI_STC");
 }

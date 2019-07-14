@@ -18,7 +18,7 @@ class InterruptManager
 public:
 	void enableInterruptsGlobally();
 	void disableInterruptsGlobally();
-	void setHandler(InterruptRequest request, InterruptHandler handler);
+	void setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request);
 };
 
 #endif /* INTERRUPT_MANAGER_H */

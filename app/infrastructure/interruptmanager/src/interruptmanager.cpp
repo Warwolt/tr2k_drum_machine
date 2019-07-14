@@ -22,7 +22,7 @@ ISR(TIMER1_COMPA_vect)
 }
 
 /**
- * Interrupt service routine for spi serial transfer complete interrupt.
+ * Interrupt service routine for spi serial transfer complete interrupt.2
  */
 ISR(SPI_STC_vect)
 {
@@ -53,10 +53,10 @@ void InterruptManager::disableInterruptsGlobally()
 /**
  * Sets which user defined interrupt handler to call in response to an
  * interrupt signal.
- * @param request  enum specifying which signal to set handler for.
  * @param handler  pointer to function that handles the interrupt.
+ * @param request  enum specifying which signal to set handler for.
  */
-void InterruptManager::setHandler(InterruptRequest request, InterruptHandler handler)
+void InterruptManager::setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request)
 {
 	switch(request)
 	{
