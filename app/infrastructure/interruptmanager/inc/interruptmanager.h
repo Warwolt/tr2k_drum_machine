@@ -16,8 +16,8 @@ using InterruptHandler = void(*)();
 class InterruptManager
 {
 public:
-	void enableInterruptsGlobally();
-	void disableInterruptsGlobally();
+	static void enableInterruptsGlobally();
+	static void disableInterruptsGlobally();
 	void setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request);
 };
 

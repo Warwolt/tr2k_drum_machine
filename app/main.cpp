@@ -22,9 +22,9 @@ int main()
 
 void init()
 {
-	interruptManager.enableInterruptsGlobally();
+	InterruptManager::enableInterruptsGlobally();
 
-	InterruptHandler interruptHandler = [](){ ledPin.toggle(); };
+	InterruptHandler interruptHandler = []{ ledPin.toggle(); };
 	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
 	interruptManager.setHandlerForInterrupt(interruptHandler, interruptRequest);
 

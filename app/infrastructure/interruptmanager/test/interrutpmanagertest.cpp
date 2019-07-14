@@ -52,13 +52,13 @@ public:
 
 TEST_F(TestInterruptManager, Global_interrupts_can_be_enabled)
 {
-	interruptManager.enableInterruptsGlobally();
+	InterruptManager::enableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::seiWasCalled());
 }
 
 TEST_F(TestInterruptManager, Global_interrupts_can_be_disabled)
 {
-	interruptManager.disableInterruptsGlobally();
+	InterruptManager::disableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::cliWasCalled());
 }
 
