@@ -13,12 +13,13 @@
 enum class InterruptRequest {TIMER1_COMPA, SPI_STC};
 using InterruptHandler = void(*)();
 
-class InterruptManager
+namespace interruptmanager
 {
-public:
-	static void enableInterruptsGlobally();
-	static void disableInterruptsGlobally();
-	void setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request);
+
+void enableInterruptsGlobally();
+void disableInterruptsGlobally();
+void setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request);
+
 };
 
 #endif /* INTERRUPT_MANAGER_H */

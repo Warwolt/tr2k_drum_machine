@@ -5,7 +5,6 @@
 #include <avr/io.h>
 
 static GpioPin ledPin = GpioPin(PIN_5, PORT_B, DIGITAL_OUTPUT);
-static InterruptManager interruptManager;
 static Timer1 tim1;
 
 void init();
@@ -22,11 +21,11 @@ int main()
 
 void init()
 {
-	InterruptManager::enableInterruptsGlobally();
+	interruptmanager::enableInterruptsGlobally();
 
 	InterruptHandler interruptHandler = []{ ledPin.toggle(); };
 	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
-	interruptManager.setHandlerForInterrupt(interruptHandler, interruptRequest);
+	interruptmanager::setHandlerForInterrupt(interruptHandler, interruptRequest);
 
 	tim1.enablePeriodicInterrupts();
 	tim1.setPrescaler(Timer16Bit::PrescaleOption::_1);

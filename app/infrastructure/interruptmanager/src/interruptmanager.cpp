@@ -36,7 +36,7 @@ ISR(SPI_STC_vect)
  * Enables interrupts signals to trigger service routines to be called. Is a
  * prerequisite for any interrupt handling to enable interrupts globally.
  */
-void InterruptManager::enableInterruptsGlobally()
+void interruptmanager::enableInterruptsGlobally()
 {
 	sei();
 }
@@ -45,7 +45,7 @@ void InterruptManager::enableInterruptsGlobally()
  * Disables interrupts globally, so that no interrupt service routines are
  * called in response to interrupt signals.
  */
-void InterruptManager::disableInterruptsGlobally()
+void interruptmanager::disableInterruptsGlobally()
 {
 	cli();
 }
@@ -56,7 +56,7 @@ void InterruptManager::disableInterruptsGlobally()
  * @param handler  pointer to function that handles the interrupt.
  * @param request  enum specifying which signal to set handler for.
  */
-void InterruptManager::setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request)
+void interruptmanager::setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request)
 {
 	switch(request)
 	{

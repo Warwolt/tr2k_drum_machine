@@ -20,7 +20,6 @@ using InterruptServiceRoutine = void(*)();
 class TestInterruptManager : public ::testing::Test
 {
 public:
-	InterruptManager interruptManager;
 
 	void SetUp()
 	{
@@ -41,7 +40,7 @@ public:
 		InterruptRequest interruptRequest, InterruptServiceRoutine serviceRoutine,
 		std::string interruptName)
 	{
-		interruptManager.setHandlerForInterrupt(interruptHandler, interruptRequest);
+		interruptmanager::setHandlerForInterrupt(interruptHandler, interruptRequest);
 
 		serviceRoutine();
 
@@ -52,13 +51,13 @@ public:
 
 TEST_F(TestInterruptManager, Global_interrupts_can_be_enabled)
 {
-	InterruptManager::enableInterruptsGlobally();
+	interruptmanager::enableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::seiWasCalled());
 }
 
 TEST_F(TestInterruptManager, Global_interrupts_can_be_disabled)
 {
-	InterruptManager::disableInterruptsGlobally();
+	interruptmanager::disableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::cliWasCalled());
 }
 
