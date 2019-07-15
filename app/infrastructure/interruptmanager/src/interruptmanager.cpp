@@ -11,7 +11,7 @@ static InterruptHandler timerCompareHandler = nullptr;
 static InterruptHandler serialTransferHandler = nullptr;
 
 /**
- *  Interrupt service routine for timer1 compare match interrupt
+ *  Interrupt service routine for timer1 compare match interrupt.
  */
 ISR(TIMER1_COMPA_vect)
 {
@@ -22,7 +22,7 @@ ISR(TIMER1_COMPA_vect)
 }
 
 /**
- * Interrupt service routine for spi serial transfer complete interrupt.2
+ * Interrupt service routine for spi serial transfer complete interrupt.
  */
 ISR(SPI_STC_vect)
 {
