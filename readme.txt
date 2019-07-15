@@ -7,7 +7,7 @@ and embedded software can absolutely benefit from some higher abstractions.
 Some goals of this little sideproject for starters:
 
 	o 	Sound authentic (ish) to the original Roland machines
-	o 	Support a very similair (hardware) user interface to the 808 and the 909
+	o 	Support a very similar (hardware) user interface to the 808 and the 909
 	o 	Have object-oriented code that is also aware of the hardware it runs on (the assembly)
 	o 	Be a fun project!
 
