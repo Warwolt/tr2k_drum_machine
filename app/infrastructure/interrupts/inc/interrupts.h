@@ -10,7 +10,7 @@
 
 #include <avr/interrupt.h>
 
-enum class InterruptRequest {TIMER1_COMPA, SPI_STC};
+enum class InterruptRequest {Timer1CompareMatch, SpiTransferComplete};
 using InterruptHandler = void(*)();
 
 namespace Interrupts

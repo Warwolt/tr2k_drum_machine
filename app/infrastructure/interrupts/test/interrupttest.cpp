@@ -64,19 +64,19 @@ TEST_F(TestInterrupts, Global_interrupts_can_be_disabled)
 TEST_F(TestInterrupts, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)
 {
 	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
-	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
+	InterruptRequest interruptRequest = InterruptRequest::Timer1CompareMatch;
 	InterruptServiceRoutine interruptServiceRoutine = TIMER1_COMPA_vect;
 
 	testInterruptHandlerCallsCallback(interruptHandler, interruptRequest, interruptServiceRoutine,
-		"TIMER1_COMPA");
+		"Timer1CompareMatch");
 }
 
 TEST_F(TestInterrupts, Callback_can_be_attached_to_interrupt_SPI_STC)
 {
 	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
-	InterruptRequest interruptRequest = InterruptRequest::SPI_STC;
+	InterruptRequest interruptRequest = InterruptRequest::SpiTransferComplete;
 	InterruptServiceRoutine interruptServiceRoutine = SPI_STC_vect;
 
 	testInterruptHandlerCallsCallback(interruptHandler, interruptRequest, interruptServiceRoutine,
-		"SPI_STC");
+		"SpiTransferComplete");
 }

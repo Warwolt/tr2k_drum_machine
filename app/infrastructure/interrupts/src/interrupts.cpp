@@ -60,7 +60,7 @@ void Interrupts::setHandlerForInterrupt(InterruptHandler handler, InterruptReque
 {
 	switch(request)
 	{
-		case(InterruptRequest::TIMER1_COMPA) : timerCompareHandler   = handler; break;
-		case(InterruptRequest::SPI_STC)      : serialTransferHandler = handler; break;
+		case(InterruptRequest::Timer1CompareMatch)  : timerCompareHandler   = handler; break;
+		case(InterruptRequest::SpiTransferComplete) : serialTransferHandler = handler; break;
 	}
 }

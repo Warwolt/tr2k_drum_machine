@@ -24,7 +24,7 @@ void init()
 	Interrupts::enableInterruptsGlobally();
 
 	InterruptHandler interruptHandler = []{ ledPin.toggle(); };
-	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
+	InterruptRequest interruptRequest = InterruptRequest::Timer1CompareMatch;
 	Interrupts::setHandlerForInterrupt(interruptHandler, interruptRequest);
 
 	tim1.enablePeriodicInterrupts();
