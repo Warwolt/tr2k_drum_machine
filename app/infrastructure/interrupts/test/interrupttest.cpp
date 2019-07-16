@@ -24,8 +24,8 @@ public:
 	void SetUp()
 	{
 		handlerWasCalled = false;
-		avrmock::resetSeiWasCalled();
-		avrmock::resetCliWasCalled();
+		AvrMock::resetSeiWasCalled();
+		AvrMock::resetCliWasCalled();
 	}
 
 	/**
@@ -52,13 +52,13 @@ public:
 TEST_F(TestInterrupts, Global_interrupts_can_be_enabled)
 {
 	Interrupts::enableInterruptsGlobally();
-	EXPECT_TRUE(avrmock::seiWasCalled());
+	EXPECT_TRUE(AvrMock::seiWasCalled());
 }
 
 TEST_F(TestInterrupts, Global_interrupts_can_be_disabled)
 {
 	Interrupts::disableInterruptsGlobally();
-	EXPECT_TRUE(avrmock::cliWasCalled());
+	EXPECT_TRUE(AvrMock::cliWasCalled());
 }
 
 TEST_F(TestInterrupts, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)

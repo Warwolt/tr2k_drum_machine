@@ -2,7 +2,7 @@
 
 #include <avr/interrupt.h>
 
-namespace avrmock
+namespace AvrMock
 {
 
 static bool seiCalled = false;
@@ -28,16 +28,17 @@ void resetCliWasCalled()
 	cliCalled = false;
 }
 
-} // avrmock
+} /* AvrMock */
+
 
 // sei (enable interrupts globally)
 void sei()
 {
-	avrmock::seiCalled = true;
+	AvrMock::seiCalled = true;
 }
 
 // cli (disable interrupts globally)
 void cli()
 {
-	avrmock::cliCalled = true;
+	AvrMock::cliCalled = true;
 }

@@ -11,7 +11,7 @@ void cli(); // cli (disable interrupts globally)
 // interrupt service routine
 #define ISR(VECTOR) void VECTOR (void)
 
-namespace avrmock
+namespace AvrMock
 {
 bool seiWasCalled();
 void resetSeiWasCalled();
