@@ -1,6 +1,6 @@
 #include "gpiopin.h"
 #include "timer1.h"
-#include "interruptmanager.h"
+#include "interrupts.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
@@ -21,11 +21,11 @@ int main()
 
 void init()
 {
-	interruptmanager::enableInterruptsGlobally();
+	Interrupts::enableInterruptsGlobally();
 
 	InterruptHandler interruptHandler = []{ ledPin.toggle(); };
 	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
-	interruptmanager::setHandlerForInterrupt(interruptHandler, interruptRequest);
+	Interrupts::setHandlerForInterrupt(interruptHandler, interruptRequest);
 
 	tim1.enablePeriodicInterrupts();
 	tim1.setPrescaler(Timer16Bit::PrescaleOption::_1);

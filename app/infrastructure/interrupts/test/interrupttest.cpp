@@ -7,7 +7,7 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "interruptmanager.h"
+#include "interrupts.h"
 
 /* Import interrupt handlers, made possible by a mocked implementation of avr/interrupt.h */
 extern void TIMER1_COMPA_vect (void);
@@ -17,7 +17,7 @@ static bool handlerWasCalled;
 
 using InterruptServiceRoutine = void(*)();
 
-class TestInterruptManager : public ::testing::Test
+class TestInterrupts : public ::testing::Test
 {
 public:
 
@@ -40,7 +40,7 @@ public:
 		InterruptRequest interruptRequest, InterruptServiceRoutine serviceRoutine,
 		std::string interruptName)
 	{
-		interruptmanager::setHandlerForInterrupt(interruptHandler, interruptRequest);
+		Interrupts::setHandlerForInterrupt(interruptHandler, interruptRequest);
 
 		serviceRoutine();
 
@@ -49,19 +49,19 @@ public:
 	}
 };
 
-TEST_F(TestInterruptManager, Global_interrupts_can_be_enabled)
+TEST_F(TestInterrupts, Global_interrupts_can_be_enabled)
 {
-	interruptmanager::enableInterruptsGlobally();
+	Interrupts::enableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::seiWasCalled());
 }
 
-TEST_F(TestInterruptManager, Global_interrupts_can_be_disabled)
+TEST_F(TestInterrupts, Global_interrupts_can_be_disabled)
 {
-	interruptmanager::disableInterruptsGlobally();
+	Interrupts::disableInterruptsGlobally();
 	EXPECT_TRUE(avrmock::cliWasCalled());
 }
 
-TEST_F(TestInterruptManager, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)
+TEST_F(TestInterrupts, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)
 {
 	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
 	InterruptRequest interruptRequest = InterruptRequest::TIMER1_COMPA;
@@ -71,7 +71,7 @@ TEST_F(TestInterruptManager, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)
 		"TIMER1_COMPA");
 }
 
-TEST_F(TestInterruptManager, Callback_can_be_attached_to_interrupt_SPI_STC)
+TEST_F(TestInterrupts, Callback_can_be_attached_to_interrupt_SPI_STC)
 {
 	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
 	InterruptRequest interruptRequest = InterruptRequest::SPI_STC;

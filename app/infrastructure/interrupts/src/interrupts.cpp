@@ -1,11 +1,11 @@
 /*
 ****************************************************************************************************
-* brief : InterruptManager allows user defined functions to be attached to interrupt signals
-*         by calling the user defined function from the associated interrupt service routine.
+* brief : this file allows user defined functions to be attached to interrupt signals by calling
+*         the user defined function from the associated interrupt service routine.
 ****************************************************************************************************
 */
 
-#include "interruptmanager.h"
+#include "interrupts.h"
 
 static InterruptHandler timerCompareHandler = nullptr;
 static InterruptHandler serialTransferHandler = nullptr;
@@ -36,7 +36,7 @@ ISR(SPI_STC_vect)
  * Enables interrupts signals to trigger service routines to be called. Is a
  * prerequisite for any interrupt handling to enable interrupts globally.
  */
-void interruptmanager::enableInterruptsGlobally()
+void Interrupts::enableInterruptsGlobally()
 {
 	sei();
 }
@@ -45,7 +45,7 @@ void interruptmanager::enableInterruptsGlobally()
  * Disables interrupts globally, so that no interrupt service routines are
  * called in response to interrupt signals.
  */
-void interruptmanager::disableInterruptsGlobally()
+void Interrupts::disableInterruptsGlobally()
 {
 	cli();
 }
@@ -56,7 +56,7 @@ void interruptmanager::disableInterruptsGlobally()
  * @param handler  pointer to function that handles the interrupt.
  * @param request  enum specifying which signal to set handler for.
  */
-void interruptmanager::setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request)
+void Interrupts::setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request)
 {
 	switch(request)
 	{
