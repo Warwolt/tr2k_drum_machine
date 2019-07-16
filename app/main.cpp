@@ -4,7 +4,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
-static GpioPin ledPin = GpioPin(PIN_5, PORT_B, DIGITAL_OUTPUT);
+static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
 static Timer1 tim1;
 
 void init();

@@ -26,35 +26,35 @@ GpioPin::GpioPin(PinNumber num, Port port, DataDirection direction)
 
 volatile uint8_t* GpioPin::getPortDataDirRegAddress(Port port)
 {
-	// no PORT_A supported in atmega328
-	if(port == PORT_B) return &DDRB;
-	if(port == PORT_C) return &DDRC;
-	if(port == PORT_D) return &DDRD;
+	// no PortA supported in atmega328
+	if(port == PortB) return &DDRB;
+	if(port == PortC) return &DDRC;
+	if(port == PortD) return &DDRD;
 	else return 0;
 }
 
 volatile uint8_t* GpioPin::getInputRegAddress(Port port)
 {
-	// no PORT_A supported in atmega328
-	if(port == PORT_B) return &PINB;
-	if(port == PORT_C) return &PINC;
-	if(port == PORT_D) return &PIND;
+	// no PortA supported in atmega328
+	if(port == PortB) return &PINB;
+	if(port == PortC) return &PINC;
+	if(port == PortD) return &PIND;
 	else return 0;
 }
 
 volatile uint8_t* GpioPin::getOutputRegAddress(Port port)
 {
-	// no PORT_A supported in atmega328
-	if(port == PORT_B) return &PORTB;
-	if(port == PORT_C) return &PORTC;
-	if(port == PORT_D) return &PORTD;
+	// no PortA supported in atmega328
+	if(port == PortB) return &PORTB;
+	if(port == PortC) return &PORTC;
+	if(port == PortD) return &PORTD;
 	else return 0;
 }
 
 /* Input / Output methods ------------------------------------------------------------------------*/
 void GpioPin::set()
 {
-	if(direction == DIGITAL_OUTPUT)
+	if(direction == DigitalOutput)
 		(*outputRegPtr) |= 0x1 << pinNum;
 }
 
@@ -65,19 +65,19 @@ void GpioPin::clear()
 
 void GpioPin::toggle()
 {
-	if(direction == DIGITAL_OUTPUT)
+	if(direction == DigitalOutput)
 		(*outputRegPtr) ^= 0x1 << pinNum;
 }
 
 void GpioPin::write(LogicState state)
 {
-	(state == LOGIC_HIGH) ? set() : clear();
+	(state == LogicHigh) ? set() : clear();
 }
 
 LogicState GpioPin::read()
 {
 	bool bitHigh = *(inputRegPtr) & (0x1 << pinNum);
-	return bitHigh ? LOGIC_HIGH : LOGIC_LOW;
+	return bitHigh ? LogicHigh : LogicLow;
 }
 
 /* Setter methods --------------------------------------------------------------------------------*/
@@ -85,13 +85,13 @@ void GpioPin::setDirection(DataDirection dir)
 {
 	direction = dir;
 
-	if(direction == DIGITAL_INPUT)
+	if(direction == DigitalInput)
 	{
 		(*dataDirRegPtr) &= ~(0x1 << pinNum); // set data direction bit to input
 		(*outputRegPtr) &= ~(0x1 << pinNum);  // clear pullup bit
 	}
 
-	if(direction == DIGITAL_OUTPUT)
+	if(direction == DigitalOutput)
 	{
 		(*dataDirRegPtr) |= 0x1 << pinNum;
 	}

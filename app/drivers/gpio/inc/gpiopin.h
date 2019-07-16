@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <avr/io.h>
 
-enum Port {PORT_B, PORT_C, PORT_D}; // note: PORT_A not supported in atmega328p
-enum PinNumber {PIN_0 = 0, PIN_1, PIN_2, PIN_3, PIN_4, PIN_5, PIN_6, PIN_7, PIN_8};
+enum Port {PortB, PortC, PortD}; // note: PORT_A not supported in atmega328p
+enum PinNumber {Pin0 = 0, Pin1, Pin2, Pin3, Pin4, Pin5, Pin6, Pin7, Pin8};
 
 class GpioPin : public IGpioPin
 {

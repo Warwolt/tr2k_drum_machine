@@ -9,8 +9,8 @@
 
 #include <avr/io.h>
 
-enum LogicState {LOGIC_LOW = false, LOGIC_HIGH = true};
-enum DataDirection {DIGITAL_INPUT, DIGITAL_OUTPUT};
+enum LogicState {LogicLow = false, LogicHigh = true};
+enum DataDirection {DigitalInput, DigitalOutput};
 
 class IGpioPin
 {
