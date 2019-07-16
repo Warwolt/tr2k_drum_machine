@@ -31,6 +31,10 @@ LIB += $(LIB_DIR)/googlemock/gmock.a
 INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include
 INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include/etl/profiles
 
+# Fixed Point Number Arithmetic Library
+INC += -I$(LIB_DIR)/libfixmath/include
+LIB += $(LIB_DIR)/libfixmath/libfixmath.a
+
 # Add avr header mocks
 -include $(LIB_DIR)/mockheaders/avr/makefile.mk
 

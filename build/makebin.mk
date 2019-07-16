@@ -26,7 +26,12 @@ COM_PORT := com5 # NOTE: This must correspond to the usb port you use!
 INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include
 INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include/etl/profiles
 
+# Definition of operations new and delete
 LIB += $(LIB_DIR)/newdelete/newdelete.a
+
+# Fixed Point Number Arithmetic Library
+INC += -I$(LIB_DIR)/libfixmath/include
+LIB += $(LIB_DIR)/libfixmath/libfixmath.a
 
 .PHONY: clean directories
 all: $(OBJ_DIR) $(BIN)

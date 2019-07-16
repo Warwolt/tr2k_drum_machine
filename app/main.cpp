@@ -3,6 +3,7 @@
 #include "interrupts.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include "libfixmath/fixmath.h"
 
 static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
 static Timer1 tim1;
@@ -13,9 +14,11 @@ int main()
 {
 	init();
 
+	Fix16 num = fix16_from_int(5);
+
 	while(1)
 	{
-		//
+		num++;
 	}
 }
 
