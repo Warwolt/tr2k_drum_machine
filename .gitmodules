@@ -1,3 +1,0 @@
-[submodule "build/lib/embeddedtemplatelibrary"]
-	path = build/lib/embeddedtemplatelibrary
-	url = https://github.com/ETLCPP/etl
