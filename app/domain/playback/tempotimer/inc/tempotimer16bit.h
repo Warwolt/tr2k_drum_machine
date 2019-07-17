@@ -14,6 +14,9 @@ class TempoTimer16Bit
 {
 public:
 	TempoTimer16Bit(Timer16Bit& timer16bit);
+	void start();
+	void stop();
+	void clear();
 	void countPulse();
 	bool playbackStepIsDue();
 	void resetPlaybackStepDue();
