@@ -24,20 +24,21 @@ Package "Domain"
 
 		interface TempoTimer
 		{
-			playbackStepIsDue() : Boolean
 			setTempo(BeatsPerMinute)
 			start()
 			stop()
 			clear()
+			playbackStepIsDue() : Boolean
 		}
 
 		class TempoTimer16Bit
 		{
-			playbackStepIsDue() : Boolean
 			setTempo(BeatsPerMinute)
 			start()
 			stop()
 			clear()
+			countPulse()
+			playbackStepIsDue() : Boolean
 		}
 
 		class LedBlinker
