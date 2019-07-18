@@ -9,11 +9,13 @@
 
 #include "linuxtypes.h"
 #include "timer16bit.h"
+#include "beatsperminute.h"
 
 class TempoTimer16Bit
 {
 public:
-	TempoTimer16Bit(Timer16Bit& timer16bit);
+	TempoTimer16Bit(Timer16Bit& timer16Bit);
+	void setTempo(BeatsPerMinute bpm);
 	void start();
 	void stop();
 	void clear();
@@ -23,7 +25,7 @@ public:
 
 private:
 	static constexpr u16 pulsesPerSixteenthNote = 120;
-	Timer16Bit& timer16bit;
+	Timer16Bit& timer16Bit;
 	u16 countedPulses = 0;
 };
 

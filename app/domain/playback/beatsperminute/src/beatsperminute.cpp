@@ -6,6 +6,11 @@
 
 #include "beatsperminute.h"
 
+BeatsPerMinute::BeatsPerMinute(u8 wholePart)
+{
+	value = wholePart * 100;
+}
+
 BeatsPerMinute::BeatsPerMinute(u8 wholePart, u8 centiPart)
 {
 	value = wholePart * 100 + centiPart;

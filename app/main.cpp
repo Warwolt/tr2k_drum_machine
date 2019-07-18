@@ -3,7 +3,7 @@
 #include "interrupts.h"
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include "libfixmath/fixmath.h"
+#include "fixmath/fixmath.h"
 
 static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
 static Timer1 tim1;

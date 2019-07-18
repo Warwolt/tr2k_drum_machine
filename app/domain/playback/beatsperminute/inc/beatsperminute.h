@@ -14,6 +14,7 @@ class BeatsPerMinute
 {
 public:
 	BeatsPerMinute() = default;
+	BeatsPerMinute(u8 wholePart);
 	BeatsPerMinute(u8 wholePart, u8 centiPart);
 	BeatsPerMinute& operator=(const BeatsPerMinute &rhs);
 	BeatsPerMinute& operator+=(const BeatsPerMinute &rhs);

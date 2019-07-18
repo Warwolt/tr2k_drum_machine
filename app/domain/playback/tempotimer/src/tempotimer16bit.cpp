@@ -4,11 +4,20 @@
 ****************************************************************************************************
 */
 
-#include "tempotimer16bit.h"
+#include "tempotimer16Bit.h"
 
-TempoTimer16Bit::TempoTimer16Bit(Timer16Bit& timer16bit) : timer16bit(timer16bit)
+TempoTimer16Bit::TempoTimer16Bit(Timer16Bit& timer16Bit) : timer16Bit(timer16Bit)
 {
-	timer16bit.setPrescaler(Timer16Bit::PrescaleOption::_1);
+	timer16Bit.setPrescaler(Timer16Bit::PrescaleOption::_1);
+}
+
+/**
+ * Sets a tempo in beats per minutes by calculating the corresponding
+ * 16-bit timer period and assigning it.
+ */
+void TempoTimer16Bit::setTempo(BeatsPerMinute bpm)
+{
+	timer16Bit.setPeriod(33333);
 }
 
 /**
@@ -16,7 +25,7 @@ TempoTimer16Bit::TempoTimer16Bit(Timer16Bit& timer16bit) : timer16bit(timer16bit
  */
 void TempoTimer16Bit::start()
 {
-	timer16bit.start();
+	timer16Bit.start();
 }
 
 /**
@@ -24,7 +33,7 @@ void TempoTimer16Bit::start()
  */
 void TempoTimer16Bit::stop()
 {
-	timer16bit.stop();
+	timer16Bit.stop();
 }
 
 /**
@@ -32,7 +41,7 @@ void TempoTimer16Bit::stop()
  */
 void TempoTimer16Bit::clear()
 {
-	timer16bit.clear();
+	timer16Bit.clear();
 }
 
 /**
@@ -62,4 +71,3 @@ void TempoTimer16Bit::resetPlaybackStepDue()
 {
 	countedPulses = 0;
 }
-

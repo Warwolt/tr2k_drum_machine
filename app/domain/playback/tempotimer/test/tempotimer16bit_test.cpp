@@ -9,6 +9,7 @@
 #include "linuxtypes.h"
 #include "tempotimer16bit.h"
 #include "timer16bitmock.h"
+#include "beatsperminute.h"
 
 using testing::NiceMock;
 
@@ -73,5 +74,8 @@ TEST_F(TestTempoTimer16Bit, Playback_no_longer_due_after_reset)
 
 TEST_F(TestTempoTimer16Bit, Setting_a_tempo_in_bpm_sets_corresponding_period_in_16bit_timer)
 {
-	FAIL() << ERROR_MSG_STR("What format should Beats Per Minute be in?");
+	BeatsPerMinute bpm(60);
+	u16 expectedPeriod = 33333; // todo change this from a magic number to a calculation
+	EXPECT_CALL(timer16Mock, setPeriod(expectedPeriod));
+	tempoTimer.setTempo(bpm);
 }

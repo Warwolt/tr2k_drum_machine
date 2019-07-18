@@ -26,8 +26,8 @@ TEST_F(TestBeatsPerMinute, Bpm_value_can_be_accessed_as_fixed_point_number)
 
 TEST_F(TestBeatsPerMinute, Bpm_values_can_be_summed)
 {
-	BeatsPerMinute sum = BeatsPerMinute(128, 50) + BeatsPerMinute(0, 50);
-	EXPECT_NEAR(129.0, sum.getAsFix16(), precision);
+	BeatsPerMinute sum = BeatsPerMinute(128) + BeatsPerMinute(0, 50);
+	EXPECT_NEAR(128.5, sum.getAsFix16(), precision);
 }
 
 TEST_F(TestBeatsPerMinute, Bpm_values_can_be_subtracted)
