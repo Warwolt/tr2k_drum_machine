@@ -20,7 +20,7 @@ void TempoTimer16Bit::start()
 }
 
 /**
- * Stops the tempo timer by starting the underlying 16-bit timer.
+ * Stops the tempo timer by stopping the underlying 16-bit timer.
  */
 void TempoTimer16Bit::stop()
 {
@@ -28,7 +28,7 @@ void TempoTimer16Bit::stop()
 }
 
 /**
- * Clears the tempo timer by starting the underlying 16-bit timer.
+ * Clears the tempo timer by clearing the underlying 16-bit timer.
  */
 void TempoTimer16Bit::clear()
 {
