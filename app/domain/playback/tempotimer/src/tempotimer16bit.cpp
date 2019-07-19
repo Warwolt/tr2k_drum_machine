@@ -61,7 +61,7 @@ void TempoTimer16Bit::countPulse()
  */
 bool TempoTimer16Bit::playbackStepIsDue()
 {
-	return (countedPulses >= pulsesPerSixteenthNote) ? true : false;
+	return (countedPulses >= pulsesPerSixteenthNote);
 }
 
 /**
