@@ -47,8 +47,3 @@ const BeatsPerMinute BeatsPerMinute::operator+(const BeatsPerMinute &other) cons
 	ret += other;
 	return ret;
 }
-
-Fix16 BeatsPerMinute::getAsFix16()
-{
-	return Fix16(value) / Fix16(100);
-}

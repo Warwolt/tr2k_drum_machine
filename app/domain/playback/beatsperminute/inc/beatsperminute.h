@@ -8,7 +8,6 @@
 #define BEATS_PER_MINUTE_H
 
 #include "linuxtypes.h"
-#include "fixmath/fixmath.h"
 
 class BeatsPerMinute
 {
@@ -21,7 +20,7 @@ public:
 	BeatsPerMinute& operator-=(const BeatsPerMinute &rhs);
 	const BeatsPerMinute operator+(const BeatsPerMinute &other) const;
 	const BeatsPerMinute operator-(const BeatsPerMinute &other) const;
-	Fix16 getAsFix16();
+	operator float() const { return value/100.0; };
 
 private:
 	u16 value; // bpm measured in 100ths

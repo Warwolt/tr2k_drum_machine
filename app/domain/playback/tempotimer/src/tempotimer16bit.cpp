@@ -5,6 +5,7 @@
 */
 
 #include "tempotimer16Bit.h"
+#include <math.h>
 
 TempoTimer16Bit::TempoTimer16Bit(Timer16Bit& timer16Bit) : timer16Bit(timer16Bit)
 {
@@ -17,7 +18,7 @@ TempoTimer16Bit::TempoTimer16Bit(Timer16Bit& timer16Bit) : timer16Bit(timer16Bit
  */
 void TempoTimer16Bit::setTempo(BeatsPerMinute bpm)
 {
-	timer16Bit.setPeriod(33333);
+	timer16Bit.setPeriod(round(scalingConstant/bpm));
 }
 
 /**

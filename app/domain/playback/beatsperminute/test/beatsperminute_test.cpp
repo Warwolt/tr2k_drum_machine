@@ -18,20 +18,20 @@ public:
 
 };
 
-TEST_F(TestBeatsPerMinute, Bpm_value_can_be_accessed_as_fixed_point_number)
+TEST_F(TestBeatsPerMinute, Bpm_value_can_be_accessed_as_floating_point_number)
 {
 	BeatsPerMinute bpm(128,50);
-	EXPECT_NEAR(128.50, bpm.getAsFix16(), precision);
+	EXPECT_NEAR(128.50, float(bpm), precision);
 }
 
 TEST_F(TestBeatsPerMinute, Bpm_values_can_be_summed)
 {
 	BeatsPerMinute sum = BeatsPerMinute(128) + BeatsPerMinute(0, 50);
-	EXPECT_NEAR(128.5, sum.getAsFix16(), precision);
+	EXPECT_NEAR(128.5, float(sum), precision);
 }
 
 TEST_F(TestBeatsPerMinute, Bpm_values_can_be_subtracted)
 {
 	BeatsPerMinute sum = BeatsPerMinute(123, 50) - BeatsPerMinute(0, 50);
-	EXPECT_NEAR(123.0, sum.getAsFix16(), precision);
+	EXPECT_NEAR(123.0, float(sum), precision);
 }

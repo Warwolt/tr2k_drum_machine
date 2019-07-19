@@ -24,7 +24,12 @@ public:
 	void resetPlaybackStepDue();
 
 private:
-	static constexpr u16 pulsesPerSixteenthNote = 120;
+	static constexpr u32 clockFrequency = 16000000;
+	static constexpr u8  secondsPerMinute = 60;
+	static constexpr u16 pulsesPerQuarterNote = 480;
+	static constexpr u16 pulsesPerSixteenthNote = pulsesPerQuarterNote / 4;
+	static constexpr u32 scalingConstant = clockFrequency * secondsPerMinute / pulsesPerQuarterNote;
+
 	Timer16Bit& timer16Bit;
 	u16 countedPulses = 0;
 };
