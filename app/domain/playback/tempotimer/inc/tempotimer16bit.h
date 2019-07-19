@@ -21,7 +21,7 @@ public:
 	void clear();
 	void countPulse();
 	bool playbackStepIsDue();
-	void resetPlaybackStepDue();
+	void startCountingNextStep();
 
 private:
 	static constexpr u32 clockFrequency = 16e6;

@@ -19,7 +19,7 @@ public:
 	virtual void stop() = 0;
 	virtual void clear() = 0;
 	virtual bool playbackStepIsDue() = 0;
-	virtual void resetPlaybackStepDue() = 0;
+	virtual void startCountingNextStep() = 0;
 };
 
 #endif /* TEMPO_TIMER_H */

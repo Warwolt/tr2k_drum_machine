@@ -80,7 +80,7 @@ TEST_F(TestTempoTimer16Bit, Playback_is_due_if_enough_pulses_counted)
 TEST_F(TestTempoTimer16Bit, Playback_no_longer_due_after_reset)
 {
 	countTempoPulses(pulsesPerSixteenthNote);
-	tempoTimer.resetPlaybackStepDue();
+	tempoTimer.startCountingNextStep();
 	EXPECT_FALSE(tempoTimer.playbackStepIsDue());
 }
 

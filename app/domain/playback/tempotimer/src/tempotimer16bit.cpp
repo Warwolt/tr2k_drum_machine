@@ -68,7 +68,7 @@ bool TempoTimer16Bit::playbackStepIsDue()
  * Used to signal that current playback step has been handled and that the next
  * playback step wait period should start elapsing. Counted pulses are reset.
  */
-void TempoTimer16Bit::resetPlaybackStepDue()
+void TempoTimer16Bit::startCountingNextStep()
 {
 	countedPulses = 0;
 }
