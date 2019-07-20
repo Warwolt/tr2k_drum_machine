@@ -2,8 +2,9 @@
 -include $(APP_ROOT)/common/makefile.mk
 
 # Domain
--include $(APP_ROOT)/domain/playback/tempotimer/makefile.mk
 -include $(APP_ROOT)/domain/playback/beatsperminute/makefile.mk
+-include $(APP_ROOT)/domain/playback/tempotimer/makefile.mk
+-include $(APP_ROOT)/domain/playback/tempotimingmanager/makefile.mk
 
 # Infrastructure
 -include $(APP_ROOT)/infrastructure/interrupts/makefile.mk
