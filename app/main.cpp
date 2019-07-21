@@ -1,16 +1,18 @@
+#include "interrupts.h"
 #include "gpiopin.h"
 #include "timer1.h"
-#include "interrupts.h"
 #include "tempotimer16bit.h"
+#include "tempotimingmanager.h"
 
 static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
+static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
 
 void init();
 void registerTimerInterrupt();
-void setupTimer1();
 void setupTempoTimer();
+void setupTimingManager();
 
 int main()
 {
@@ -18,11 +20,7 @@ int main()
 
 	while(1)
 	{
-		if(tempoTimer.playbackStepIsDue())
-		{
-			ledPin.toggle();
-			tempoTimer.startCountingNextStep();
-		}
+		timingManager.handlePlayback();
 	}
 }
 
@@ -30,8 +28,8 @@ void init()
 {
 	Interrupts::enableInterruptsGlobally();
 	registerTimerInterrupt();
-	setupTimer1();
 	setupTempoTimer();
+	setupTimingManager();
 }
 
 void registerTimerInterrupt()
@@ -44,14 +42,23 @@ void registerTimerInterrupt()
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
 }
 
-void setupTimer1()
-{
-	tim1.enablePeriodicInterrupts();
-	tim1.setPrescaler(Timer16Bit::PrescaleOption::_1);
-}
-
 void setupTempoTimer()
 {
+	tim1.enablePeriodicInterrupts();
 	tempoTimer.setTempo(BeatsPerMinute(120));
 	tempoTimer.start();
+}
+
+void setupTimingManager()
+{
+	static	u8 counter = 0;
+	timingManager.addPlaybackStepHandler([]
+	{
+		if(counter == 2)
+		{
+			ledPin.toggle();
+			counter = 0;
+		}
+		counter++;
+	});
 }
