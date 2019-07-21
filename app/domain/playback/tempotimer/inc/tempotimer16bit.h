@@ -11,7 +11,7 @@
 #include "tempotimer.h"
 #include "timer16bit.h"
 
-class TempoTimer16Bit : TempoTimer
+class TempoTimer16Bit : public TempoTimer
 {
 public:
 	TempoTimer16Bit(Timer16Bit& timer16Bit);
