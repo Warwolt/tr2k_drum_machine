@@ -67,7 +67,7 @@ void Timer1::start()
 
 inline u8 Timer1::getPrescalerMask(PrescaleOption prescaler)
 {
-	switch(prescaler)
+	switch (prescaler)
 	{
 		case PrescaleOption::_1    : return (0x1 << CS10);
 		case PrescaleOption::_8    : return (0x2 << CS10);

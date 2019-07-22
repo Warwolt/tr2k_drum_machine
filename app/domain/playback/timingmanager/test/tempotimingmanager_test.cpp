@@ -23,7 +23,7 @@ public:
 
 	void SetUp()
 	{
-		for(int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			callbackWasCalled[i] = false;
 		}
@@ -32,7 +32,7 @@ public:
 
 TEST_F(TestTempoTimingManager, A_maximum_amount_of_callbacks_can_be_registered)
 {
-	for(size_t i = 0; i < timingManager.maxNumHandlers; i++)
+	for (size_t i = 0; i < timingManager.maxNumHandlers; i++)
 	{
 		timingManager.addPlaybackStepHandler([]{ callbackWasCalled[0] = true; });
 	}

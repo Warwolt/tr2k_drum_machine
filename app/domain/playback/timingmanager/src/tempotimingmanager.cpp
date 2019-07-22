@@ -19,7 +19,7 @@ TempoTimingManager::TempoTimingManager(TempoTimer& tempoTimer) : tempoTimer(temp
  */
 void TempoTimingManager::addPlaybackStepHandler(PlaybackStepHandler handler)
 {
-	if(currentNumHandlers < maxNumHandlers)
+	if (currentNumHandlers < maxNumHandlers)
 	{
 		playbackStepHandlers[currentNumHandlers++] = handler;
 	}
@@ -31,7 +31,7 @@ void TempoTimingManager::addPlaybackStepHandler(PlaybackStepHandler handler)
  */
 void TempoTimingManager::handlePlayback()
 {
-	if(tempoTimer.playbackStepIsDue())
+	if (tempoTimer.playbackStepIsDue())
 	{
 		callPlaybackStephandlers();
 		tempoTimer.startCountingNextStep();
@@ -40,7 +40,7 @@ void TempoTimingManager::handlePlayback()
 
 inline void TempoTimingManager::callPlaybackStephandlers()
 {
-	for(size_t i = 0; i < currentNumHandlers; i++)
+	for (size_t i = 0; i < currentNumHandlers; i++)
 	{
 		auto& handlePlaybackStep = playbackStepHandlers[i];
 		handlePlaybackStep();

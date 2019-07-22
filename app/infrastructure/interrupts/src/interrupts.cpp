@@ -15,7 +15,7 @@ static InterruptHandler serialTransferHandler = nullptr;
  */
 ISR(TIMER1_COMPA_vect)
 {
-	if(timerCompareHandler != nullptr)
+	if (timerCompareHandler != nullptr)
 	{
 		timerCompareHandler();
 	}
@@ -26,7 +26,7 @@ ISR(TIMER1_COMPA_vect)
  */
 ISR(SPI_STC_vect)
 {
-	if(serialTransferHandler != nullptr)
+	if (serialTransferHandler != nullptr)
 	{
 		serialTransferHandler();
 	}
@@ -58,7 +58,7 @@ void Interrupts::disableInterruptsGlobally()
  */
 void Interrupts::setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request)
 {
-	switch(request)
+	switch (request)
 	{
 		case(InterruptRequest::Timer1CompareMatch)  : timerCompareHandler   = handler; break;
 		case(InterruptRequest::SpiTransferComplete) : serialTransferHandler = handler; break;

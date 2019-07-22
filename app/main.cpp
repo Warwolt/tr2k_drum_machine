@@ -18,7 +18,7 @@ int main()
 {
 	init();
 
-	while(1)
+	while (1)
 	{
 		timingManager.handlePlayback();
 	}
@@ -54,7 +54,7 @@ void setupTimingManager()
 	static	u8 counter = 0;
 	timingManager.addPlaybackStepHandler([]
 	{
-		if(counter == 2)
+		if (counter == 2)
 		{
 			ledPin.toggle();
 			counter = 0;

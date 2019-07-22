@@ -28,7 +28,7 @@ public:
 		testPin.setDataDirectionRegister(dataDirectionRegister);
 		testPin.setDirection(DigitalOutput); // use output as default
 
-		for(auto &pin : testPins)
+		for (auto &pin : testPins)
 		{
 			pin.setInputRegister(inputRegister);
 			pin.setOutputRegister(outputRegister);
@@ -82,7 +82,7 @@ TEST_F(TestGpioPin, Setting_several_pins_sets_correct_bits_in_output_register)
 {
 	outputRegister = 0;
 
-	for(auto &pin : testPins)
+	for (auto &pin : testPins)
 	{
 		pin.set();
 	}
@@ -113,7 +113,7 @@ TEST_F(TestGpioPin, Clearing_several_pins_resets_correct_bits_in_output_register
 {
 	outputRegister = 0xFF;
 
-	for(auto &pin : testPins)
+	for (auto &pin : testPins)
 	{
 		pin.clear();
 	}

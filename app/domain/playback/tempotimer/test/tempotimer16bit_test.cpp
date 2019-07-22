@@ -25,7 +25,7 @@ public:
 
 	void countTempoPulses(u16 numPulses)
 	{
-		for(size_t i = 0; i < numPulses; i++)
+		for (size_t i = 0; i < numPulses; i++)
 		{
 			tempoTimer.countPulse();
 		}
@@ -90,9 +90,9 @@ TEST_F(TestTempoTimer16Bit, Setting_a_tempo_in_bpm_sets_corresponding_period_in_
 
 	/* Test for every BPM value between 60 and 200 that the correct value for the 16-bit timer
 	   is calculated and assigned. */
-	for(int wholePartBpm = 60; wholePartBpm <= maxBpm; wholePartBpm++)
+	for (int wholePartBpm = 60; wholePartBpm <= maxBpm; wholePartBpm++)
 	{
-		for(int centiPartBpm = 0; centiPartBpm < 100; centiPartBpm++)
+		for (int centiPartBpm = 0; centiPartBpm < 100; centiPartBpm++)
 		{
 			BeatsPerMinute bpm(wholePartBpm, centiPartBpm);
 			u16 expectedPeriod = getExpectedPeriodForBpm(bpm);

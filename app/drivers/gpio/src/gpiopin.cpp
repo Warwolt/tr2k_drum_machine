@@ -27,34 +27,34 @@ GpioPin::GpioPin(PinNumber num, Port port, DataDirection direction)
 volatile uint8_t* GpioPin::getPortDataDirRegAddress(Port port)
 {
 	// no PortA supported in atmega328
-	if(port == PortB) return &DDRB;
-	if(port == PortC) return &DDRC;
-	if(port == PortD) return &DDRD;
+	if (port == PortB) return &DDRB;
+	if (port == PortC) return &DDRC;
+	if (port == PortD) return &DDRD;
 	else return 0;
 }
 
 volatile uint8_t* GpioPin::getInputRegAddress(Port port)
 {
 	// no PortA supported in atmega328
-	if(port == PortB) return &PINB;
-	if(port == PortC) return &PINC;
-	if(port == PortD) return &PIND;
+	if (port == PortB) return &PINB;
+	if (port == PortC) return &PINC;
+	if (port == PortD) return &PIND;
 	else return 0;
 }
 
 volatile uint8_t* GpioPin::getOutputRegAddress(Port port)
 {
 	// no PortA supported in atmega328
-	if(port == PortB) return &PORTB;
-	if(port == PortC) return &PORTC;
-	if(port == PortD) return &PORTD;
+	if (port == PortB) return &PORTB;
+	if (port == PortC) return &PORTC;
+	if (port == PortD) return &PORTD;
 	else return 0;
 }
 
 /* Input / Output methods ------------------------------------------------------------------------*/
 void GpioPin::set()
 {
-	if(direction == DigitalOutput)
+	if (direction == DigitalOutput)
 		(*outputRegPtr) |= 0x1 << pinNum;
 }
 
@@ -65,7 +65,7 @@ void GpioPin::clear()
 
 void GpioPin::toggle()
 {
-	if(direction == DigitalOutput)
+	if (direction == DigitalOutput)
 		(*outputRegPtr) ^= 0x1 << pinNum;
 }
 
@@ -85,13 +85,13 @@ void GpioPin::setDirection(DataDirection dir)
 {
 	direction = dir;
 
-	if(direction == DigitalInput)
+	if (direction == DigitalInput)
 	{
 		(*dataDirRegPtr) &= ~(0x1 << pinNum); // set data direction bit to input
 		(*outputRegPtr) &= ~(0x1 << pinNum);  // clear pullup bit
 	}
 
-	if(direction == DigitalOutput)
+	if (direction == DigitalOutput)
 	{
 		(*dataDirRegPtr) |= 0x1 << pinNum;
 	}
