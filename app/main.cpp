@@ -4,10 +4,12 @@
 #include "tempotimer16bit.h"
 #include "tempotimingmanager.h"
 
-static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
+static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
+
+using namespace Interrupts
 
 void init();
 void registerTimerInterrupt();
@@ -26,7 +28,7 @@ int main()
 
 void init()
 {
-	Interrupts::enableInterruptsGlobally();
+	enableInterruptsGlobally();
 	registerTimerInterrupt();
 	setupTempoTimer();
 	setupTimingManager();
@@ -39,7 +41,7 @@ void registerTimerInterrupt()
 		tempoTimer.countPulse();
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer1CompareMatch;
-	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
+	setHandlerForInterrupt(timerISR, timerIRQ);
 }
 
 void setupTempoTimer()
