@@ -7,9 +7,10 @@
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
-static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
+// static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
+static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 
-using namespace Interrupts
+using namespace Interrupts;
 
 void init();
 void registerTimerInterrupt();
@@ -20,9 +21,19 @@ int main()
 {
 	init();
 
+	/* Initialize SPI peripheral */
+    // set MOSI, SCK as Output
+    DDRB = (1<<5) | (1<<3) | (1<<2);
+	// configure SPI pins
+    SPCR = (1<<SPE) | (1<<MSTR) | (1<<SPR0);
+
 	while (1)
 	{
-		timingManager.handlePlayback();
+		// initiate transfer of 1 byte
+		SPDR = 0x1;
+
+		// wait for transfer to complete
+		while (!(SPSR & (0x1 << SPIF)));
 	}
 }
 
