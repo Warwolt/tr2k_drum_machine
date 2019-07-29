@@ -3,6 +3,7 @@
 #include "timer1.h"
 #include "tempotimer16bit.h"
 #include "tempotimingmanager.h"
+#include <util/delay.h>
 
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
@@ -17,23 +18,37 @@ void registerTimerInterrupt();
 void setupTempoTimer();
 void setupTimingManager();
 
+static u8 txBuffer[] = {1, 2, 3, 4};
+static u8 byteIndex = 0;
+
 int main()
 {
 	init();
 
 	/* Initialize SPI peripheral */
-    // set MOSI, SCK as Output
-    DDRB = (1<<5) | (1<<3) | (1<<2);
+    // set MOSI, SCK and SS as Output
+    DDRB = (1 << 5) | (1 << 3) | (1 << 2);
+    // enable transfer complete interrupts
+    SPCR |= (1 << SPIE);
 	// configure SPI pins
-    SPCR = (1<<SPE) | (1<<MSTR) | (1<<SPR0);
+    SPCR |= (1 << SPE) | (1 << MSTR) | (1 << SPR0) | (1 << DORD);
+
+    InterruptHandler spiTransferISR = []
+    {
+		if(byteIndex < 4)
+		{
+			SPDR = txBuffer[byteIndex];
+			byteIndex++;
+		}
+    };
+    InterruptRequest spiIRQ = InterruptRequest::SpiTransferComplete;
+    setHandlerForInterrupt(spiTransferISR, spiIRQ);
 
 	while (1)
 	{
-		// initiate transfer of 1 byte
-		SPDR = 0x1;
-
-		// wait for transfer to complete
-		while (!(SPSR & (0x1 << SPIF)));
+		SPDR = txBuffer[0]; // write to triggers first interrupt
+		byteIndex = 1;
+		_delay_ms(6);
 	}
 }
 
