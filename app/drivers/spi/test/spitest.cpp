@@ -17,13 +17,33 @@ class SpiTest : public ::testing::Test
 {
 public:
 	Spi spi;
-	u8 pinDirectionRegister;
+	u8 controlRegister = 0;
+	u8 pinDirectionRegister = 0;
 
 	void SetUp()
 	{
+		spi.setControlRegister(&controlRegister);
 		spi.setPinDirectionRegister(&pinDirectionRegister);
 	}
 };
+
+TEST_F(SpiTest, Spi_enabled_during_initialization)
+{
+	spi.initialize();
+	EXPECT_TRUE(controlRegister & (0x1 << SPE));
+}
+
+TEST_F(SpiTest, Peripheral_selected_as_master_during_initialization)
+{
+	spi.initialize();
+	EXPECT_TRUE(controlRegister & (0x1 << MSTR));
+}
+
+TEST_F(SpiTest, Transfer_complete_interrupts_enabled_during_initialization)
+{
+	spi.initialize();
+	EXPECT_TRUE(controlRegister & (0x1 << SPIE));
+}
 
 TEST_F(SpiTest, Master_Out_Slave_In_set_as_output_during_initialization)
 {
