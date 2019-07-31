@@ -33,16 +33,16 @@ public:
 	 * "Relationship between SCK and Oscillator Frequency" at page 222 in
 	 * the "Atmel-42735B-ATmega328/P_Datasheet_Complete-11/2016" document.
 	 *
-	 *       Number | SPI Clock frequency
-	 *      ------------------------------
-	 *         0    |    sys freq / 4
-	 *         1    |    sys freq / 16
-	 *         2    |    sys freq / 64
-	 *         3    |    sys freq / 128
-	 *         4    |    sys freq / 2
-	 *         5    |    sys freq / 8
-	 *         6    |    sys freq / 32
-	 *         7    |    sys freq / 64
+	 *    Selection Number | SPI Clock Frequency
+	 *   ----------------------------------------
+	 *           0         |    Sys Freq / 4
+	 *           1         |    Sys Freq / 16
+	 *           2         |    Sys Freq / 64
+	 *           3         |    Sys Freq / 128
+	 *           4         |    Sys Freq / 2
+	 *           5         |    Sys Freq / 8
+	 *           6         |    Sys Freq / 32
+	 *           7         |    Sys Freq / 64
 	 */
 	u8 getClockSpeedFromRegisters()
 	{
@@ -90,8 +90,26 @@ TEST_F(SpiTest, Slave_Select_set_as_output_during_initialization)
 	EXPECT_TRUE(pinDirectionReg & (0x1 << SS_PIN_NUMBER));
 }
 
-TEST_F(SpiTest, Spi_clock_can_be_set_to_system_frequency_over_two)
+TEST_F(SpiTest, Spi_clock_speed_can_be_set)
 {
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_4);
+	EXPECT_EQ(0, getClockSpeedFromRegisters());
+
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_16);
+	EXPECT_EQ(1, getClockSpeedFromRegisters());
+
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_64);
+	EXPECT_EQ(2, getClockSpeedFromRegisters());
+
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_128);
+	EXPECT_EQ(3, getClockSpeedFromRegisters());
+
 	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_2);
-	EXPECT_EQ(0x4, getClockSpeedFromRegisters());
+	EXPECT_EQ(4, getClockSpeedFromRegisters());
+
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_8);
+	EXPECT_EQ(5, getClockSpeedFromRegisters());
+
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_32);
+	EXPECT_EQ(6, getClockSpeedFromRegisters());
 }

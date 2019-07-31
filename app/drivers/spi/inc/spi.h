@@ -10,7 +10,8 @@
 #include "linuxtypes.h"
 #include <avr/io.h>
 
-enum class SpiClockSpeed {SysFreq_over_2};
+enum class SpiClockSpeed {SysFreq_over_2, SysFreq_over_4, SysFreq_over_8, SysFreq_over_16,
+	SysFreq_over_32, SysFreq_over_64, SysFreq_over_128};
 
 class Spi
 {
@@ -31,6 +32,9 @@ private:
 	void enableSpi();
 	void useMasterMode();
 	void setupPins();
+
+	u8 getClockSelectionNumber(SpiClockSpeed clockSpeed);
+	void writeSelectionNumToRegs(bool digit0, bool digit1, bool digit2);
 };
 
 #endif /* SPI_H */

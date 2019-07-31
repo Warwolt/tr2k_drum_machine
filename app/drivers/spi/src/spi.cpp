@@ -42,14 +42,60 @@ inline void Spi::setupPins()
 }
 
 /**
- * Sets the speed of the serial clock used to drive the SPI slave.
+ * Sets the speed of the serial clock used to drive the SPI slave, by assigning
+ * bit SPR0, SPR1 and SPI2X to form the entries in table 23-5 "Relationship
+ * between SCK and Oscillator Frequency" at page 222 in the "Atmel-42735B-
+ * ATmega328/P_Datasheet_Complete-11/2016" document.
+ *
+ *    Selection Number | SPI Clock Frequency
+ *   ----------------------------------------
+ *           0         |    Sys Freq / 4
+ *           1         |    Sys Freq / 16
+ *           2         |    Sys Freq / 64
+ *           3         |    Sys Freq / 128
+ *           4         |    Sys Freq / 2
+ *           5         |    Sys Freq / 8
+ *           6         |    Sys Freq / 32
+ *           7         |    Sys Freq / 64
+ *
  * @param clockSpeed  selected with a prescaler for the system clock.
  */
 void Spi::setClockSpeed(SpiClockSpeed clockSpeed)
 {
-	// code only to pass test
-	*controlRegister &= ~(0x1 << SPR1 | 0x1 << SPR0);
-	*statusRegister |= (0x1 << SPI2X);
+	u8 tableNumber = getClockSelectionNumber(clockSpeed);
+
+	bool digit0 = static_cast<bool>(tableNumber & 0x1);
+	bool digit1 = static_cast<bool>(tableNumber & 0x2);
+	bool digit2 = static_cast<bool>(tableNumber & 0x4);
+
+	writeSelectionNumToRegs(digit0, digit1, digit2);
+}
+
+inline u8 Spi::getClockSelectionNumber(SpiClockSpeed clockSpeed)
+{
+	switch(clockSpeed)
+	{
+		case (SpiClockSpeed::SysFreq_over_2):   return 4;
+		case (SpiClockSpeed::SysFreq_over_4):   return 0;
+		case (SpiClockSpeed::SysFreq_over_8):   return 5;
+		case (SpiClockSpeed::SysFreq_over_16):  return 1;
+		case (SpiClockSpeed::SysFreq_over_32):  return 6;
+		case (SpiClockSpeed::SysFreq_over_64):  return 2;
+		case (SpiClockSpeed::SysFreq_over_128): return 3;
+	}
+
+	return 0; // should never get here
+}
+
+inline void Spi::writeSelectionNumToRegs(bool digit0, bool digit1, bool digit2)
+{
+	/* Reset digit positions */
+	*controlRegister &= ~((0x1 << SPR1) | (0x1 << SPR0));
+	*statusRegister &= ~(0x1 << SPI2X);
+
+	/* Write digits to registers */
+	*controlRegister |= (digit1 << SPR1) | (digit0 << SPR0);
+	*statusRegister |= digit2 << SPI2X;
 }
 
 /**
