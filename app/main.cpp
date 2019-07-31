@@ -30,7 +30,7 @@ int main()
     DDRB = (1 << 5) | (1 << 3) | (1 << 2);
     // enable transfer complete interrupts
     SPCR |= (1 << SPIE);
-	// configure SPI pins
+	// configure SPI settings
     SPCR |= (1 << SPE) | (1 << MSTR) | (1 << SPR0) | (1 << DORD);
 
     InterruptHandler spiTransferISR = []

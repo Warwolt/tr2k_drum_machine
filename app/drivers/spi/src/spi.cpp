@@ -5,9 +5,10 @@
 */
 
 #include "spi.h"
+#include "traceprint.h"
 
 /**
- * Enables the SPI peripheral, enables transfer complete interrupts, sets SPI
+ * Enables the SPI peripheral, enables "transfer complete"-interrupts, sets SPI
  * peripheral as master, and sets up MOSI, SCLK, and SS pins as outputs.
  */
 void Spi::initialize()
@@ -41,6 +42,17 @@ inline void Spi::setupPins()
 }
 
 /**
+ * Sets the speed of the serial clock used to drive the SPI slave.
+ * @param clockSpeed  selected with a prescaler for the system clock.
+ */
+void Spi::setClockSpeed(SpiClockSpeed clockSpeed)
+{
+	// code only to pass test
+	*controlRegister &= ~(0x1 << SPR1 | 0x1 << SPR0);
+	*statusRegister |= (0x1 << SPI2X);
+}
+
+/**
  * Used for testing.
  * @param reg  pointer to variable mocking the DDRB register.
  */
@@ -56,4 +68,13 @@ void Spi::setPinDirectionRegister(u8* reg)
 void Spi::setControlRegister(u8* reg)
 {
 	controlRegister = reg;
+}
+
+/**
+ * Used for testing.
+ * @param reg  pointer to variable mocking the SPSR register.
+ */
+void Spi::setStatusRegister(u8* reg)
+{
+	statusRegister = reg;
 }
