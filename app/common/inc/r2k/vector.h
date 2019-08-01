@@ -37,6 +37,8 @@ public:
 	/* Capacity */
 	size_t size() final	{ return num_elements; }
 	size_t capacity() final { return CAPACITY; }
+	void resize(size_t new_size) final { if(new_size <= CAPACITY) {	num_elements = new_size; }; }
+	bool empty() final { return num_elements == 0; }
 
 	/* Element access */
 	reference operator[](size_t index) final { return array[index];	}

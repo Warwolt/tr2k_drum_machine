@@ -105,3 +105,36 @@ TEST_F(r2kVectorTest, Last_element_can_be_removed_with_pop_back)
 
 	EXPECT_EQ(ivec.back(), ivec[1]);
 }
+
+TEST_F(r2kVectorTest, Vector_not_empty_while_values_remain)
+{
+	r2k::vector<u8, 2> vec = {1, 2};
+	r2k::ivector<u8>& ivec = vec;
+
+	ivec.pop_back();
+
+	EXPECT_FALSE(ivec.empty());
+}
+
+TEST_F(r2kVectorTest, Vector_empty_after_last_value_popped)
+{
+	r2k::vector<u8, 2> vec = {1, 2};
+	r2k::ivector<u8>& ivec = vec;
+
+	ivec.pop_back();
+	ivec.pop_back();
+
+	EXPECT_TRUE(ivec.empty());
+}
+
+TEST_F(r2kVectorTest, Vector_can_be_resized_up_to_capacity)
+{
+	r2k::vector<u8, 3> vec = {21, 22, 23};
+	r2k::ivector<u8>& ivec = vec;
+
+	ivec.resize(2);
+	EXPECT_EQ(ivec.size(), 2u);
+
+	ivec.resize(4);
+	EXPECT_NE(ivec.size(), 4u);
+}

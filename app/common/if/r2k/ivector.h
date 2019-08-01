@@ -28,6 +28,8 @@ public:
 	/* Capacity */
 	virtual size_t size() = 0;
 	virtual size_t capacity() = 0;
+	virtual void resize(size_t) = 0;
+	virtual bool empty() = 0;
 
 	/* Element access */
 	virtual reference operator[](size_t index) = 0;
