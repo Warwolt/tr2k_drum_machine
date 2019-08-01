@@ -15,46 +15,47 @@ static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 using namespace Interrupts;
 
 void init();
+void registerSpiInterrupt();
 void registerTimerInterrupt();
+void setupSpi();
 void setupTempoTimer();
 void setupTimingManager();
-
-static u8 txBuffer[] = {1, 2, 3, 4};
-static u8 byteIndex = 0;
 
 int main()
 {
 	init();
 
-	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_16);
-	spi.setBitOrder(SpiBitOrder::LsbFirst);
-
-    InterruptHandler spiTransferISR = []
-    {
-		if(byteIndex < 4)
-		{
-			spi.sendByte(txBuffer[byteIndex]);
-			byteIndex++;
-		}
-    };
-
-    InterruptRequest spiIRQ = InterruptRequest::SpiTransferComplete;
-    setHandlerForInterrupt(spiTransferISR, spiIRQ);
+	r2k::vector<u8, 4> txBuffer = {1, 2, 3, 4};
 
 	while (1)
 	{
-		spi.sendByte(txBuffer[0]);
-		byteIndex = 1;
-		_delay_ms(6);
+		spi.sendNextByteInBuffer();
+		_delay_us(100);
+		spi.setTxBuffer(txBuffer);
 	}
 }
 
 void init()
 {
 	enableInterruptsGlobally();
+	registerSpiInterrupt();
 	registerTimerInterrupt();
 	setupTempoTimer();
 	setupTimingManager();
+}
+
+void registerSpiInterrupt()
+{
+	InterruptHandler spiTransferISR = []
+	{
+		if (!spi.txBufferIsEmpty())
+		{
+			spi.sendNextByteInBuffer();
+		}
+	};
+
+	InterruptRequest spiIRQ = InterruptRequest::SpiTransferComplete;
+	setHandlerForInterrupt(spiTransferISR, spiIRQ);
 }
 
 void registerTimerInterrupt()
@@ -67,11 +68,17 @@ void registerTimerInterrupt()
 	setHandlerForInterrupt(timerISR, timerIRQ);
 }
 
+void setupSpi()
+{
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_16);
+	spi.setBitOrder(SpiBitOrder::LsbFirst);
+}
+
 void setupTempoTimer()
 {
 	tim1.enablePeriodicInterrupts();
 	tempoTimer.setTempo(BeatsPerMinute(120));
-	tempoTimer.start();
+	// tempoTimer.start();
 }
 
 void setupTimingManager()

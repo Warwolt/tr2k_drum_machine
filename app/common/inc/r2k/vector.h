@@ -9,6 +9,7 @@
 #define R2K_VECTOR_H
 
 #include "r2k/ivector.h"
+#include <string.h>
 
 namespace r2k
 {
