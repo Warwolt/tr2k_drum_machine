@@ -22,12 +22,9 @@ HEXFILE := $(OBJ_DIR)/$(TARGET).hex
 OBJCOPY  := avr-objcopy
 COM_PORT := com5 # NOTE: This must correspond to the usb port you use!
 
-# Embedded template library
-INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include
-INC += -I$(LIB_DIR)/embeddedtemplatelibrary/Include/etl/profiles
-
 # Definition of operations new and delete
 LIB += $(LIB_DIR)/newdelete/newdelete.a
+INC += -I$(LIB_DIR)/newdelete/inc/
 
 # Fixed Point Number Arithmetic Library
 INC += -I$(LIB_DIR)/libfixmath/include
