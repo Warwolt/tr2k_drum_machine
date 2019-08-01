@@ -31,6 +31,9 @@ LIB += $(LIB_DIR)/googlemock/gmock.a
 INC += -I$(LIB_DIR)/libfixmath/include
 LIB += $(LIB_DIR)/libfixmath/libfixmath.a
 
+# Add borrowed Standard Template Library files
+INC += -I$(LIB_DIR)
+
 # Add avr header mocks
 -include $(LIB_DIR)/mockheaders/avr/makefile.mk
 

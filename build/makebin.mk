@@ -30,6 +30,10 @@ INC += -I$(LIB_DIR)/newdelete/inc/
 INC += -I$(LIB_DIR)/libfixmath/include
 LIB += $(LIB_DIR)/libfixmath/libfixmath.a
 
+# Add borrowed Standard Template Library files
+INC += -I$(LIB_DIR)
+INC += -I$(LIB_DIR)/stlstub
+
 .PHONY: clean directories
 all: $(OBJ_DIR) $(BIN)
 

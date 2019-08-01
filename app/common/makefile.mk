@@ -3,5 +3,7 @@
 #
 
 MODULE_DIR := $(APP_ROOT)/common
+-include common_makefiles/if.mk
 -include common_makefiles/src_inc.mk
+-include common_makefiles/test.mk
 
