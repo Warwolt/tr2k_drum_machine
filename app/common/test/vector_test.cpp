@@ -9,13 +9,13 @@
 #include "linuxtypes.h"
 #include "r2k/vector.h"
 
-class R2KVectorTest : public ::testing::Test
+class r2kVectorTest : public ::testing::Test
 {
 public:
 	//
 };
 
-TEST_F(R2KVectorTest, Values_can_be_accessed_using_bracket_operator)
+TEST_F(r2kVectorTest, Values_can_be_assigned_using_bracket_operator)
 {
 	r2k::vector<u8, 2> vec;
 	r2k::ivector<u8>& ivec = vec;
@@ -27,7 +27,7 @@ TEST_F(R2KVectorTest, Values_can_be_accessed_using_bracket_operator)
 	EXPECT_EQ(ivec[1], 23);
 }
 
-TEST_F(R2KVectorTest, Values_can_be_assigned_using_initializer_list)
+TEST_F(r2kVectorTest, Values_can_be_assigned_using_initializer_list)
 {
 	r2k::vector<u8, 3> vec = {10, 20, 30};
 	r2k::ivector<u8>& ivec = vec;
@@ -37,27 +37,55 @@ TEST_F(R2KVectorTest, Values_can_be_assigned_using_initializer_list)
 	EXPECT_EQ(ivec[2], 30);
 }
 
-TEST_F(R2KVectorTest, Vector_size_can_be_queried)
+TEST_F(r2kVectorTest, Values_can_be_assigned_using_push_back)
+{
+	r2k::vector<u8, 3> vec;
+	r2k::ivector<u8>& ivec = vec;
+
+	ivec.push_back(10);
+	ivec.push_back(20);
+	ivec.push_back(30);
+
+	EXPECT_EQ(ivec[0], 10);
+	EXPECT_EQ(ivec[1], 20);
+	EXPECT_EQ(ivec[2], 30);
+}
+
+TEST_F(r2kVectorTest, Cannot_push_back_elements_beyond_capacity)
+{
+	r2k::vector<u8, 2> vec; // NOTE: size is not 3!
+	r2k::ivector<u8>& ivec = vec;
+
+	ivec.push_back(10);
+	ivec.push_back(20);
+	ivec.push_back(30); // this should do nothing
+
+	EXPECT_EQ(ivec[0], 10);
+	EXPECT_EQ(ivec[1], 20);
+	EXPECT_NE(ivec[2], 30);
+}
+
+TEST_F(r2kVectorTest, Vector_size_can_be_queried) // generalize this test
 {
 	r2k::vector<u8, 3> vec = {1, 2};
 	r2k::ivector<u8>& ivec = vec;
 	EXPECT_EQ(ivec.size(), 2u);
 }
 
-TEST_F(R2KVectorTest, Vector_capacity_can_be_queried)
+TEST_F(r2kVectorTest, Vector_capacity_can_be_queried)
 {
 	r2k::vector<u8, 3> vec = {1, 2, 3};
 	r2k::ivector<u8>& ivec = vec;
 	EXPECT_EQ(ivec.size(), 3u);
 }
 
-TEST_F(R2KVectorTest, Values_can_be_accessed_using_iterator)
+TEST_F(r2kVectorTest, Values_can_be_accessed_using_iterator)
 {
 	size_t i = 0;
 	r2k::vector<u8, 3> vec = {11, 22, 33};
 	r2k::ivector<u8>& ivec = vec;
 	for(const auto& num : ivec)
 	{
-		EXPECT_EQ(num, vec[i++]);
+		EXPECT_EQ(num, ivec[i++]);
 	}
 }

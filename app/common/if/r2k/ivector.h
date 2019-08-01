@@ -16,12 +16,14 @@ template<class T>
 class ivector
 {
 public:
+	using value_type = T;
 	using iterator = T*;
-	using lvalue = T&;
+	using reference = T&;
 
 	virtual size_t size() = 0;
 	virtual size_t capacity() = 0;
-	virtual lvalue operator[](size_t index) = 0;
+	virtual void push_back(const value_type& val) = 0;
+	virtual reference operator[](size_t index) = 0;
 	virtual iterator begin() = 0;
 	virtual iterator end() = 0;
 };

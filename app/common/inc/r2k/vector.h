@@ -16,8 +16,9 @@ template<class T, size_t CAPACITY>
 class vector : public ivector<T>
 {
 public:
+	using value_type = T;
 	using iterator = T*;
-	using lvalue = T&;
+	using reference = T&;
 
 	vector() = default;
 
@@ -37,7 +38,15 @@ public:
 		return CAPACITY;
 	}
 
-	lvalue operator[](size_t index) final
+	void push_back(const value_type& val) final
+	{
+		if(numElements < CAPACITY)
+		{
+			array[numElements++] = val;
+		}
+	}
+
+	reference operator[](size_t index) final
 	{
 		return array[index];
 	}
