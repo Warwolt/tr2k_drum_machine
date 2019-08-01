@@ -20,12 +20,14 @@ public:
 	u8 controlReg = 0;
 	u8 pinDirectionReg = 0;
 	u8 statusReg = 0;
+	u8 dataReg = 0;
 
 	void SetUp()
 	{
 		spi.setControlRegister(&controlReg);
 		spi.setPinDirectionRegister(&pinDirectionReg);
 		spi.setStatusRegister(&statusReg);
+		spi.setDataRegister(&dataReg);
 	}
 
 	/**
@@ -112,4 +114,110 @@ TEST_F(SpiTest, Spi_clock_speed_can_be_set)
 
 	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_32);
 	EXPECT_EQ(6, getClockSpeedFromRegisters());
+}
+
+TEST_F(SpiTest, Bit_order_can_be_set_to_least_significant_bit_first)
+{
+	spi.setBitOrder(SpiBitOrder::LsbFirst);
+	EXPECT_TRUE(controlReg & (0x1 << DORD));
+}
+
+TEST_F(SpiTest, Bit_order_can_be_set_to_most_significant_bit_first)
+{
+	spi.setBitOrder(SpiBitOrder::MsbFirst);
+	EXPECT_FALSE(controlReg & (0x1 << DORD));
+}
+
+TEST_F(SpiTest, Single_byte_can_be_transferred)
+{
+	u8 txByte = 123;
+	spi.sendByte(txByte);
+	EXPECT_EQ(txByte, dataReg);
+}
+
+TEST_F(SpiTest, Byte_buffer_can_be_transferred)
+{
+	constexpr u8 bufferSize = 2;
+	u8 txBuffer[bufferSize] = {123, 234};
+	spi.setTxBuffer(txBuffer, bufferSize);
+
+	spi.sendNextBufferByte();
+
+	EXPECT_EQ(txBuffer[0], dataReg);
+}
+
+TEST_F(SpiTest, Transfer_complete_false_if_corresponding_flag_not_set)
+{
+	statusReg &= ~(0x1 << SPIF);
+	EXPECT_FALSE(spi.transferIsComplete());
+}
+
+TEST_F(SpiTest, Transfer_complete_true_if_corresponding_flag_is_set)
+{
+	statusReg |= (0x1 << SPIF);
+	EXPECT_TRUE(spi.transferIsComplete());
+}
+
+TEST_F(SpiTest, Buffer_contents_sent_byte_for_byte)
+{
+	constexpr u8 bufferSize = 2;
+	u8 txBuffer[bufferSize] = {123, 234};
+	spi.setTxBuffer(txBuffer, bufferSize);
+
+	spi.sendNextBufferByte();
+	spi.sendNextBufferByte();
+
+	EXPECT_EQ(txBuffer[1], dataReg);
+}
+
+TEST_F(SpiTest, Buffer_not_empty_when_bytes_remain_unsent)
+{
+	constexpr u8 bufferSize = 2;
+	u8 txBuffer[bufferSize] = {123, 234};
+	spi.setTxBuffer(txBuffer, bufferSize);
+
+	spi.sendNextBufferByte();
+
+	EXPECT_FALSE(spi.txBufferIsEmpty());
+}
+
+TEST_F(SpiTest, Buffer_empty_after_all_bytes_sent)
+{
+	constexpr u8 bufferSize = 2;
+	u8 txBuffer[bufferSize] = {123, 234};
+	spi.setTxBuffer(txBuffer, bufferSize);
+
+	spi.sendNextBufferByte();
+	spi.sendNextBufferByte();
+
+	EXPECT_TRUE(spi.txBufferIsEmpty());
+}
+
+TEST_F(SpiTest, Sends_zero_if_trying_to_send_byte_in_empty_buffer)
+{
+	constexpr u8 bufferSize = 2;
+	u8 txBuffer[bufferSize] = {123, 234};
+	spi.setTxBuffer(txBuffer, bufferSize);
+
+	spi.sendNextBufferByte();
+	spi.sendNextBufferByte();
+	spi.sendNextBufferByte();
+
+	EXPECT_EQ(0, dataReg);
+}
+
+TEST_F(SpiTest, Client_can_transfer_byte_buffer_by_combing_spi_methods)
+{
+	u8 byteIndex = 0;
+	constexpr u8 bufferSize = 3;
+	u8 txBuffer[bufferSize] = {12, 34, 56};
+	spi.setTxBuffer(txBuffer, bufferSize);
+
+	while(!spi.txBufferIsEmpty())
+	{
+		spi.sendNextBufferByte();
+		EXPECT_EQ(txBuffer[byteIndex++], dataReg);
+	}
+
+	EXPECT_EQ(byteIndex, bufferSize);
 }

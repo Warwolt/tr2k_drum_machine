@@ -9,24 +9,41 @@
 
 #include "linuxtypes.h"
 #include <avr/io.h>
+#include <stddef.h>
 
+enum class SpiBitOrder {LsbFirst, MsbFirst};
 enum class SpiClockSpeed {SysFreq_over_2, SysFreq_over_4, SysFreq_over_8, SysFreq_over_16,
 	SysFreq_over_32, SysFreq_over_64, SysFreq_over_128};
 
 class Spi
 {
 public:
+
 	void initialize();
 	void setClockSpeed(SpiClockSpeed);
+	void setBitOrder(SpiBitOrder);
+
+	void sendByte(u8 txByte);
+	void setTxBuffer(u8* buffer, size_t size);
+	void sendNextBufferByte();
+	bool txBufferIsEmpty();
+	bool transferIsComplete();
 
 	void setControlRegister(u8* reg);
 	void setPinDirectionRegister(u8* reg);
 	void setStatusRegister(u8* reg);
+	void setDataRegister(u8* reg);
 
 private:
 	volatile u8* pinDirectionRegister;
 	volatile u8* controlRegister;
 	volatile u8* statusRegister;
+	volatile u8* dataRegister;
+
+	static constexpr u8 TX_BUFFER_CAPACITY = 255;
+	u8 txBuffer[TX_BUFFER_CAPACITY];
+	u8 txBufferSize = 0;
+	u8 txByteIndex = 0;
 
 	void enableInterrupts();
 	void enableSpi();
