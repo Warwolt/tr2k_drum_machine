@@ -12,8 +12,6 @@ static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
 static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 
-using namespace Interrupts;
-
 void init();
 void registerSpiInterrupt();
 void registerTimerInterrupt();
@@ -37,9 +35,10 @@ int main()
 
 void init()
 {
-	enableInterruptsGlobally();
+	Interrupts::enableInterruptsGlobally();
 	registerSpiInterrupt();
 	registerTimerInterrupt();
+	setupSpi();
 	setupTempoTimer();
 	setupTimingManager();
 }
@@ -55,7 +54,7 @@ void registerSpiInterrupt()
 	};
 
 	InterruptRequest spiIRQ = InterruptRequest::SpiTransferComplete;
-	setHandlerForInterrupt(spiTransferISR, spiIRQ);
+	Interrupts::setHandlerForInterrupt(spiTransferISR, spiIRQ);
 }
 
 void registerTimerInterrupt()
@@ -65,13 +64,13 @@ void registerTimerInterrupt()
 		tempoTimer.countPulse();
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer1CompareMatch;
-	setHandlerForInterrupt(timerISR, timerIRQ);
+	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
 }
 
 void setupSpi()
 {
-	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_16);
 	spi.setBitOrder(SpiBitOrder::LsbFirst);
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_2);
 }
 
 void setupTempoTimer()
