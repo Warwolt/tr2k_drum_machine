@@ -19,13 +19,23 @@ public:
 	using value_type = T;
 	using iterator = T*;
 	using reference = T&;
+	using const_reference = const T&;
 
-	virtual size_t size() = 0;
-	virtual size_t capacity() = 0;
-	virtual void push_back(const value_type& val) = 0;
-	virtual reference operator[](size_t index) = 0;
+	/* Iterators */
 	virtual iterator begin() = 0;
 	virtual iterator end() = 0;
+
+	/* Capacity */
+	virtual size_t size() = 0;
+	virtual size_t capacity() = 0;
+
+	/* Element access */
+	virtual reference operator[](size_t index) = 0;
+	virtual reference back() = 0;
+
+	/* Modifiers */
+	virtual void push_back(const_reference val) = 0;
+	virtual void pop_back() = 0;
 };
 }
 

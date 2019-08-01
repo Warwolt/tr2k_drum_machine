@@ -20,51 +20,41 @@ public:
 	using value_type = T;
 	using iterator = T*;
 	using reference = T&;
+	using const_reference = const T&;
 
+	/* Constructors */
 	vector() = default;
-
 	vector(std::initializer_list<T> list)
 	{
-		numElements = (CAPACITY < list.size() ? CAPACITY : list.size());
-		memcpy(array, list.begin(), numElements);
+		num_elements = (CAPACITY < list.size() ? CAPACITY : list.size());
+		memcpy(array, list.begin(), num_elements);
 	}
 
-	size_t size() final
-	{
-		return numElements;
-	}
+	/* Iterators */
+	iterator begin() final { return array; }
+	iterator end() final { return array + num_elements; }
 
-	size_t capacity() final
-	{
-		return CAPACITY;
-	}
+	/* Capacity */
+	size_t size() final	{ return num_elements; }
+	size_t capacity() final { return CAPACITY; }
 
-	void push_back(const value_type& val) final
+	/* Element access */
+	reference operator[](size_t index) final { return array[index];	}
+	reference back() final { return array[num_elements-1]; }
+
+	/* Modifiers */
+	void push_back(const_reference val) final
 	{
-		if(numElements < CAPACITY)
+		if(num_elements < CAPACITY)
 		{
-			array[numElements++] = val;
+			array[num_elements++] = val;
 		}
 	}
-
-	reference operator[](size_t index) final
-	{
-		return array[index];
-	}
-
-	iterator begin() final
-	{
-		return array;
-	}
-
-	iterator end() final
-	{
-		return array + numElements;
-	}
+	void pop_back() final { num_elements--; }
 
 private:
 	T array[CAPACITY];
-	size_t numElements = 0;
+	size_t num_elements = 0;
 };
 }
 

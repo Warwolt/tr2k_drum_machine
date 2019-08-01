@@ -12,7 +12,6 @@
 class r2kVectorTest : public ::testing::Test
 {
 public:
-	//
 };
 
 TEST_F(r2kVectorTest, Values_can_be_assigned_using_bracket_operator)
@@ -88,4 +87,21 @@ TEST_F(r2kVectorTest, Values_can_be_accessed_using_iterator)
 	{
 		EXPECT_EQ(num, ivec[i++]);
 	}
+}
+
+TEST_F(r2kVectorTest, Last_value_can_be_accessed_using_back)
+{
+	r2k::vector<u8, 3> vec = {5, 6, 7};
+	r2k::ivector<u8>& ivec = vec;
+	EXPECT_EQ(ivec.back(), ivec[2]);
+}
+
+TEST_F(r2kVectorTest, Last_element_can_be_removed_with_pop_back)
+{
+	r2k::vector<u8, 3> vec = {11, 22, 33};
+	r2k::ivector<u8>& ivec = vec;
+
+	ivec.pop_back();
+
+	EXPECT_EQ(ivec.back(), ivec[1]);
 }
