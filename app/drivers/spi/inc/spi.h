@@ -44,10 +44,10 @@ private:
 	u8 txByteIndex = 0;
 
 	void initialize();
-	void enableInterrupts();
-	void enableSpi();
-	void useMasterMode();
 	void setupPins();
+	void enableInterrupts();
+	void useMasterMode();
+	void enableSpi();
 
 	u8 getClockSelectionNumber(SpiClockSpeed clockSpeed);
 	void writeSelectionNumToRegs(bool digit0, bool digit1, bool digit2);

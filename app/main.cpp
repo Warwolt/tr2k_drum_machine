@@ -1,14 +1,15 @@
 #include "interrupts.h"
+#include "spi.h"
 #include "gpiopin.h"
 #include "timer1.h"
 #include "tempotimer16bit.h"
 #include "tempotimingmanager.h"
 #include <util/delay.h>
 
+static Spi spi;
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
-// static GpioPin ledPin = GpioPin(Pin5, PortB, DigitalOutput);
 static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 
 using namespace Interrupts;
@@ -25,28 +26,24 @@ int main()
 {
 	init();
 
-	/* Initialize SPI peripheral */
-    // set MOSI, SCK and SS as Output
-    DDRB = (1 << 5) | (1 << 3) | (1 << 2);
-    // enable transfer complete interrupts
-    SPCR |= (1 << SPIE);
-	// configure SPI settings
-    SPCR |= (1 << SPE) | (1 << MSTR) | (1 << SPR0) | (1 << DORD);
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_16);
+	spi.setBitOrder(SpiBitOrder::LsbFirst);
 
     InterruptHandler spiTransferISR = []
     {
 		if(byteIndex < 4)
 		{
-			SPDR = txBuffer[byteIndex];
+			spi.sendByte(txBuffer[byteIndex]);
 			byteIndex++;
 		}
     };
+
     InterruptRequest spiIRQ = InterruptRequest::SpiTransferComplete;
     setHandlerForInterrupt(spiTransferISR, spiIRQ);
 
 	while (1)
 	{
-		SPDR = txBuffer[0]; // write to triggers first interrupt
+		spi.sendByte(txBuffer[0]);
 		byteIndex = 1;
 		_delay_ms(6);
 	}

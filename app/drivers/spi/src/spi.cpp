@@ -32,25 +32,10 @@ Spi::Spi(u8& pinDirReg, u8& controlReg, u8& statReg, u8& dataReg) :
  */
 inline void Spi::initialize()
 {
-	enableSpi();
+	setupPins();
 	enableInterrupts();
 	useMasterMode();
-	setupPins();
-}
-
-inline void Spi::enableSpi()
-{
-	*controlRegister |= (0x1 << SPE);
-}
-
-inline void Spi::useMasterMode()
-{
-	*controlRegister |= (0x1 << MSTR);
-}
-
-inline void Spi::enableInterrupts()
-{
-	*controlRegister |= (0x1 << SPIE); // enable interrupt on completed transfer
+	enableSpi();
 }
 
 inline void Spi::setupPins()
@@ -58,6 +43,21 @@ inline void Spi::setupPins()
 	*pinDirectionRegister |= (0x1 << 2); // set Slave Select (SS) as output
 	*pinDirectionRegister |= (0x1 << 3); // set Master Out Slave Input (MOSI) as output
 	*pinDirectionRegister |= (0x1 << 5); // set Serial Clock as output (SCK)
+}
+
+inline void Spi::enableInterrupts()
+{
+	*controlRegister |= (0x1 << SPIE); // enable interrupt on completed transfer
+}
+
+inline void Spi::useMasterMode()
+{
+	*controlRegister |= (0x1 << MSTR);
+}
+
+inline void Spi::enableSpi()
+{
+	*controlRegister |= (0x1 << SPE);
 }
 
 /**
@@ -98,7 +98,7 @@ void Spi::setClockSpeed(SpiClockSpeed clockSpeed)
  */
 inline u8 Spi::getClockSelectionNumber(SpiClockSpeed clockSpeed)
 {
-	switch(clockSpeed)
+	switch (clockSpeed)
 	{
 		case (SpiClockSpeed::SysFreq_over_2):   return 4;
 		case (SpiClockSpeed::SysFreq_over_4):   return 0;
@@ -134,12 +134,12 @@ inline void Spi::writeSelectionNumToRegs(bool digit0, bool digit1, bool digit2)
  */
 void Spi::setBitOrder(SpiBitOrder order)
 {
-	if(order == SpiBitOrder::LsbFirst)
+	if (order == SpiBitOrder::LsbFirst)
 	{
 		*controlRegister |= 0x1 << DORD;
 	}
 
-	if(order == SpiBitOrder::MsbFirst)
+	if (order == SpiBitOrder::MsbFirst)
 	{
 		*controlRegister &=  ~(0x1 << DORD);
 	}
@@ -164,7 +164,7 @@ void Spi::sendByte(u8 txByte)
  */
 void Spi::setTxBuffer(r2k::ivector<u8> &buffer)
 {
-	memcpy(txBuffer, &buffer[0], buffer.size());
+	memcpy(txBuffer, buffer.begin(), buffer.size());
 	txBufferSize = buffer.size();
 	txByteIndex = 0;
 }
@@ -175,7 +175,7 @@ void Spi::setTxBuffer(r2k::ivector<u8> &buffer)
  */
 void Spi::sendNextByteInBuffer()
 {
-	if(!txBufferIsEmpty())
+	if (!txBufferIsEmpty())
 	{
 		*dataRegister = txBuffer[txByteIndex++];
 	}
