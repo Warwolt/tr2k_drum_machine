@@ -8,10 +8,29 @@
 #include <string.h>
 
 /**
+ * Constructor used in release build.
+ */
+Spi::Spi() : pinDirectionRegister(&DDRB), controlRegister(&SPCR), statusRegister(&SPSR),
+	dataRegister(&SPDR)
+{
+	initialize();
+}
+
+/**
+ *  Constructor used in unit tests.
+ */
+Spi::Spi(u8& pinDirReg, u8& controlReg, u8& statReg, u8& dataReg) :
+	pinDirectionRegister(&pinDirReg), controlRegister(&controlReg), statusRegister(&statReg),
+	dataRegister(&dataReg)
+{
+	initialize();
+}
+
+/**
  * Enables the SPI peripheral, enables "transfer complete"-interrupts, sets SPI
  * peripheral as master, and sets up MOSI, SCLK, and SS pins as outputs.
  */
-void Spi::initialize()
+inline void Spi::initialize()
 {
 	enableSpi();
 	enableInterrupts();
@@ -184,40 +203,4 @@ bool Spi::txBufferIsEmpty()
 bool Spi::transferIsComplete()
 {
 	return (*statusRegister & (0x1 << SPIF));
-}
-
-/**
- * Used for testing.
- * @param reg  pointer to variable mocking the DDRB register.
- */
-void Spi::setPinDirectionRegister(u8* reg)
-{
-	pinDirectionRegister = reg;
-}
-
-/**
- * Used for testing.
- * @param reg  pointer to variable mocking the SPCR register.
- */
-void Spi::setControlRegister(u8* reg)
-{
-	controlRegister = reg;
-}
-
-/**
- * Used for testing.
- * @param reg  pointer to variable mocking the SPSR register.
- */
-void Spi::setStatusRegister(u8* reg)
-{
-	statusRegister = reg;
-}
-
-/**
- * Used for testing.
- * @param reg  pointer to variable mocking the SPDR register.
- */
-void Spi::setDataRegister(u8* reg)
-{
-	dataRegister = reg;
 }

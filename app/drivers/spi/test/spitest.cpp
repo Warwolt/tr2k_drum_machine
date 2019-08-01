@@ -16,19 +16,11 @@ constexpr u8 SS_PIN_NUMBER = 2;
 class SpiTest : public ::testing::Test
 {
 public:
-	Spi spi;
-	u8 controlReg = 0;
 	u8 pinDirectionReg = 0;
+	u8 controlReg = 0;
 	u8 statusReg = 0;
 	u8 dataReg = 0;
-
-	void SetUp()
-	{
-		spi.setControlRegister(&controlReg);
-		spi.setPinDirectionRegister(&pinDirectionReg);
-		spi.setStatusRegister(&statusReg);
-		spi.setDataRegister(&dataReg);
-	}
+	Spi spi = Spi(pinDirectionReg, controlReg, statusReg, dataReg);
 
 	/**
 	 * Combines bits SPR0, SPR1 and SPI2X to form the entries in table 23-5
@@ -56,39 +48,33 @@ public:
 	}
 };
 
-TEST_F(SpiTest, Spi_enabled_during_initialization)
+TEST_F(SpiTest, Spi_enabled_during_construction)
 {
-	spi.initialize();
 	EXPECT_TRUE(controlReg & (0x1 << SPE));
 }
 
-TEST_F(SpiTest, Peripheral_selected_as_master_during_initialization)
+TEST_F(SpiTest, Peripheral_selected_as_master_during_construction)
 {
-	spi.initialize();
 	EXPECT_TRUE(controlReg & (0x1 << MSTR));
 }
 
-TEST_F(SpiTest, Transfer_complete_interrupts_enabled_during_initialization)
+TEST_F(SpiTest, Transfer_complete_interrupts_enabled_during_construction)
 {
-	spi.initialize();
 	EXPECT_TRUE(controlReg & (0x1 << SPIE));
 }
 
-TEST_F(SpiTest, Master_Out_Slave_In_set_as_output_during_initialization)
+TEST_F(SpiTest, Master_Out_Slave_In_set_as_output_during_construction)
 {
-	spi.initialize();
 	EXPECT_TRUE(pinDirectionReg & (0x1 << MOSI_PIN_NUMBER));
 }
 
-TEST_F(SpiTest, Serial_Clock_set_as_output_during_initialization)
+TEST_F(SpiTest, Serial_Clock_set_as_output_during_construction)
 {
-	spi.initialize();
 	EXPECT_TRUE(pinDirectionReg & (0x1 << SCK_PIN_NUMBER));
 }
 
-TEST_F(SpiTest, Slave_Select_set_as_output_during_initialization)
+TEST_F(SpiTest, Slave_Select_set_as_output_during_construction)
 {
-	spi.initialize();
 	EXPECT_TRUE(pinDirectionReg & (0x1 << SS_PIN_NUMBER));
 }
 

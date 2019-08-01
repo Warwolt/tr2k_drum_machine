@@ -18,8 +18,9 @@ enum class SpiClockSpeed {SysFreq_over_2, SysFreq_over_4, SysFreq_over_8, SysFre
 class Spi
 {
 public:
+	Spi();
+	Spi(u8 &pinDirReg, u8 &controlReg, u8 &statReg, u8 &dataReg);
 
-	void initialize();
 	void setClockSpeed(SpiClockSpeed);
 	void setBitOrder(SpiBitOrder);
 
@@ -28,11 +29,6 @@ public:
 	void sendNextBufferByte();
 	bool txBufferIsEmpty();
 	bool transferIsComplete();
-
-	void setControlRegister(u8* reg);
-	void setPinDirectionRegister(u8* reg);
-	void setStatusRegister(u8* reg);
-	void setDataRegister(u8* reg);
 
 private:
 	volatile u8* pinDirectionRegister;
@@ -45,6 +41,7 @@ private:
 	u8 txBufferSize = 0;
 	u8 txByteIndex = 0;
 
+	void initialize();
 	void enableInterrupts();
 	void enableSpi();
 	void useMasterMode();
