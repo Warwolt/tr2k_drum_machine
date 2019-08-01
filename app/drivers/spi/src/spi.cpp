@@ -157,19 +157,15 @@ void Spi::sendByte(u8 txByte)
 /**
  * Set a buffer of bytes to use for transferring data.
  *
- * Note bene: Uese the "txBufferIsEmpty"-method to check if more bytes need to
+ * Note Bene: Use the "txBufferIsEmpty"-method to check if more bytes need to
  * be transfered, and transfer them using the "sendNextBufferByte" method.
  *
  * @param buffer  reference to byte buffer to transfer.
  */
-void Spi::setTxBuffer(u8* buffer, size_t size)
+void Spi::setTxBuffer(r2k::ivector<u8> &buffer)
 {
-	/**
-	 *  !! TODO:
-	 *  implement own std::vector equivalent using static memory and use that in setTxBuffer()
-	 */
-	memcpy(txBuffer, buffer, size);
-	txBufferSize = size;
+	memcpy(txBuffer, &buffer[0], buffer.size());
+	txBufferSize = buffer.size();
 	txByteIndex = 0;
 }
 
@@ -177,7 +173,7 @@ void Spi::setTxBuffer(u8* buffer, size_t size)
  * Sends the next byte in the txBuffer and updates the byte index if buffer
  * none-empty, otherwise sends a zero.
  */
-void Spi::sendNextBufferByte()
+void Spi::sendNextByteInBuffer()
 {
 	if(!txBufferIsEmpty())
 	{

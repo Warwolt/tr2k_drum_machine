@@ -121,17 +121,6 @@ TEST_F(SpiTest, Single_byte_can_be_transferred)
 	EXPECT_EQ(txByte, dataReg);
 }
 
-TEST_F(SpiTest, Byte_buffer_can_be_transferred)
-{
-	constexpr u8 bufferSize = 2;
-	u8 txBuffer[bufferSize] = {123, 234};
-	spi.setTxBuffer(txBuffer, bufferSize);
-
-	spi.sendNextBufferByte();
-
-	EXPECT_EQ(txBuffer[0], dataReg);
-}
-
 TEST_F(SpiTest, Transfer_complete_false_if_corresponding_flag_not_set)
 {
 	statusReg &= ~(0x1 << SPIF);
@@ -144,66 +133,71 @@ TEST_F(SpiTest, Transfer_complete_true_if_corresponding_flag_is_set)
 	EXPECT_TRUE(spi.transferIsComplete());
 }
 
+TEST_F(SpiTest, Byte_buffer_can_be_transferred)
+{
+	r2k::vector<u8, 2> txBuffer = {222, 233};
+	spi.setTxBuffer(txBuffer);
+
+	spi.sendNextByteInBuffer();
+
+	EXPECT_EQ(txBuffer[0], dataReg);
+}
+
 TEST_F(SpiTest, Buffer_contents_sent_byte_for_byte)
 {
-	constexpr u8 bufferSize = 2;
-	u8 txBuffer[bufferSize] = {123, 234};
-	spi.setTxBuffer(txBuffer, bufferSize);
+	r2k::vector<u8, 2> txBuffer = {11, 22};
+	spi.setTxBuffer(txBuffer);
 
-	spi.sendNextBufferByte();
-	spi.sendNextBufferByte();
+	spi.sendNextByteInBuffer();
+	spi.sendNextByteInBuffer();
 
 	EXPECT_EQ(txBuffer[1], dataReg);
 }
 
 TEST_F(SpiTest, Buffer_not_empty_when_bytes_remain_unsent)
 {
-	constexpr u8 bufferSize = 2;
-	u8 txBuffer[bufferSize] = {123, 234};
-	spi.setTxBuffer(txBuffer, bufferSize);
+	r2k::vector<u8, 2> txBuffer = {10, 20};
+	spi.setTxBuffer(txBuffer);
 
-	spi.sendNextBufferByte();
+	spi.sendNextByteInBuffer();
 
 	EXPECT_FALSE(spi.txBufferIsEmpty());
 }
 
 TEST_F(SpiTest, Buffer_empty_after_all_bytes_sent)
 {
-	constexpr u8 bufferSize = 2;
-	u8 txBuffer[bufferSize] = {123, 234};
-	spi.setTxBuffer(txBuffer, bufferSize);
+	r2k::vector<u8, 2> txBuffer = {123, 234};
+	spi.setTxBuffer(txBuffer);
 
-	spi.sendNextBufferByte();
-	spi.sendNextBufferByte();
+	spi.sendNextByteInBuffer();
+	spi.sendNextByteInBuffer();
 
 	EXPECT_TRUE(spi.txBufferIsEmpty());
 }
 
 TEST_F(SpiTest, Sends_zero_if_trying_to_send_byte_in_empty_buffer)
 {
-	constexpr u8 bufferSize = 2;
-	u8 txBuffer[bufferSize] = {123, 234};
-	spi.setTxBuffer(txBuffer, bufferSize);
+	r2k::vector<u8, 2> txBuffer = {1, 2};
+	spi.setTxBuffer(txBuffer);
 
-	spi.sendNextBufferByte();
-	spi.sendNextBufferByte();
-	spi.sendNextBufferByte();
+	spi.sendNextByteInBuffer();
+	spi.sendNextByteInBuffer();
+	spi.sendNextByteInBuffer();
 
 	EXPECT_EQ(0, dataReg);
 }
 
-TEST_F(SpiTest, Client_can_transfer_byte_buffer_by_combing_spi_methods)
+TEST_F(SpiTest, Client_can_transfer_byte_buffer_by_combing_spi_driver_methods)
 {
 	u8 byteIndex = 0;
-	constexpr u8 bufferSize = 3;
-	u8 txBuffer[bufferSize] = {12, 34, 56};
-	spi.setTxBuffer(txBuffer, bufferSize);
+	r2k::vector<u8, 3> txBuffer = {12, 34, 56};
+	spi.setTxBuffer(txBuffer);
 
 	while(!spi.txBufferIsEmpty())
 	{
-		spi.sendNextBufferByte();
+		spi.sendNextByteInBuffer();
 		EXPECT_EQ(txBuffer[byteIndex++], dataReg);
 	}
 
-	EXPECT_EQ(byteIndex, bufferSize);
+	EXPECT_EQ(byteIndex, txBuffer.size());
 }

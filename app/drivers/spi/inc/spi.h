@@ -10,6 +10,7 @@
 #include "linuxtypes.h"
 #include <avr/io.h>
 #include <stddef.h>
+#include "r2k/vector.h"
 
 enum class SpiBitOrder {LsbFirst, MsbFirst};
 enum class SpiClockSpeed {SysFreq_over_2, SysFreq_over_4, SysFreq_over_8, SysFreq_over_16,
@@ -25,10 +26,11 @@ public:
 	void setBitOrder(SpiBitOrder);
 
 	void sendByte(u8 txByte);
-	void setTxBuffer(u8* buffer, size_t size);
-	void sendNextBufferByte();
-	bool txBufferIsEmpty();
 	bool transferIsComplete();
+
+	void setTxBuffer(r2k::ivector<u8> &buffer);
+	void sendNextByteInBuffer();
+	bool txBufferIsEmpty();
 
 private:
 	volatile u8* pinDirectionRegister;
