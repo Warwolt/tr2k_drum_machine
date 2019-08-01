@@ -164,8 +164,8 @@ void Spi::sendByte(u8 txByte)
  */
 void Spi::setTxBuffer(r2k::ivector<u8> &buffer)
 {
-	memcpy(txBuffer, buffer.begin(), buffer.size());
-	txBufferSize = buffer.size();
+	memcpy(txBuffer.begin(), buffer.begin(), buffer.size());
+	txBuffer.resize(buffer.size());
 	txByteIndex = 0;
 }
 
@@ -190,7 +190,7 @@ void Spi::sendNextByteInBuffer()
  */
 bool Spi::txBufferIsEmpty()
 {
-	return (txByteIndex >= txBufferSize);
+	return (txByteIndex >= txBuffer.size());
 }
 
 /**

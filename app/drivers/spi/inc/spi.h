@@ -38,9 +38,7 @@ private:
 	volatile u8* statusRegister;
 	volatile u8* dataRegister;
 
-	static constexpr u8 TX_BUFFER_CAPACITY = 255;
-	u8 txBuffer[TX_BUFFER_CAPACITY]; // TODO: use a r2k::vector here?
-	u8 txBufferSize = 0;
+	r2k::vector<u8, 255> txBuffer;
 	u8 txByteIndex = 0;
 
 	void initialize();

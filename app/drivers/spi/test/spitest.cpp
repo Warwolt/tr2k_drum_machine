@@ -196,7 +196,7 @@ TEST_F(SpiTest, Client_can_transfer_byte_buffer_by_combing_spi_driver_methods)
 	while(!spi.txBufferIsEmpty())
 	{
 		spi.sendNextByteInBuffer();
-		EXPECT_EQ(txBuffer[byteIndex++], dataReg);
+		ASSERT_EQ(txBuffer[byteIndex++], dataReg);
 	}
 
 	EXPECT_EQ(byteIndex, txBuffer.size());

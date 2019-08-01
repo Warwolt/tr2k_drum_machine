@@ -29,9 +29,9 @@ int main()
 
 	while (1)
 	{
+		spi.setTxBuffer(txBuffer);
 		spi.sendNextByteInBuffer();
 		_delay_us(100);
-		spi.setTxBuffer(txBuffer);
 	}
 }
 
