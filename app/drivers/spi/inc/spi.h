@@ -28,7 +28,7 @@ public:
 	void sendByte(u8 txByte);
 	void setTxBuffer(r2k::ivector<u8> &buffer);
 	void sendNextByteInBuffer();
-	bool txBufferIsEmpty();
+	bool txBufferIsEmpty() const;
 
 private:
 	volatile u8* pinDirectionRegister;

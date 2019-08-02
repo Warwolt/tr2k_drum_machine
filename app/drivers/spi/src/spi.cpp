@@ -194,7 +194,7 @@ void Spi::sendNextByteInBuffer()
 /**
  * @return true if all bytes in tx buffer have ben transferred
  */
-bool Spi::txBufferIsEmpty()
+bool Spi::txBufferIsEmpty() const
 {
 	return (txByteIndex >= txBuffer.size());
 }

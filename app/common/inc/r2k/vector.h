@@ -43,12 +43,12 @@ public:
 	}
 
 	/* Capacity */
-	size_t size() final
+	size_t size() const final
 	{
 		return num_elements;
 	}
 
-	size_t capacity() final
+	size_t capacity() const final
 	{
 		return CAPACITY;
 	}
@@ -61,7 +61,7 @@ public:
 		};
 	}
 
-	bool empty() final
+	bool empty() const final
 	{
 		return num_elements == 0;
 	}
