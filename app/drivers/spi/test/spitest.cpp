@@ -117,20 +117,11 @@ TEST_F(SpiTest, Bit_order_can_be_set_to_most_significant_bit_first)
 TEST_F(SpiTest, Single_byte_can_be_transferred)
 {
 	u8 txByte = 123;
+	// Send byte blocks until SPI transfer complete flag is set. Usually this
+	// is done by hardware, but in this test we must do it manually.
+	statusReg |= (0x1 << SPIF);
 	spi.sendByte(txByte);
 	EXPECT_EQ(txByte, dataReg);
-}
-
-TEST_F(SpiTest, Transfer_complete_false_if_corresponding_flag_not_set)
-{
-	statusReg &= ~(0x1 << SPIF);
-	EXPECT_FALSE(spi.transferIsComplete());
-}
-
-TEST_F(SpiTest, Transfer_complete_true_if_corresponding_flag_is_set)
-{
-	statusReg |= (0x1 << SPIF);
-	EXPECT_TRUE(spi.transferIsComplete());
 }
 
 TEST_F(SpiTest, Byte_buffer_can_be_transferred)

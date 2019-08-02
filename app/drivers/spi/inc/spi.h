@@ -26,8 +26,6 @@ public:
 	void setBitOrder(SpiBitOrder);
 
 	void sendByte(u8 txByte);
-	bool transferIsComplete();
-
 	void setTxBuffer(r2k::ivector<u8> &buffer);
 	void sendNextByteInBuffer();
 	bool txBufferIsEmpty();
@@ -46,9 +44,9 @@ private:
 	void enableInterrupts();
 	void useMasterMode();
 	void enableSpi();
-
 	u8 getClockSelectionNumber(SpiClockSpeed clockSpeed);
 	void writeSelectionNumToRegs(bool digit0, bool digit1, bool digit2);
+	bool transferIsComplete();
 };
 
 #endif /* SPI_H */

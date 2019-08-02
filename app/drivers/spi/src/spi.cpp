@@ -146,12 +146,18 @@ void Spi::setBitOrder(SpiBitOrder order)
 }
 
 /**
- * Sends a single byte over SPI.
+ * Sends single byte over SPI in blocking mode, returns after transfer's done.
  * @param byte to transfer.
  */
 void Spi::sendByte(u8 txByte)
 {
 	*dataRegister = txByte;
+	while(!transferIsComplete()); // wait until transfer is done
+}
+
+inline bool Spi::transferIsComplete()
+{
+	return (*statusRegister & (0x1 << SPIF));
 }
 
 /**
@@ -191,12 +197,4 @@ void Spi::sendNextByteInBuffer()
 bool Spi::txBufferIsEmpty()
 {
 	return (txByteIndex >= txBuffer.size());
-}
-
-/**
- * @return  true if transfer complete interrupt flag is set.
- */
-bool Spi::transferIsComplete()
-{
-	return (*statusRegister & (0x1 << SPIF));
 }
