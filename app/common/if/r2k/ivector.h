@@ -12,6 +12,7 @@
 
 namespace r2k
 {
+
 template<class T>
 class ivector
 {
@@ -39,6 +40,7 @@ public:
 	virtual void push_back(const_reference val) = 0;
 	virtual void pop_back() = 0;
 };
-}
+
+} /* namespace r2k */
 
 #endif /* R2K_INTERFACE_VECTOR_H */
