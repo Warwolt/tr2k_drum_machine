@@ -2,7 +2,7 @@
 
 skinparam linetype ortho
 
-title Select Tempo
+title Display Tempo
 
 
 ''' Class definitions '''
@@ -21,31 +21,6 @@ Package "Presentation"
 			beatsPerMinuteRange : BeatsPerMinute
 			getSelectedTempo() : BeatsPerMinute
 		}
-
-		class DigitalTempoKnob
-		{
-			beatsPerMinuteRange : BeatsPerMinute
-			getSelectedTempo() : BeatsPerMinute
-		}
-	}
-}
-
-Package "Application"
-{
-	class RhythmPlaybackController
-	{
-		selectTempo(BeatsPerMinute)
-	}
-}
-
-Package "Domain"
-{
-	Package "Playback"
-	{
-		interface TempoTimer
-		{
-			selectTempo(BeatsPerMinute)
-		}
 	}
 }
 
@@ -53,19 +28,16 @@ Package "HardwareAbstractionLayer"
 {
 	interface FourDigitDisplay
 	{
+		clear()
 		setNumber(Integer)
 	}
 }
 
 Package "Drivers"
 {
-	class RotaryEncoder
-	{
-		read() : Integer
-	}
-
 	class SegmentDisplay75HC595 << adapter >>
 	{
+		clear()
 		setNumber(BeatsPerMinute)
 		selectDigit(Integer)
 		writeSegmentData()
@@ -90,27 +62,25 @@ Package "Infrastructure"
 	{
 		enableInterruptsGlobally()
 		disableInterruptsGlobally()
-		setHandlerForInterrupt(InterruptHandler, InterruptRequest)
+		setHandler(InterruptHandler, InterruptRequest)
 	}
 }
 
+''' Class notes '''
+note top of InterruptManager: Manages timing for event \ndriven peripheral drivers
+note top of TempoControlView: Reads input from\nTempoKnob and outputs\nvalue on FourDigitDisplay
+note bottom of TempoKnob: Input for tempo value to display
+
 ''' Class relations '''
 
-TempoControlView -down-> FourDigitDisplay
 TempoControlView -down-> TempoKnob
-TempoControlView -right-> RhythmPlaybackController
-
-TempoKnob <|.. DigitalTempoKnob
-DigitalTempoKnob -down-> RotaryEncoder
-
-RhythmPlaybackController -down-> TempoTimer
+TempoControlView -down-> FourDigitDisplay
 
 FourDigitDisplay <|.. SegmentDisplay75HC595
 SegmentDisplay75HC595 -> Spi
-SegmentDisplay75HC595 -> GpioPin
+SegmentDisplay75HC595 -left-> GpioPin
 
-InterruptManager ..> SegmentDisplay75HC595
-InterruptManager ..> RotaryEncoder
+InterruptManager .down.> SegmentDisplay75HC595
 InterruptManager ..> Spi
 
 @enduml
