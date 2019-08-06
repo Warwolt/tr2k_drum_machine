@@ -31,6 +31,12 @@ Package "HardwareAbstractionLayer"
 		clear()
 		setNumber(Integer)
 	}
+
+	interface MillisecondTimer
+	{
+		start()
+		stop()
+	}
 }
 
 Package "Drivers"
@@ -54,6 +60,20 @@ Package "Drivers"
 		set()
 		clear()
 	}
+
+	class MillisecondTimer8Bit << adapter >>
+	{
+		start()
+		stop()
+	}
+
+	class Timer0
+	{
+		selectPrescaler(PrescalerOption)
+		selectPeriod(Integer)
+		start()
+		stop()
+	}
 }
 
 Package "Infrastructure"
@@ -61,7 +81,7 @@ Package "Infrastructure"
 	class InterruptManager
 	{
 		enableInterruptsGlobally()
-		disableInterruptsGlobally()
+		disablweInterruptsGlobally()
 		setHandler(InterruptHandler, InterruptRequest)
 	}
 }
@@ -77,10 +97,12 @@ TempoControlView -down-> TempoKnob
 TempoControlView -down-> FourDigitDisplay
 
 FourDigitDisplay <|.. SegmentDisplay75HC595
-SegmentDisplay75HC595 -> Spi
-SegmentDisplay75HC595 -left-> GpioPin
+SegmentDisplay75HC595 -down-> Spi
+SegmentDisplay75HC595 -down-> GpioPin
 
-InterruptManager .down.> SegmentDisplay75HC595
-InterruptManager ..> Spi
+MillisecondTimer <|.. MillisecondTimer8Bit
+MillisecondTimer8Bit -down-> Timer0
+
+InterruptManager ..> SegmentDisplay75HC595
 
 @enduml
