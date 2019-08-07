@@ -5,6 +5,7 @@
 #include "tempotimer16bit.h"
 #include "tempotimingmanager.h"
 #include <util/delay.h>
+#include "math.h"
 
 static Spi spi;
 static Timer1 tim1;
@@ -13,7 +14,7 @@ static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
 static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
 
-static unsigned char segmentDataLut[] =
+static unsigned char segmentDataLookup[] =
 {// 0	 1	  2	   3	4	 5	  6	   7	8	 9	  A	   b	C    d	  E    F    -
 	0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90,0x8C,0xBF,0xC6,0xA1,0x86,0xFF,0xbf
 };
@@ -30,23 +31,28 @@ void setupTimingManager();
 int main()
 {
 	init();
+	u16 number = 1200;
 
 	while (1)
 	{
-		displayNumber(1337);
-		_delay_us(2000);
+		displayNumber(number);
+		_delay_us(4000);
 	}
 }
 
 void displayNumber(u16 num)
 {
 	u16 digits[] = {num % 10, num/10 % 10, num/100 % 10, num/1000 % 10};
-	for(int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		displayDigit(segmentDataLut[digits[i]], i);
-		_delay_us(400);
+		u8 segmentData;
+		segmentData = (num > pow(10, i)) ? segmentDataLookup[digits[i]] : 0xFF;
+		if(i == 1) segmentData &= ~(0x1 << 7);
+		displayDigit(segmentData, i);
+		_delay_us(200);
 	}
 	displayDigit(0xFF, 5);
+	_delay_us(200);
 }
 
 void displayDigit(u8 segmentData, u8 digitNum)
