@@ -1,6 +1,7 @@
 #include "interrupts.h"
 #include "spi.h"
 #include "gpiopin.h"
+#include "timer0.h"
 #include "timer1.h"
 #include "tempotimer16bit.h"
 #include "tempotimingmanager.h"
@@ -8,6 +9,7 @@
 #include "math.h"
 
 static Spi spi;
+static Timer0 tim0;
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
@@ -27,16 +29,28 @@ void registerTimerInterrupt();
 void setupSpi();
 void setupTempoTimer();
 void setupTimingManager();
+void setupMillisecondTimer();
+
+/*** Proof of concept for display driver code ***/
+static u8 current_digit = 0;
+constexpr u16 num = 1200;
+constexpr u16 digits[] = {num % 10, num/10 % 10, num/100 % 10, num/1000 % 10};
+
+ISR(TIMER0_COMPA_vect)
+{
+	ledPin.toggle();
+	displayDigit(segmentDataLookup[digits[current_digit]], current_digit);
+	current_digit = (current_digit + 1) % 4;
+}
+/*** End proof of concept ***/
 
 int main()
 {
 	init();
-	u16 number = 1200;
 
 	while (1)
 	{
-		displayNumber(number);
-		_delay_us(4000);
+
 	}
 }
 
@@ -51,25 +65,30 @@ void displayNumber(u16 num)
 		displayDigit(segmentData, i);
 		_delay_us(200);
 	}
-	displayDigit(0xFF, 5);
-	_delay_us(200);
 }
 
 void displayDigit(u8 segmentData, u8 digitNum)
 {
-		r2k::vector<u8, 2> txBuffer = {segmentData, static_cast<u8>(0x1 << digitNum)};
-		spi.setTxBuffer(txBuffer);
-		spi.sendNextByteInBuffer();
+	r2k::vector<u8, 2> txBuffer = {segmentData, static_cast<u8>(0x1 << digitNum)};
+	spi.setTxBuffer(txBuffer);
+	spi.sendNextByteInBuffer();
 }
 
 void init()
 {
 	Interrupts::enableInterruptsGlobally();
-	registerTimerInterrupt();
-	setupTempoTimer();
+
+	/* Spi */
 	registerSpiInterrupt();
 	setupSpi();
+
+	/* Tempo timng */
+	registerTimerInterrupt();
+	setupTempoTimer();
 	setupTimingManager();
+
+	/* Tempo display */
+	setupMillisecondTimer();
 }
 
 void registerSpiInterrupt()
@@ -126,4 +145,12 @@ void setupTimingManager()
 		}
 		counter++;
 	});
+}
+
+void setupMillisecondTimer()
+{
+	tim0.enablePeriodicInterrupts();
+	tim0.setPrescaler(Timer8Bit::PrescaleOption::_64);
+	tim0.setPeriod(250);
+	tim0.start();
 }
