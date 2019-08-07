@@ -13,19 +13,11 @@
 class TestTimer1 : public ::testing::Test
 {
 public:
-	Timer1 timer;
 	u8 controlRegister = 0;
 	u8 maskRegister = 0;
 	u16 compareRegister = 0;
 	u16 counterRegister = 0;
-
-	void SetUp()
-	{
-		timer.setControlRegister(&controlRegister);
-		timer.setInterruptMaskRegister(&maskRegister);
-		timer.setOutputCompareRegister(&compareRegister);
-		timer.setCounterValueRegister(&counterRegister);
-	}
+	Timer1 timer = Timer1(controlRegister, maskRegister, compareRegister, counterRegister);
 
 	void testPrescaler(Timer16Bit::PrescaleOption prescaler, u8 clockSelectBits)
 	{
