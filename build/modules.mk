@@ -14,5 +14,6 @@
 
 # Drivers
 -include $(APP_ROOT)/drivers/gpio/makefile.mk
+-include $(APP_ROOT)/drivers/timer0/makefile.mk
 -include $(APP_ROOT)/drivers/timer1/makefile.mk
 -include $(APP_ROOT)/drivers/spi/makefile.mk
