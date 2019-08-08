@@ -10,6 +10,7 @@
 #include "interrupts.h"
 
 /* Import interrupt handlers, made possible by a mocked implementation of avr/interrupt.h */
+extern void TIMER0_COMPA_vect (void);
 extern void TIMER1_COMPA_vect (void);
 extern void SPI_STC_vect (void);
 
@@ -59,6 +60,16 @@ TEST_F(TestInterrupts, Global_interrupts_can_be_disabled)
 {
 	Interrupts::disableInterruptsGlobally();
 	EXPECT_TRUE(AvrMock::cliWasCalled());
+}
+
+TEST_F(TestInterrupts, Callback_can_be_attached_to_interrupt_TIMER0_COMPA)
+{
+	InterruptHandler interruptHandler = [](){ handlerWasCalled = true; };
+	InterruptRequest interruptRequest = InterruptRequest::Timer0CompareMatch;
+	InterruptServiceRoutine interruptServiceRoutine = TIMER0_COMPA_vect;
+
+	testInterruptHandlerCallsCallback(interruptHandler, interruptRequest, interruptServiceRoutine,
+		"Timer0CompareMatch");
 }
 
 TEST_F(TestInterrupts, Callback_can_be_attached_to_interrupt_TIMER1_COMPA)

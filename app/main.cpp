@@ -20,18 +20,12 @@ static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
 
 void init();
 void registerSpiInterrupt();
-void registerTimerInterrupt();
+void registerTempoTimerInterrupt();
+void registerMillisecondTimerInterrupt();
 void setupSpi();
 void setupTempoTimer();
 void setupTimingManager();
 void setupMillisecondTimer();
-
-static u8 currentDigit = 0;
-ISR(TIMER0_COMPA_vect)
-{
-	display.outputDigit(currentDigit);
-	currentDigit = (currentDigit + 1) % 5;
-}
 
 int main()
 {
@@ -55,11 +49,12 @@ void init()
 	setupSpi();
 
 	/* Tempo timng */
-	registerTimerInterrupt();
+	registerTempoTimerInterrupt();
 	setupTempoTimer();
 	setupTimingManager();
 
 	/* Tempo display */
+	registerMillisecondTimerInterrupt();
 	setupMillisecondTimer();
 }
 
@@ -82,7 +77,7 @@ void registerSpiInterrupt()
 	Interrupts::setHandlerForInterrupt(spiTransferISR, spiIRQ);
 }
 
-void registerTimerInterrupt()
+void registerTempoTimerInterrupt()
 {
 	InterruptHandler timerISR = []
 	{
@@ -126,3 +121,16 @@ void setupMillisecondTimer()
 	tim0.setPeriod(250);
 	tim0.start();
 }
+
+void registerMillisecondTimerInterrupt()
+{
+	static u8 currentDigit = 0;
+	InterruptHandler timerISR = []
+	{
+		display.outputDigit(currentDigit);
+		currentDigit = (currentDigit + 1) % 5;
+	};
+	InterruptRequest timerIRQ = InterruptRequest::Timer0CompareMatch;
+	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
+}
+

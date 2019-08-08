@@ -7,17 +7,29 @@
 
 #include "interrupts.h"
 
-static InterruptHandler timerCompareHandler = nullptr;
+static InterruptHandler timer0CompareHandler = nullptr;
+static InterruptHandler timer1CompareHandler = nullptr;
 static InterruptHandler serialTransferHandler = nullptr;
+
+/**
+ *  Interrupt service routine for timer1 compare match interrupt.
+ */
+ISR(TIMER0_COMPA_vect)
+{
+	if(timer0CompareHandler != nullptr)
+	{
+		timer0CompareHandler();
+	}
+}
 
 /**
  *  Interrupt service routine for timer1 compare match interrupt.
  */
 ISR(TIMER1_COMPA_vect)
 {
-	if (timerCompareHandler != nullptr)
+	if(timer1CompareHandler != nullptr)
 	{
-		timerCompareHandler();
+		timer1CompareHandler();
 	}
 }
 
@@ -26,7 +38,7 @@ ISR(TIMER1_COMPA_vect)
  */
 ISR(SPI_STC_vect)
 {
-	if (serialTransferHandler != nullptr)
+	if(serialTransferHandler != nullptr)
 	{
 		serialTransferHandler();
 	}
@@ -58,9 +70,10 @@ void Interrupts::disableInterruptsGlobally()
  */
 void Interrupts::setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request)
 {
-	switch (request)
+	switch(request)
 	{
-		case(InterruptRequest::Timer1CompareMatch)  : timerCompareHandler   = handler; break;
-		case(InterruptRequest::SpiTransferComplete) : serialTransferHandler = handler; break;
+		case(InterruptRequest::Timer0CompareMatch)  : timer0CompareHandler   = handler; break;
+		case(InterruptRequest::Timer1CompareMatch)  : timer1CompareHandler   = handler; break;
+		case(InterruptRequest::SpiTransferComplete) : serialTransferHandler  = handler; break;
 	}
 }
