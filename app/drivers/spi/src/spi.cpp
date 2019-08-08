@@ -6,6 +6,7 @@
 
 #include "spi.h"
 #include <string.h>
+#include "traceprint.h"
 
 /**
  * Constructor used in release build.
