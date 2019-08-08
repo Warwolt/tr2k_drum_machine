@@ -7,22 +7,17 @@
 #include "tempotimingmanager.h"
 #include <util/delay.h>
 #include "math.h"
+#include "segmentdisplay.h"
 
 static Spi spi;
 static Timer0 tim0;
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
+static SegmentDisplay74HC595 display = SegmentDisplay74HC595(spi);
 static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
 
-static unsigned char segmentDataLookup[] =
-{// 0	 1	  2	   3	4	 5	  6	   7	8	 9	  A	   b	C    d	  E    F    -
-	0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90,0x8C,0xBF,0xC6,0xA1,0x86,0xFF,0xbf
-};
-
-void displayNumber(u16 number);
-void displayDigit(u8 segmentData, u8 digitData);
 void init();
 void registerSpiInterrupt();
 void registerTimerInterrupt();
@@ -31,47 +26,24 @@ void setupTempoTimer();
 void setupTimingManager();
 void setupMillisecondTimer();
 
-/*** Proof of concept for display driver code ***/
-static u8 current_digit = 0;
-constexpr u16 num = 1200;
-constexpr u16 digits[] = {num % 10, num/10 % 10, num/100 % 10, num/1000 % 10};
-
+static u8 currentDigit = 0;
 ISR(TIMER0_COMPA_vect)
 {
-	ledPin.toggle();
-	displayDigit(segmentDataLookup[digits[current_digit]], current_digit);
-	current_digit = (current_digit + 1) % 4;
+	display.outputDigit(currentDigit);
+	currentDigit = (currentDigit + 1) % 5;
 }
-/*** End proof of concept ***/
 
 int main()
 {
 	init();
 
+	display.setNumber(1234);
+	display.enableDecimalPoint(1);
+
 	while (1)
 	{
 
 	}
-}
-
-void displayNumber(u16 num)
-{
-	u16 digits[] = {num % 10, num/10 % 10, num/100 % 10, num/1000 % 10};
-	for (int i = 0; i < 4; i++)
-	{
-		u8 segmentData;
-		segmentData = (num > pow(10, i)) ? segmentDataLookup[digits[i]] : 0xFF;
-		if(i == 1) segmentData &= ~(0x1 << 7);
-		displayDigit(segmentData, i);
-		_delay_us(200);
-	}
-}
-
-void displayDigit(u8 segmentData, u8 digitNum)
-{
-	r2k::vector<u8, 2> txBuffer = {segmentData, static_cast<u8>(0x1 << digitNum)};
-	spi.setTxBuffer(txBuffer);
-	spi.sendNextByteInBuffer();
 }
 
 void init()
