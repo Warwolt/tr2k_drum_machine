@@ -18,25 +18,29 @@ static SegmentDisplay74HC595 display = SegmentDisplay74HC595(spi);
 static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
 
+/* Startup */
 void init();
-void registerSpiInterrupt();
-void registerTempoTimerInterrupt();
-void registerMillisecondTimerInterrupt();
+/* Spi */
 void setupSpi();
+void registerSpiInterrupt();
+/* Tempo Timing */
 void setupTempoTimer();
+void registerTempoTimerInterrupt();
 void setupTimingManager();
+/* Tempo Display */
 void setupMillisecondTimer();
+void registerDisplayDriverInterrupt();
 
 int main()
 {
 	init();
 
-	display.setNumber(1234);
+	display.setNumber(120*10);
 	display.enableDecimalPoint(1);
 
-	while (1)
+	while(1)
 	{
-
+		timingManager.handlePlayback();
 	}
 }
 
@@ -45,24 +49,29 @@ void init()
 	Interrupts::enableInterruptsGlobally();
 
 	/* Spi */
-	registerSpiInterrupt();
 	setupSpi();
 
 	/* Tempo timng */
-	registerTempoTimerInterrupt();
 	setupTempoTimer();
 	setupTimingManager();
 
 	/* Tempo display */
-	registerMillisecondTimerInterrupt();
 	setupMillisecondTimer();
+	registerDisplayDriverInterrupt();
+}
+
+void setupSpi()
+{
+	spi.setBitOrder(SpiBitOrder::MsbFirst);
+	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_128);
+	registerSpiInterrupt();
 }
 
 void registerSpiInterrupt()
 {
 	InterruptHandler spiTransferISR = []
 	{
-		if (!spi.txBufferIsEmpty())
+		if(!spi.txBufferIsEmpty())
 		{
 			spi.sendNextByteInBuffer();
 		}
@@ -77,6 +86,14 @@ void registerSpiInterrupt()
 	Interrupts::setHandlerForInterrupt(spiTransferISR, spiIRQ);
 }
 
+void setupTempoTimer()
+{
+	registerTempoTimerInterrupt();
+	tim1.enablePeriodicInterrupts();
+	tempoTimer.setTempo(BeatsPerMinute(120));
+	tempoTimer.start();
+}
+
 void registerTempoTimerInterrupt()
 {
 	InterruptHandler timerISR = []
@@ -87,25 +104,12 @@ void registerTempoTimerInterrupt()
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
 }
 
-void setupSpi()
-{
-	spi.setBitOrder(SpiBitOrder::MsbFirst);
-	spi.setClockSpeed(SpiClockSpeed::SysFreq_over_128);
-}
-
-void setupTempoTimer()
-{
-	tim1.enablePeriodicInterrupts();
-	tempoTimer.setTempo(BeatsPerMinute(120));
-	// tempoTimer.start();
-}
-
 void setupTimingManager()
 {
 	static	u8 counter = 0;
 	timingManager.addPlaybackStepHandler([]
 	{
-		if (counter == 2)
+		if(counter == 2)
 		{
 			ledPin.toggle();
 			counter = 0;
@@ -122,7 +126,7 @@ void setupMillisecondTimer()
 	tim0.start();
 }
 
-void registerMillisecondTimerInterrupt()
+void registerDisplayDriverInterrupt()
 {
 	static u8 currentDigit = 0;
 	InterruptHandler timerISR = []
