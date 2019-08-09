@@ -10,6 +10,7 @@
 #include "igpiopin.h"
 #include <stdio.h>
 #include <avr/io.h>
+#include "linuxtypes.h"
 
 enum Port {PortB, PortC, PortD}; // note: PORT_A not supported in atmega328p
 enum PinNumber {Pin0 = 0, Pin1, Pin2, Pin3, Pin4, Pin5, Pin6, Pin7, Pin8};
@@ -27,20 +28,20 @@ public:
 	LogicState read();
 
 	void setDirection(DataDirection direction);
-	void setInputRegister(uint8_t &regptr);
-	void setOutputRegister(uint8_t &regptr);
-	void setDataDirectionRegister(uint8_t &regptr);
+	void setInputRegister(u8 &regptr);
+	void setOutputRegister(u8 &regptr);
+	void setDataDirectionRegister(u8 &regptr);
 
 private:
-	volatile uint8_t* getPortDataDirRegAddress(Port port);
-	volatile uint8_t* getInputRegAddress(Port port);
-	volatile uint8_t* getOutputRegAddress(Port port);
+	volatile u8* getPortDataDirRegAddress(Port port);
+	volatile u8* getInputRegAddress(Port port);
+	volatile u8* getOutputRegAddress(Port port);
 
 	DataDirection direction;
 	unsigned int pinNum;
-	volatile uint8_t* inputRegPtr;
-	volatile uint8_t* outputRegPtr;
-	volatile uint8_t* dataDirRegPtr;
+	volatile u8* inputRegPtr;
+	volatile u8* outputRegPtr;
+	volatile u8* dataDirRegPtr;
 };
 
 #endif /* GPIO_PIN_H */
