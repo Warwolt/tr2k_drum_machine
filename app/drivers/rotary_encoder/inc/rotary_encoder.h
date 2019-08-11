@@ -8,7 +8,6 @@
 #define ROTARY_ENCODER_H
 
 #include "linuxtypes.h"
-#include <avr/io.h>
 
 template<typename IGpioPin>
 class RotaryEncoder

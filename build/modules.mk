@@ -1,6 +1,9 @@
 # Include module-specific makefiles
 -include $(APP_ROOT)/common/makefile.mk
 
+# Presentation
+-include $(APP_ROOT)/presentation/tempo_control_view/tempo_knob/makefile.mk
+
 # Domain
 -include $(APP_ROOT)/domain/playback/beats_per_minute/makefile.mk
 -include $(APP_ROOT)/domain/playback/tempo_timer/makefile.mk
