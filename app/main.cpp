@@ -1,13 +1,14 @@
+#include <math.h>
+#include <util/delay.h>
 #include "interrupts.h"
-#include "spi.h"
 #include "gpiopin.h"
+#include "spi.h"
 #include "timer0.h"
 #include "timer1.h"
 #include "tempotimer16bit.h"
 #include "tempotimingmanager.h"
-#include <util/delay.h>
-#include "math.h"
 #include "segmentdisplay.h"
+#include "rotary_encoder.h"
 
 static Spi spi;
 static Timer0 tim0;
@@ -19,8 +20,9 @@ static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
 static GpioPin rotaryEncoderPin = GpioPin(Pin3, PortC, DigitalInput);
 
-static GpioPin rotaryEncoderPinA = GpioPin(Pin2, PortD, DigitalInput);
-static GpioPin rotaryEncoderPinB = GpioPin(Pin3, PortC, DigitalInput);
+static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput);
+static GpioPin encoderPinB = GpioPin(Pin3, PortC, DigitalInput);
+static RotaryEncoder<GpioPin> rotaryEncoder = RotaryEncoder<GpioPin>(encoderPinA, encoderPinB);
 
 /* Startup */
 void init();
@@ -35,41 +37,25 @@ void setupTimingManager();
 void setupMillisecondTimer();
 void registerDisplayDriverInterrupt();
 
-static volatile s16 encoderRotations;
 ISR(INT0_vect)
 {
 	_delay_us(100); // give time for signals to stabilize
-
-	LogicState stateA = rotaryEncoderPinA.read();
-	LogicState stateB = rotaryEncoderPinB.read();
-
-	if(stateA == LogicLow and stateB == LogicLow) // turn right
-	{
-		encoderRotations++;
-	}
-	else if(stateA == LogicLow and stateB == LogicHigh) // turn left
-	{
-		encoderRotations--;
-	}
+	rotaryEncoder.handleEdge();
 }
 
 int main()
 {
 	init();
 
-	/* Setup rotary encoder */
-	EIMSK |= 0x1 << INT0; // enable external interrupt request 0
-	EICRA |= 0x2 << ISC00; // trigger on falling edge
-
 	display.enableDecimalPoint(1);
 
 	while(1)
 	{
-		// Display stuff
-		u8 currentBpm = 120 + encoderRotations;
+		/* Show current tempo on display */
+		u8 currentBpm = 120 + rotaryEncoder.getNumRotations();
 		display.setNumber(currentBpm*10);
 
-		// Handle playback
+		/* Handle playback */
 		tempoTimer.setTempo(BeatsPerMinute(currentBpm));
 		timingManager.handlePlayback();
 	}
@@ -89,6 +75,10 @@ void init()
 	/* Tempo display */
 	setupMillisecondTimer();
 	registerDisplayDriverInterrupt();
+
+	/* Rotary encoder interrupts */
+	EIMSK |= 0x1 << INT0; // enable external interrupt request 0 (Pin D2)
+	EICRA |= 0x2 << ISC00; // trigger on falling edge
 }
 
 void setupSpi()
