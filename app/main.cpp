@@ -9,20 +9,22 @@
 #include "tempotimingmanager.h"
 #include "segmentdisplay.h"
 #include "rotary_encoder.h"
+#include "digital_tempo_knob.h"
 
 static Spi spi;
 static Timer0 tim0;
+static SegmentDisplay74HC595 display = SegmentDisplay74HC595(spi);
+static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
+
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
-static SegmentDisplay74HC595 display = SegmentDisplay74HC595(spi);
 static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
-static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
-static GpioPin rotaryEncoderPin = GpioPin(Pin3, PortC, DigitalInput);
 
 static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput);
 static GpioPin encoderPinB = GpioPin(Pin3, PortC, DigitalInput);
 static RotaryEncoder<GpioPin> rotaryEncoder = RotaryEncoder<GpioPin>(encoderPinA, encoderPinB);
+static DigitalTempoKnob<GpioPin> tempoKnob = DigitalTempoKnob<GpioPin>(rotaryEncoder);
 
 /* Startup */
 void init();
@@ -52,11 +54,11 @@ int main()
 	while(1)
 	{
 		/* Show current tempo on display */
-		u8 currentBpm = 120 + rotaryEncoder.getNumRotations();
+		BeatsPerMinute currentBpm = tempoKnob.getCurrentTempo();
 		display.setNumberToDisplay(currentBpm*10);
 
 		/* Handle playback */
-		tempoTimer.setTempo(BeatsPerMinute(currentBpm));
+		tempoTimer.setTempo(currentBpm);
 		timingManager.handlePlayback();
 	}
 }
