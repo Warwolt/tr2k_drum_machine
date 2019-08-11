@@ -17,6 +17,10 @@ static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
 static SegmentDisplay74HC595 display = SegmentDisplay74HC595(spi);
 static GpioPin ledPin = GpioPin(Pin5, PortC, DigitalOutput);
 static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
+static GpioPin rotaryEncoderPin = GpioPin(Pin3, PortC, DigitalInput);
+
+static GpioPin rotaryEncoderPinA = GpioPin(Pin2, PortD, DigitalInput);
+static GpioPin rotaryEncoderPinB = GpioPin(Pin3, PortC, DigitalInput);
 
 /* Startup */
 void init();
@@ -31,15 +35,42 @@ void setupTimingManager();
 void setupMillisecondTimer();
 void registerDisplayDriverInterrupt();
 
+static volatile s16 encoderRotations;
+ISR(INT0_vect)
+{
+	_delay_us(100); // give time for signals to stabilize
+
+	LogicState stateA = rotaryEncoderPinA.read();
+	LogicState stateB = rotaryEncoderPinB.read();
+
+	if(stateA == LogicLow and stateB == LogicLow) // turn right
+	{
+		encoderRotations++;
+	}
+	else if(stateA == LogicLow and stateB == LogicHigh) // turn left
+	{
+		encoderRotations--;
+	}
+}
+
 int main()
 {
 	init();
 
-	display.setNumber(120*10);
+	/* Setup rotary encoder */
+	EIMSK |= 0x1 << INT0; // enable external interrupt request 0
+	EICRA |= 0x2 << ISC00; // trigger on falling edge
+
 	display.enableDecimalPoint(1);
 
 	while(1)
 	{
+		// Display stuff
+		u8 currentBpm = 120 + encoderRotations;
+		display.setNumber(currentBpm*10);
+
+		// Handle playback
+		tempoTimer.setTempo(BeatsPerMinute(currentBpm));
 		timingManager.handlePlayback();
 	}
 }
