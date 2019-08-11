@@ -7,9 +7,7 @@
 #ifndef I_GPIO_PIN_H
 #define I_GPIO_PIN_H
 
-#include <avr/io.h>
-
-enum LogicState {LogicLow = false, LogicHigh = true};
+enum class LogicState {Low = false, High = true};
 enum DataDirection {DigitalInput, DigitalOutput};
 
 class IGpioPin

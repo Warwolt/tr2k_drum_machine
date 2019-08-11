@@ -18,6 +18,7 @@ CC := g++
 FLAGS := -Wall
 FLAGS += -fmax-errors=5
 FLAGS += -std=gnu++11
+FLAGS += -DUNIT_TESTING
 
 # google test
 INC += -I$(LIB_DIR)/googletest/include

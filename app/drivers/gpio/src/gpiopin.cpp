@@ -71,13 +71,13 @@ void GpioPin::toggle()
 
 void GpioPin::write(LogicState state)
 {
-	(state == LogicHigh) ? set() : clear();
+	(state == LogicState::High) ? set() : clear();
 }
 
 LogicState GpioPin::read()
 {
 	bool bitHigh = *(inputRegPtr) & (0x1 << pinNum);
-	return bitHigh ? LogicHigh : LogicLow;
+	return bitHigh ? LogicState::High : LogicState::Low;
 }
 
 /* Setter methods --------------------------------------------------------------------------------*/

@@ -125,7 +125,7 @@ TEST_F(TestGpioPin, Write_pin_method_can_set_a_pin)
 {
 	outputRegister = 0;
 
-	testPin.write(LogicHigh);
+	testPin.write(LogicState::High);
 
 	EXPECT_EQ(0x1, outputRegister) << ERROR_MSG_STR("Expected output register bit to be set");
 }
@@ -135,7 +135,7 @@ TEST_F(TestGpioPin, Write_pin_method_cannot_set_an_input_pin)
 	outputRegister = 0;
 
 	testPin.setDirection(DigitalInput);
-	testPin.write(LogicHigh);
+	testPin.write(LogicState::High);
 
 	EXPECT_EQ(0x0, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
@@ -144,7 +144,7 @@ TEST_F(TestGpioPin, Write_pin_method_can_clear_a_pin)
 {
 	outputRegister = 0xFF;
 
-	testPin.write(LogicLow);
+	testPin.write(LogicState::Low);
 
 	EXPECT_EQ(0xFE, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
@@ -184,7 +184,7 @@ TEST_F(TestGpioPin, Reading_pin_returns_low_if_input_register_is_empty)
 
 	LogicState actualLogicState = testPin.read();
 
-	EXPECT_EQ(LogicLow, actualLogicState) << ERROR_MSG_STR("Expected pin state to have "
+	EXPECT_EQ(LogicState::Low, actualLogicState) << ERROR_MSG_STR("Expected pin state to have "
 		" been read low");
 }
 
@@ -194,7 +194,7 @@ TEST_F(TestGpioPin, Reading_pin_returns_low_if_wrong_bit_in_input_register_is_se
 
 	LogicState actualLogicState = testPin.read();
 
-	EXPECT_EQ(LogicLow, actualLogicState) << ERROR_MSG_STR("Expected pin state to have "
+	EXPECT_EQ(LogicState::Low, actualLogicState) << ERROR_MSG_STR("Expected pin state to have "
 		" been read low");
 }
 
@@ -204,6 +204,6 @@ TEST_F(TestGpioPin, Reading_pin_returns_high_if_input_register_has_set_bit)
 
 	LogicState actualLogicState = testPin.read();
 
-	EXPECT_EQ(LogicHigh, actualLogicState) << ERROR_MSG_STR("Expected pin state to have "
+	EXPECT_EQ(LogicState::High, actualLogicState) << ERROR_MSG_STR("Expected pin state to have "
 		" been read high");
 }
