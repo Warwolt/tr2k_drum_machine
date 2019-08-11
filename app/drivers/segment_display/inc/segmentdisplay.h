@@ -15,7 +15,7 @@ class SegmentDisplay74HC595 : FourDigitDisplay
 {
 public:
 	SegmentDisplay74HC595(Spi& spi);
-	void setNumber(u16 number);
+	void setNumberToDisplay(u16 number);
 	void enableDecimalPoint(u8 digit);
 	void disableDecimalPoint(u8 digit);
 	void outputDigit(u8 digit);

@@ -35,7 +35,7 @@ public:
 
 TEST_F(TestSegmentDisplay74HC595, Digit_output_first_sends_segment_data_over_spi)
 {
-	display.setNumber(4);
+	display.setNumberToDisplay(4);
 
 	display.outputDigit(0);
 
@@ -45,7 +45,7 @@ TEST_F(TestSegmentDisplay74HC595, Digit_output_first_sends_segment_data_over_spi
 
 TEST_F(TestSegmentDisplay74HC595, Digit_output_then_sends_digit_data_over_spi)
 {
-	display.setNumber(4);
+	display.setNumberToDisplay(4);
 	display.outputDigit(0);
 
 	spi.sendNextByteInBuffer();
@@ -56,7 +56,7 @@ TEST_F(TestSegmentDisplay74HC595, Digit_output_then_sends_digit_data_over_spi)
 
 TEST_F(TestSegmentDisplay74HC595, Number_is_split_into_four_digits)
 {
-	display.setNumber(1957);
+	display.setNumberToDisplay(1957);
 
 	display.outputDigit(0);
 	EXPECT_EQ(dataReg, segmentDataLookUpTable[7]) << ERROR_MSG_STR("Expected digit 0 segment data");
@@ -73,7 +73,7 @@ TEST_F(TestSegmentDisplay74HC595, Number_is_split_into_four_digits)
 
 TEST_F(TestSegmentDisplay74HC595, Decimal_point_can_be_enabled)
 {
-	display.setNumber(14);
+	display.setNumberToDisplay(14);
 	display.enableDecimalPoint(1);
 
 	display.outputDigit(1);
@@ -84,7 +84,7 @@ TEST_F(TestSegmentDisplay74HC595, Decimal_point_can_be_enabled)
 
 TEST_F(TestSegmentDisplay74HC595, Decimal_point_can_be_disabled)
 {
-	display.setNumber(14);
+	display.setNumberToDisplay(14);
 	display.enableDecimalPoint(1);
 	display.disableDecimalPoint(1);
 

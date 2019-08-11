@@ -13,7 +13,7 @@ class FourDigitDisplay
 {
 public:
 	virtual ~FourDigitDisplay() {}
-	virtual void setNumber(u16 number) = 0;
+	virtual void setNumberToDisplay(u16 number) = 0;
 	virtual void enableDecimalPoint(u8 digit) = 0;
 	virtual void disableDecimalPoint(u8 digit) = 0;
 };

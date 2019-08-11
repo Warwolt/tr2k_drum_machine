@@ -18,7 +18,7 @@ SegmentDisplay74HC595::SegmentDisplay74HC595(Spi& spi) : spi(spi)
 	decimalPointEnabled = {false, false, false, false};
 }
 
-void SegmentDisplay74HC595::setNumber(u16 number)
+void SegmentDisplay74HC595::setNumberToDisplay(u16 number)
 {
 	numberDigits =
 	{

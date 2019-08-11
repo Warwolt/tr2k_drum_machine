@@ -53,7 +53,7 @@ int main()
 	{
 		/* Show current tempo on display */
 		u8 currentBpm = 120 + rotaryEncoder.getNumRotations();
-		display.setNumber(currentBpm*10);
+		display.setNumberToDisplay(currentBpm*10);
 
 		/* Handle playback */
 		tempoTimer.setTempo(BeatsPerMinute(currentBpm));
