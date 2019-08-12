@@ -6,16 +6,10 @@ import matplotlib.pyplot as plt
 
 
 def main():
-	parser = argparse.ArgumentParser(description="Creates a pie chart with data collected from the \
-		avr-size CLI tool and presents it using matplotlib.")
-	parser.add_argument("-t","--total-size", action="store_true",
-		help="display how much total memory has been used up.")
-	parser.add_argument("-p", "--print", action="store_true",
-		help="print output from avr-size to terminal instead of creating pie chart")
+	parser = create_parser()
 	args = parser.parse_args()
 
-	avr_cmd = "avr-size " + get_object_path() + "*.o"
-	avrsize_output = subprocess.check_output(avr_cmd).decode(sys.stdout.encoding).strip()
+	avrsize_output = get_avrsize_output()
 	avr_row_dicts = get_row_dicts_from_avrsize_output(avrsize_output)
 
 	if args.print:
@@ -25,14 +19,36 @@ def main():
 	if args.total_size:
 		create_total_size_plot(avr_row_dicts)
 	else:
-		create_avrsize_plot(avr_row_dicts)
+		create_file_size_plot(avr_row_dicts)
 
 	plt.tight_layout(pad=4)
-	plt.show()
+
+	if args.output:
+		plt.savefig(args.output[0])
+	else:
+		plt.show()
+
+
+def create_parser():
+	""" Create a CLI front-end and return it. """
+	parser = argparse.ArgumentParser(description="Creates a pie chart with data collected from \
+		the avr-size CLI tool and presents it using matplotlib.")
+	parser.add_argument("-t","--total-size", action="store_true",
+		help="display how much total memory has been used up.")
+	parser.add_argument("-p", "--print", action="store_true",
+		help="print output from avr-size to terminal instead of creating pie chart")
+	parser.add_argument("-o", "--output", nargs=1)
+	return parser
+
+
+def get_avrsize_output():
+	""" Executes the avr-size command and returns the result as a string. """
+	avr_cmd = "avr-size " + get_object_path() + "*.o"
+	return subprocess.check_output(avr_cmd).decode(sys.stdout.encoding).strip()
 
 
 def get_object_path():
-	""" Returns the path to the object files created from compilation. """
+	""" Return the path to the object files created from compilation. """
 	git_cmd = ["git", "rev-parse", "--show-toplevel"]
 	root_path = subprocess.check_output(git_cmd).decode(sys.stdout.encoding).strip()
 	root_path = "C:/" + root_path.lstrip("/cygdrive/")
@@ -41,7 +57,7 @@ def get_object_path():
 
 def get_row_dicts_from_avrsize_output(avrsize_output):
 	"""
-	Takes the output from the avr-size command and marshals it into a list of dicts.
+	Take the output from the avr-size command and marshals it into a list of dicts.
 	Dict has the keys {"text", "data", "bss", "dec", "hex", filename"}.
 	"""
 	dicts = []
@@ -54,9 +70,9 @@ def get_row_dicts_from_avrsize_output(avrsize_output):
 	return dicts
 
 
-def create_avrsize_plot(avr_row_dicts):
+def create_file_size_plot(avr_row_dicts):
 	"""
-	Takes a list of dicts containing program size information and creates a matplotlib pie chart
+	Take a list of dicts containing program size information and creates a matplotlib pie chart
 	that presents how big each object file is.
 	"""
 	labels = [row_dict["filename"].rstrip(".o") for row_dict in avr_row_dicts]
@@ -72,7 +88,7 @@ def create_avrsize_plot(avr_row_dicts):
 
 def create_total_size_plot(avr_row_dicts):
 	"""
-	Takes a list of dicts containing program size information and creates a matplotlib pie chart
+	Take a list of dicts containing program size information and creates a matplotlib pie chart
 	that presents how much of the total program size has been used up.
 	"""
 	atmega328_prog_memory_size = int(32e3) # 32KB
