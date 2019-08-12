@@ -38,6 +38,8 @@ void setupTimingManager();
 /* Tempo Display */
 void setupMillisecondTimer();
 void registerDisplayDriverInterrupt();
+/* Tempo Knob */
+void setupExternalPinInterrupt();
 
 ISR(INT0_vect)
 {
@@ -49,13 +51,11 @@ int main()
 {
 	init();
 
-	display.enableDecimalPoint(1);
-
 	while(1)
 	{
 		/* Show current tempo on display */
 		BeatsPerMinute currentBpm = tempoKnob.getCurrentTempo();
-		display.setNumberToDisplay(currentBpm*10);
+		display.setNumberToDisplay(currentBpm * 10);
 
 		/* Handle playback */
 		tempoTimer.setTempo(currentBpm);
@@ -77,10 +77,10 @@ void init()
 	/* Tempo display */
 	setupMillisecondTimer();
 	registerDisplayDriverInterrupt();
+	display.enableDecimalPoint(1);
 
 	/* Rotary encoder interrupts */
-	EIMSK |= 0x1 << INT0; // enable external interrupt request 0 (Pin D2)
-	EICRA |= 0x2 << ISC00; // trigger on falling edge
+	setupExternalPinInterrupt();
 }
 
 void setupSpi()
@@ -161,3 +161,8 @@ void registerDisplayDriverInterrupt()
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
 }
 
+void setupExternalPinInterrupt()
+{
+	EIMSK |= 0x1 << INT0; // enable external interrupt request 0 (Pin D2)
+	EICRA |= 0x2 << ISC00; // trigger on falling edge
+}
