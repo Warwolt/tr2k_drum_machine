@@ -1,14 +1,14 @@
 import sys
 import os
-import re
 import subprocess
 import argparse
 import matplotlib.pyplot as plt
 
+
 def main():
 	parser = argparse.ArgumentParser(description="Creates a pie chart with data collected from the \
 		avr-size CLI tool and presents it using matplotlib.")
-	parser.add_argument("--total-size", action="store_true",
+	parser.add_argument("-t", "--total-size", action="store_true",
 		help="display how much total memory has been used up.")
 	args = parser.parse_args()
 
@@ -40,8 +40,6 @@ def get_row_dicts_from_avrsize_output(avrsize_output):
 	"""
 	dicts = []
 	for row in avrsize_output.splitlines()[1:]:
-		regex_pattern = re.compile("[\t]+")
-		rows = re.split(regex_pattern, row)
 		row = row.replace(' ', '').split('\t')
 		row_dict = {"text" : int(row[0]), "data" : int(row[1]), "bss" : int(row[2]),
 			"dec" : int(row[3]), "hex" : int(row[4], 16), "filename" : os.path.split(row[5])[1]}
@@ -83,6 +81,7 @@ def create_total_size_plot(avr_row_dicts):
 	wedges = ax.pie(sizes, labels=labels, autopct='%1.1f%%', shadow=True, startangle=0)
 	ax.axis('equal')
 	ax.set_title("Memory usage")
+
 
 if __name__ == "__main__":
 	main()
