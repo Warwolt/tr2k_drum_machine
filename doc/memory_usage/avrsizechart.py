@@ -8,13 +8,19 @@ import matplotlib.pyplot as plt
 def main():
 	parser = argparse.ArgumentParser(description="Creates a pie chart with data collected from the \
 		avr-size CLI tool and presents it using matplotlib.")
-	parser.add_argument("-t", "--total-size", action="store_true",
+	parser.add_argument("-t","--total-size", action="store_true",
 		help="display how much total memory has been used up.")
+	parser.add_argument("-p", "--print", action="store_true",
+		help="print output from avr-size to terminal instead of creating pie chart")
 	args = parser.parse_args()
 
 	avr_cmd = "avr-size " + get_object_path() + "*.o"
 	avrsize_output = subprocess.check_output(avr_cmd).decode(sys.stdout.encoding).strip()
 	avr_row_dicts = get_row_dicts_from_avrsize_output(avrsize_output)
+
+	if args.print:
+		print(avrsize_output)
+		return
 
 	if args.total_size:
 		create_total_size_plot(avr_row_dicts)
@@ -53,7 +59,7 @@ def create_avrsize_plot(avr_row_dicts):
 	Takes a list of dicts containing program size information and creates a matplotlib pie chart
 	that presents how big each object file is.
 	"""
-	labels = [row_dict["filename"] for row_dict in avr_row_dicts]
+	labels = [row_dict["filename"].rstrip(".o") for row_dict in avr_row_dicts]
 	sizes  = [row_dict["dec"] for row_dict in avr_row_dicts]
 
 	fig, ax = plt.subplots()
