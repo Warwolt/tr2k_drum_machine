@@ -26,10 +26,6 @@ COM_PORT := com5 # NOTE: This must correspond to the usb port you use!
 LIB += $(LIB_DIR)/newdelete/newdelete.a
 INC += -I$(LIB_DIR)/newdelete/inc/
 
-# Fixed Point Number Arithmetic Library
-INC += -I$(LIB_DIR)/libfixmath/include
-LIB += $(LIB_DIR)/libfixmath/libfixmath.a
-
 # Add borrowed Standard Template Library files
 INC += -I$(LIB_DIR)
 INC += -I$(LIB_DIR)/stlstub

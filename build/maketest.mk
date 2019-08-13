@@ -28,10 +28,6 @@ LIB += $(LIB_DIR)/googletest/gtest_main.a
 INC += -I$(LIB_DIR)/googlemock/include
 LIB += $(LIB_DIR)/googlemock/gmock.a
 
-# Fixed Point Number Arithmetic Library
-INC += -I$(LIB_DIR)/libfixmath/include
-LIB += $(LIB_DIR)/libfixmath/libfixmath.a
-
 # Add borrowed Standard Template Library files
 INC += -I$(LIB_DIR)
 

@@ -8,7 +8,6 @@
 #include "traceprint.h"
 #include "linuxtypes.h"
 #include "beatsperminute.h"
-#include "fixmath/fixmath.h"
 
 static const float precision = 0.01; // precise to 100ths place
 
