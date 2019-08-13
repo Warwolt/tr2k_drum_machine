@@ -17,7 +17,7 @@ class DigitalTempoKnob : public TempoKnob
 public:
 	DigitalTempoKnob(RotaryEncoder<IGpioPin>& rotaryEncoder);
 	void setReferenceTempo(u8 bpm);
-	BeatsPerMinute getCurrentTempo() const final;
+	BeatsPerMinute read() const final;
 
 private:
 	static constexpr u8 minimumTempo = 60;

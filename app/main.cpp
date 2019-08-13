@@ -54,7 +54,7 @@ int main()
 	while(1)
 	{
 		/* Show current tempo on display */
-		BeatsPerMinute currentBpm = tempoKnob.getCurrentTempo();
+		BeatsPerMinute currentBpm = tempoKnob.read();
 		display.setNumberToDisplay(currentBpm * 10);
 
 		/* Handle playback */

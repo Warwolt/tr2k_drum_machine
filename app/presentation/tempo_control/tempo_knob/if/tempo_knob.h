@@ -13,7 +13,7 @@ class TempoKnob
 {
 public:
 	virtual ~TempoKnob(){}
-	virtual BeatsPerMinute getCurrentTempo() const = 0;
+	virtual BeatsPerMinute read() const = 0;
 };
 
 #endif /* TEMPO_KNOB_H */

@@ -37,39 +37,39 @@ public:
 
 TEST_F(DigitalTempoKnobTest, Initial_reference_bpm_value_is_120)
 {
-	EXPECT_EQ(BeatsPerMinute(120), knob.getCurrentTempo());
+	EXPECT_EQ(BeatsPerMinute(120), knob.read());
 }
 
 TEST_F(DigitalTempoKnobTest, Reference_bpm_value_can_be_set)
 {
 	knob.setReferenceTempo(60);
-	EXPECT_EQ(BeatsPerMinute(60), knob.getCurrentTempo());
+	EXPECT_EQ(BeatsPerMinute(60), knob.read());
 }
 
 TEST_F(DigitalTempoKnobTest, Bpm_increases_when_encoder_rotations_increases)
 {
 	increaseMockKnobRotations();
 	increaseMockKnobRotations();
-	EXPECT_EQ(BeatsPerMinute(120 + 2), knob.getCurrentTempo());
+	EXPECT_EQ(BeatsPerMinute(120 + 2), knob.read());
 }
 
 TEST_F(DigitalTempoKnobTest, Bpm_decreases_when_encoder_rotations_decreases)
 {
 	decreaseMockKnobRotations();
 	decreaseMockKnobRotations();
-	EXPECT_EQ(BeatsPerMinute(120 - 2), knob.getCurrentTempo());
+	EXPECT_EQ(BeatsPerMinute(120 - 2), knob.read());
 }
 
 TEST_F(DigitalTempoKnobTest, Lowest_bpm_setting_is_60)
 {
 	knob.setReferenceTempo(60);
 	decreaseMockKnobRotations(); // should do nothing
-	EXPECT_EQ(BeatsPerMinute(60), knob.getCurrentTempo());
+	EXPECT_EQ(BeatsPerMinute(60), knob.read());
 }
 
 TEST_F(DigitalTempoKnobTest, Highest_bpm_setting_is_200)
 {
 	knob.setReferenceTempo(200);
 	increaseMockKnobRotations(); // should do nothing
-	EXPECT_EQ(BeatsPerMinute(200), knob.getCurrentTempo());
+	EXPECT_EQ(BeatsPerMinute(200), knob.read());
 }

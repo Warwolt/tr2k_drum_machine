@@ -13,7 +13,7 @@
 class TempoKnobMock : public TempoKnob
 {
 public:
-	MOCK_CONST_METHOD0(getCurrentTempo, BeatsPerMinute());
+	MOCK_CONST_METHOD0(read, BeatsPerMinute());
 };
 
 #endif /* TEMPO_KNOB_MOCK_H */

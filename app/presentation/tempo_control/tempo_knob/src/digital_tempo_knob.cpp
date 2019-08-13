@@ -25,7 +25,7 @@ void DigitalTempoKnob<IGpioPin>::setReferenceTempo(u8 bpm)
 }
 
 template<typename IGpioPin>
-BeatsPerMinute DigitalTempoKnob<IGpioPin>::getCurrentTempo() const
+BeatsPerMinute DigitalTempoKnob<IGpioPin>::read() const
 {
 	s16 currentTempo = referenceTempo + rotaryEncoder.getNumRotations();
 
