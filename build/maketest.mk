@@ -4,7 +4,7 @@
 UNIT_TESTING :='TRUE'# include test files in this build
 
 PROJ_ROOT = ..
-APP_ROOT = $(PROJ_ROOT)/app
+APP_ROOT = $(PROJ_ROOT)/software
 OBJ_DIR = obj/test
 LIB_DIR = $(PROJ_ROOT)/lib
 

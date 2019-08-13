@@ -1,5 +1,5 @@
 PROJ_ROOT = ..
-APP_ROOT = $(PROJ_ROOT)/app
+APP_ROOT = $(PROJ_ROOT)/software
 OBJ_DIR = obj/bin
 LIB_DIR = $(PROJ_ROOT)/lib
 

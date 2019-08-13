@@ -11,7 +11,7 @@
 #include "linuxtypes.h"
 #include "spi.h"
 
-class SegmentDisplay74HC595 : FourDigitDisplay
+class SegmentDisplay74HC595 : public FourDigitDisplay
 {
 public:
 	SegmentDisplay74HC595(Spi& spi);

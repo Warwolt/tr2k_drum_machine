@@ -16,6 +16,7 @@
 
 # Infrastructure
 -include $(APP_ROOT)/infrastructure/interrupts/makefile.mk
+-include $(APP_ROOT)/infrastructure/startup/makefile.mk
 
 # Hardware Abstraction Layer
 -include $(APP_ROOT)/hal/makefile.mk
