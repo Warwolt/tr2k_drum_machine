@@ -16,7 +16,6 @@ class TempoControlView
 public:
 	TempoControlView(RhythmPlaybackController& controller, TempoKnob& knob,
 		FourDigitDisplay& display);
-
 	void handleTempoControl();
 
 private:

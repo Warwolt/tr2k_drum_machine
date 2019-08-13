@@ -28,11 +28,17 @@ public:
 	TempoControlView tempoView = TempoControlView(controller, knobMock, displayMock);
 };
 
+TEST_F(TempoControlViewTest, Enables_dot_for_digit_1_on_display_in_constructor)
+{
+	EXPECT_CALL(displayMock, enableDecimalPoint(1));
+	TempoControlView(controller, knobMock, displayMock);
+}
+
 TEST_F(TempoControlViewTest, Sets_display_tempo_equal_to_knob_setting)
 {
 	BeatsPerMinute bpm(120);
 	EXPECT_CALL(knobMock, read()).WillOnce(Return(bpm));
-	EXPECT_CALL(displayMock, setNumberToDisplay(int(bpm)));
+	EXPECT_CALL(displayMock, setNumberToDisplay(int(bpm * 10))); // 120 is displayed as 120.0
 	tempoView.handleTempoControl();
 }
 
