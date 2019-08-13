@@ -9,19 +9,27 @@ def main():
 	parser = create_parser()
 	args = parser.parse_args()
 
-	avrsize_output = get_avrsize_output()
-	avr_row_dicts = get_row_dicts_from_avrsize_output(avrsize_output)
+	avrsize_bin_file_output = get_binary_file_size()
+	avrsize_obj_file_output = get_object_file_sizes()
+
+	avr_binary_size_dict = get_row_dicts_from_avrsize_output(avrsize_bin_file_output)[0]
+	avr_object_size_dicts = get_row_dicts_from_avrsize_output(avrsize_obj_file_output)
 
 	if args.print:
-		print(avrsize_output)
+
+		if args.total_size:
+			print(avrsize_bin_file_output)
+		else:
+			print(avrsize_obj_file_output)
+
 		if args.show_bootloader:
 			print("    512       0       0     512     200 atmega328 bootloader", end="")
 		return
 
 	if args.total_size:
-		create_total_size_plot(avr_row_dicts, args.show_bootloader)
+		create_total_size_plot(avr_binary_size_dict, args.show_bootloader)
 	else:
-		create_file_size_plot(avr_row_dicts, args.show_bootloader)
+		create_file_size_plot(avr_object_size_dicts, args.show_bootloader)
 
 	plt.tight_layout(pad=4)
 
@@ -47,9 +55,15 @@ def create_parser():
 	return parser
 
 
-def get_avrsize_output():
-	""" Executes the avr-size command and returns the result as a string. """
+def get_object_file_sizes():
+	""" Executes the avr-size command on all .o files and returns the result as a string. """
 	avr_cmd = "avr-size " + get_object_path() + "*.o"
+	return subprocess.check_output(avr_cmd).decode(sys.stdout.encoding).strip()
+
+
+def get_binary_file_size():
+	""" Executes the avr-size command on the .bin file and returns the result as a string. """
+	avr_cmd = "avr-size " + get_object_path() + "*.bin"
 	return subprocess.check_output(avr_cmd).decode(sys.stdout.encoding).strip()
 
 
@@ -57,17 +71,20 @@ def get_object_path():
 	""" Return the path to the object files created from compilation. """
 	git_cmd = ["git", "rev-parse", "--show-toplevel"]
 	root_path = subprocess.check_output(git_cmd).decode(sys.stdout.encoding).strip()
-	root_path = "C:/" + root_path.lstrip("/cygdrive/")
+
+	if "cygdrive" in root_path:
+		root_path = "C:/" + root_path.lstrip("/cygdrive/")
+
 	return root_path + "/build/obj/bin/"
 
 
-def get_row_dicts_from_avrsize_output(avrsize_output):
+def get_row_dicts_from_avrsize_output(avrsize_obj_file_output):
 	"""
 	Take the output from the avr-size command and marshals it into a list of dicts.
 	Dict has the keys {"text", "data", "bss", "dec", "hex", filename"}.
 	"""
 	dicts = []
-	for row in avrsize_output.splitlines()[1:]:
+	for row in avrsize_obj_file_output.splitlines()[1:]:
 		row = row.replace(' ', '').split('\t')
 		row_dict = {"text" : int(row[0]), "data" : int(row[1]), "bss" : int(row[2]),
 			"dec" : int(row[3]), "hex" : int(row[4], 16), "filename" : os.path.split(row[5])[1]}
@@ -76,15 +93,15 @@ def get_row_dicts_from_avrsize_output(avrsize_output):
 	return dicts
 
 
-def create_file_size_plot(avr_row_dicts, show_bootloader):
+def create_file_size_plot(avr_object_size_dicts, show_bootloader):
 	"""
 	Take a list of dicts containing program size information and creates a matplotlib pie chart
 	that presents how big each object file is.
 
 	If show_bootloader is True, then the bootloader will be shown as a pie slice.
 	"""
-	labels = [row_dict["filename"].rstrip(".o") for row_dict in avr_row_dicts]
-	sizes  = [row_dict["dec"] for row_dict in avr_row_dicts]
+	labels = [row_dict["filename"].rstrip(".o") for row_dict in avr_object_size_dicts]
+	sizes  = [row_dict["dec"] for row_dict in avr_object_size_dicts]
 
 	# Add bootloader stats
 	if show_bootloader:
@@ -100,9 +117,9 @@ def create_file_size_plot(avr_row_dicts, show_bootloader):
 	ax.set_title("Memory usage")
 
 
-def create_total_size_plot(avr_row_dicts, show_bootloader):
+def create_total_size_plot(avr_bin_size_dict, show_bootloader):
 	"""
-	Take a list of dicts containing program size information and creates a matplotlib pie chart
+	Take a dict containing program size information and creates a matplotlib pie chart
 	that presents how much of the total program size has been used up.
 
 	If show_bootloader is True, then the bootloader will be counted into the used size. If it is
@@ -111,7 +128,7 @@ def create_total_size_plot(avr_row_dicts, show_bootloader):
 	bootloader_size = 512
 	atmega328_prog_memory_size = int(32*1024) # 32KB
 	labels = ["used memory", "free memory"]
-	used_size  = sum([row_dict["dec"] for row_dict in avr_row_dicts])
+	used_size  = avr_bin_size_dict["text"] + avr_bin_size_dict["data"] # .bss takes no space in ram
 	unused_size = atmega328_prog_memory_size - used_size
 
 	if show_bootloader:
