@@ -10,12 +10,13 @@ LIB :=
 CC = avr-g++
 
 FLAGS := -Wall -std=c++11
+FLAGS += -fno-exceptions
 FLAGS += -fmax-errors=5
 
 # AVR specific
 MCU = atmega328p
 F_CPU = 16000000
-FLAGS += -g -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)
+FLAGS += -g -O3 -mmcu=$(MCU) -DF_CPU=$(F_CPU)
 TARGET := main
 BIN  := $(OBJ_DIR)/$(TARGET).bin
 HEXFILE := $(OBJ_DIR)/$(TARGET).hex
