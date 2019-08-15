@@ -21,11 +21,11 @@ public:
 	GpioPin(PinNumber num, Port port);
 	GpioPin(PinNumber num, Port port, DataDirection dir);
 
-	void set();
-	void clear();
-	void toggle();
-	void write(LogicState);
-	LogicState read();
+	void set() final;
+	void clear() final;
+	void toggle() final;
+	void write(LogicState) final;
+	LogicState read() final;
 
 	void setDirection(DataDirection direction);
 	void setInputRegister(u8 &regptr);
@@ -38,7 +38,7 @@ private:
 	volatile u8* getOutputRegAddress(Port port);
 
 	DataDirection direction;
-	unsigned int pinNum;
+	u8 pinNum;
 	volatile u8* inputRegPtr;
 	volatile u8* outputRegPtr;
 	volatile u8* dataDirRegPtr;

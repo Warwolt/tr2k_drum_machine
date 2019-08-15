@@ -90,16 +90,6 @@ TEST_F(TestGpioPin, Setting_several_pins_sets_correct_bits_in_output_register)
 	EXPECT_EQ(0x7, outputRegister) << ERROR_MSG_STR("Expected output register bits to be set");
 }
 
-TEST_F(TestGpioPin, Setting_input_does_nothing_to_output_register)
-{
-	outputRegister = 0;
-
-	testPin.setDirection(DigitalInput);
-	testPin.set();
-
-	EXPECT_EQ(0, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
-}
-
 TEST_F(TestGpioPin, Clearing_pin_resets_correct_bit_in_output_register)
 {
 	outputRegister = 0xFF;
@@ -130,16 +120,6 @@ TEST_F(TestGpioPin, Write_pin_method_can_set_a_pin)
 	EXPECT_EQ(0x1, outputRegister) << ERROR_MSG_STR("Expected output register bit to be set");
 }
 
-TEST_F(TestGpioPin, Write_pin_method_cannot_set_an_input_pin)
-{
-	outputRegister = 0;
-
-	testPin.setDirection(DigitalInput);
-	testPin.write(LogicState::High);
-
-	EXPECT_EQ(0x0, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
-}
-
 TEST_F(TestGpioPin, Write_pin_method_can_clear_a_pin)
 {
 	outputRegister = 0xFF;
@@ -165,16 +145,6 @@ TEST_F(TestGpioPin, Toggling_initially_high_pin_clears_it)
 	testPin.toggle();
 
 	EXPECT_EQ(0xFE, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
-}
-
-TEST_F(TestGpioPin, Toggling_input_pin_does_nothing)
-{
-	outputRegister = 0;
-
-	testPin.setDirection(DigitalInput);
-	testPin.toggle();
-
-	EXPECT_EQ(0x0, outputRegister) << ERROR_MSG_STR("Expected output register bit to be cleared");
 }
 
 /* Pin input tests -------------------------------------------------------------------------------*/

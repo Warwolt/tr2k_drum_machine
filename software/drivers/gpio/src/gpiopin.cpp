@@ -54,8 +54,7 @@ volatile uint8_t* GpioPin::getOutputRegAddress(Port port)
 /* Input / Output methods ------------------------------------------------------------------------*/
 void GpioPin::set()
 {
-	if (direction == DigitalOutput)
-		(*outputRegPtr) |= 0x1 << pinNum;
+	(*outputRegPtr) |= 0x1 << pinNum;
 }
 
 void GpioPin::clear()
@@ -65,8 +64,7 @@ void GpioPin::clear()
 
 void GpioPin::toggle()
 {
-	if (direction == DigitalOutput)
-		(*outputRegPtr) ^= 0x1 << pinNum;
+	(*outputRegPtr) ^= 0x1 << pinNum;
 }
 
 void GpioPin::write(LogicState state)
