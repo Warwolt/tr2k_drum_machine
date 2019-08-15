@@ -1,0 +1,53 @@
+\hypertarget{class_test_segment_display74_h_c595}{}\section{Test\+Segment\+Display74\+H\+C595 Class Reference}
+\label{class_test_segment_display74_h_c595}\index{Test\+Segment\+Display74\+H\+C595@{Test\+Segment\+Display74\+H\+C595}}
+Inheritance diagram for Test\+Segment\+Display74\+H\+C595\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_test_segment_display74_h_c595}
+\end{center}
+\end{figure}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_test_segment_display74_h_c595_af2798ef4f77230c853c944bc049a6082}\label{class_test_segment_display74_h_c595_af2798ef4f77230c853c944bc049a6082}} 
+u8 {\bfseries pin\+Direction\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_test_segment_display74_h_c595_aa81517db050dcb1bfc54c5ccce0de0fa}\label{class_test_segment_display74_h_c595_aa81517db050dcb1bfc54c5ccce0de0fa}} 
+u8 {\bfseries control\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_test_segment_display74_h_c595_a59e27e6533a5dade8460c3acd1c2a4bc}\label{class_test_segment_display74_h_c595_a59e27e6533a5dade8460c3acd1c2a4bc}} 
+u8 {\bfseries status\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_test_segment_display74_h_c595_a343a03e0831f6efcdeb675dceb1949ff}\label{class_test_segment_display74_h_c595_a343a03e0831f6efcdeb675dceb1949ff}} 
+u8 {\bfseries data\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_test_segment_display74_h_c595_ab093597d558c95849a23fce5886fadea}\label{class_test_segment_display74_h_c595_ab093597d558c95849a23fce5886fadea}} 
+\mbox{\hyperlink{class_spi}{Spi}} {\bfseries spi} = \mbox{\hyperlink{class_spi}{Spi}}(pin\+Direction\+Reg, control\+Reg, status\+Reg, data\+Reg)
+\item 
+\mbox{\Hypertarget{class_test_segment_display74_h_c595_aaa666829ff3f82cf4d8ec37a97cdf13b}\label{class_test_segment_display74_h_c595_aaa666829ff3f82cf4d8ec37a97cdf13b}} 
+\mbox{\hyperlink{class_segment_display74_h_c595}{Segment\+Display74\+H\+C595}} {\bfseries display} = \mbox{\hyperlink{class_segment_display74_h_c595}{Segment\+Display74\+H\+C595}}(spi)
+\item 
+std\+::map$<$ digit\+Value, segment\+Data $>$ {\bfseries segment\+Data\+Look\+Up\+Table}
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_test_segment_display74_h_c595_a5adfa8af8f14cedfff1ae6129d423355}\label{class_test_segment_display74_h_c595_a5adfa8af8f14cedfff1ae6129d423355}} 
+\index{Test\+Segment\+Display74\+H\+C595@{Test\+Segment\+Display74\+H\+C595}!segment\+Data\+Look\+Up\+Table@{segment\+Data\+Look\+Up\+Table}}
+\index{segment\+Data\+Look\+Up\+Table@{segment\+Data\+Look\+Up\+Table}!Test\+Segment\+Display74\+H\+C595@{Test\+Segment\+Display74\+H\+C595}}
+\subsubsection{\texorpdfstring{segment\+Data\+Look\+Up\+Table}{segmentDataLookUpTable}}
+{\footnotesize\ttfamily std\+::map$<$digit\+Value, segment\+Data$>$ Test\+Segment\+Display74\+H\+C595\+::segment\+Data\+Look\+Up\+Table}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    \{
+        \{0, 0xC0\}, \{1, 0xF9\}, \{2, 0xA4\}, \{3, 0xB0\}, \{4, 0x99\},
+        \{5, 0x92\}, \{6, 0x82\}, \{7, 0xF8\}, \{8, 0x80\}, \{9, 0x90\}
+    \}
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+..\textbackslash{}..\textbackslash{}software/drivers/segment\+\_\+display/test/segmentdisplay\+\_\+test.\+cpp\end{DoxyCompactItemize}

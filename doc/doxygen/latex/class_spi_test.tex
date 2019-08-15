@@ -1,0 +1,49 @@
+\hypertarget{class_spi_test}{}\section{Spi\+Test Class Reference}
+\label{class_spi_test}\index{Spi\+Test@{Spi\+Test}}
+Inheritance diagram for Spi\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_spi_test}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+u8 \mbox{\hyperlink{class_spi_test_a6f3260038241bf80545cddf4e1d73130}{get\+Clock\+Speed\+From\+Registers}} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_spi_test_a2124422a4366e5d93c187f28b501d329}\label{class_spi_test_a2124422a4366e5d93c187f28b501d329}} 
+u8 {\bfseries pin\+Direction\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_spi_test_a880e38b17b7c677f4bb8f080d9c456ce}\label{class_spi_test_a880e38b17b7c677f4bb8f080d9c456ce}} 
+u8 {\bfseries control\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_spi_test_a699992d86eb612c5075cb6c20fbc7ee3}\label{class_spi_test_a699992d86eb612c5075cb6c20fbc7ee3}} 
+u8 {\bfseries status\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_spi_test_aa67bba41833d0757d6d60f24102313bf}\label{class_spi_test_aa67bba41833d0757d6d60f24102313bf}} 
+u8 {\bfseries data\+Reg} = 0
+\item 
+\mbox{\Hypertarget{class_spi_test_a2cb7044aa4c2cf119b0ee7338e0e66b6}\label{class_spi_test_a2cb7044aa4c2cf119b0ee7338e0e66b6}} 
+\mbox{\hyperlink{class_spi}{Spi}} {\bfseries spi} = \mbox{\hyperlink{class_spi}{Spi}}(pin\+Direction\+Reg, control\+Reg, status\+Reg, data\+Reg)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_spi_test_a6f3260038241bf80545cddf4e1d73130}\label{class_spi_test_a6f3260038241bf80545cddf4e1d73130}} 
+\index{Spi\+Test@{Spi\+Test}!get\+Clock\+Speed\+From\+Registers@{get\+Clock\+Speed\+From\+Registers}}
+\index{get\+Clock\+Speed\+From\+Registers@{get\+Clock\+Speed\+From\+Registers}!Spi\+Test@{Spi\+Test}}
+\subsubsection{\texorpdfstring{get\+Clock\+Speed\+From\+Registers()}{getClockSpeedFromRegisters()}}
+{\footnotesize\ttfamily u8 Spi\+Test\+::get\+Clock\+Speed\+From\+Registers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Combines bits S\+P\+R0, S\+P\+R1 and S\+P\+I2X to form the entries in table 23-\/5 \char`\"{}\+Relationship between S\+C\+K and Oscillator Frequency\char`\"{} at page 222 in the \char`\"{}\+Atmel-\/42735\+B-\/\+A\+Tmega328/\+P\+\_\+\+Datasheet\+\_\+\+Complete-\/11/2016\char`\"{} document.
+
+\subsubsection*{Selection Number $\vert$ S\+PI Clock Frequency }
+
+0 $\vert$ Sys Freq / 4 1 $\vert$ Sys Freq / 16 2 $\vert$ Sys Freq / 64 3 $\vert$ Sys Freq / 128 4 $\vert$ Sys Freq / 2 5 $\vert$ Sys Freq / 8 6 $\vert$ Sys Freq / 32 7 $\vert$ Sys Freq / 64 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+..\textbackslash{}..\textbackslash{}software/drivers/spi/test/spitest.\+cpp\end{DoxyCompactItemize}

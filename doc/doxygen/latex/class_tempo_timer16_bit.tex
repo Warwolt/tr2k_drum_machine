@@ -1,0 +1,106 @@
+\hypertarget{class_tempo_timer16_bit}{}\section{Tempo\+Timer16\+Bit Class Reference}
+\label{class_tempo_timer16_bit}\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+Inheritance diagram for Tempo\+Timer16\+Bit\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_tempo_timer16_bit}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_tempo_timer16_bit_ad1d65ddce9cb60487b7c47f0b4a46dd3}\label{class_tempo_timer16_bit_ad1d65ddce9cb60487b7c47f0b4a46dd3}} 
+{\bfseries Tempo\+Timer16\+Bit} (\mbox{\hyperlink{class_timer16_bit}{Timer16\+Bit}} \&timer16\+Bit)
+\item 
+void \mbox{\hyperlink{class_tempo_timer16_bit_adbd6f0e4af015b240e65109a128988a4}{set\+Tempo}} (\mbox{\hyperlink{class_beats_per_minute}{Beats\+Per\+Minute}} bpm)
+\item 
+void \mbox{\hyperlink{class_tempo_timer16_bit_a84b46988dda79e20172382417966de13}{start}} ()
+\item 
+void \mbox{\hyperlink{class_tempo_timer16_bit_abb43b9ec84b965feaf3062aa1cb5be5e}{stop}} ()
+\item 
+void \mbox{\hyperlink{class_tempo_timer16_bit_a749e01b62ff3ff184c62a99db70588ba}{clear}} ()
+\item 
+void \mbox{\hyperlink{class_tempo_timer16_bit_a1dcf447b3ffdeadfc65f8bd3da24c632}{count\+Pulse}} ()
+\item 
+bool \mbox{\hyperlink{class_tempo_timer16_bit_a480d726dc86d7136904056ac4b37082b}{playback\+Step\+Is\+Due}} ()
+\item 
+void \mbox{\hyperlink{class_tempo_timer16_bit_a1f5d42ac7fe24317a0c04484bbf345c6}{start\+Counting\+Next\+Step}} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_tempo_timer16_bit_a749e01b62ff3ff184c62a99db70588ba}\label{class_tempo_timer16_bit_a749e01b62ff3ff184c62a99db70588ba}} 
+\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}!clear@{clear}}
+\index{clear@{clear}!Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+\subsubsection{\texorpdfstring{clear()}{clear()}}
+{\footnotesize\ttfamily void Tempo\+Timer16\+Bit\+::clear (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Clears the tempo timer by clearing the underlying 16-\/bit timer. 
+
+Implements \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}}.
+
+\mbox{\Hypertarget{class_tempo_timer16_bit_a1dcf447b3ffdeadfc65f8bd3da24c632}\label{class_tempo_timer16_bit_a1dcf447b3ffdeadfc65f8bd3da24c632}} 
+\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}!count\+Pulse@{count\+Pulse}}
+\index{count\+Pulse@{count\+Pulse}!Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+\subsubsection{\texorpdfstring{count\+Pulse()}{countPulse()}}
+{\footnotesize\ttfamily void Tempo\+Timer16\+Bit\+::count\+Pulse (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Count a tempo pulse (pulses-\/per-\/sixteenth-\/note pulses). Used to track when the period for a sixteenth note has elapsed, and the next playback step is due for execution. \mbox{\Hypertarget{class_tempo_timer16_bit_a480d726dc86d7136904056ac4b37082b}\label{class_tempo_timer16_bit_a480d726dc86d7136904056ac4b37082b}} 
+\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}!playback\+Step\+Is\+Due@{playback\+Step\+Is\+Due}}
+\index{playback\+Step\+Is\+Due@{playback\+Step\+Is\+Due}!Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+\subsubsection{\texorpdfstring{playback\+Step\+Is\+Due()}{playbackStepIsDue()}}
+{\footnotesize\ttfamily bool Tempo\+Timer16\+Bit\+::playback\+Step\+Is\+Due (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Should be polled continously by the client. \begin{DoxyReturn}{Returns}
+true if the next playback step is due for execution. 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}}.
+
+\mbox{\Hypertarget{class_tempo_timer16_bit_adbd6f0e4af015b240e65109a128988a4}\label{class_tempo_timer16_bit_adbd6f0e4af015b240e65109a128988a4}} 
+\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}!set\+Tempo@{set\+Tempo}}
+\index{set\+Tempo@{set\+Tempo}!Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+\subsubsection{\texorpdfstring{set\+Tempo()}{setTempo()}}
+{\footnotesize\ttfamily void Tempo\+Timer16\+Bit\+::set\+Tempo (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_beats_per_minute}{Beats\+Per\+Minute}}}]{bpm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Sets a tempo in beats per minutes by calculating the corresponding 16-\/bit timer period and assigning it. 
+
+Implements \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}}.
+
+\mbox{\Hypertarget{class_tempo_timer16_bit_a84b46988dda79e20172382417966de13}\label{class_tempo_timer16_bit_a84b46988dda79e20172382417966de13}} 
+\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}!start@{start}}
+\index{start@{start}!Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+\subsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily void Tempo\+Timer16\+Bit\+::start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Starts the tempo timer by starting the underlying 16-\/bit timer. 
+
+Implements \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}}.
+
+\mbox{\Hypertarget{class_tempo_timer16_bit_a1f5d42ac7fe24317a0c04484bbf345c6}\label{class_tempo_timer16_bit_a1f5d42ac7fe24317a0c04484bbf345c6}} 
+\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}!start\+Counting\+Next\+Step@{start\+Counting\+Next\+Step}}
+\index{start\+Counting\+Next\+Step@{start\+Counting\+Next\+Step}!Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+\subsubsection{\texorpdfstring{start\+Counting\+Next\+Step()}{startCountingNextStep()}}
+{\footnotesize\ttfamily void Tempo\+Timer16\+Bit\+::start\+Counting\+Next\+Step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Used to signal that current playback step has been handled and that the next playback step wait period should start elapsing. Counted pulses are reset. 
+
+Implements \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}}.
+
+\mbox{\Hypertarget{class_tempo_timer16_bit_abb43b9ec84b965feaf3062aa1cb5be5e}\label{class_tempo_timer16_bit_abb43b9ec84b965feaf3062aa1cb5be5e}} 
+\index{Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}!stop@{stop}}
+\index{stop@{stop}!Tempo\+Timer16\+Bit@{Tempo\+Timer16\+Bit}}
+\subsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily void Tempo\+Timer16\+Bit\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+Stops the tempo timer by stopping the underlying 16-\/bit timer. 
+
+Implements \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+..\textbackslash{}..\textbackslash{}software/domain/rhythm\+\_\+playback/tempo\+\_\+timer/inc/tempotimer16bit.\+h\item 
+..\textbackslash{}..\textbackslash{}software/domain/rhythm\+\_\+playback/tempo\+\_\+timer/src/tempotimer16bit.\+cpp\end{DoxyCompactItemize}

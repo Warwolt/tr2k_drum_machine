@@ -1,0 +1,110 @@
+\hypertarget{class_spi}{}\section{Spi Class Reference}
+\label{class_spi}\index{Spi@{Spi}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_spi_a27b7b236f911650839cf9465bfc4b972}{Spi}} ()
+\item 
+\mbox{\hyperlink{class_spi_aa5bff4855080ca494dda262669931973}{Spi}} (u8 \&pin\+Dir\+Reg, u8 \&control\+Reg, u8 \&stat\+Reg, u8 \&data\+Reg)
+\item 
+void \mbox{\hyperlink{class_spi_af36b174c9f4ab3dcd3d1b24587d396c8}{set\+Clock\+Speed}} (Spi\+Clock\+Speed)
+\item 
+void \mbox{\hyperlink{class_spi_aee3ca300877494f2c66be7c99d831ee1}{set\+Bit\+Order}} (Spi\+Bit\+Order)
+\item 
+void \mbox{\hyperlink{class_spi_af95597dbf2ad61755808ea6d87e587f1}{send\+Byte}} (u8 tx\+Byte)
+\item 
+void \mbox{\hyperlink{class_spi_a11ab7b1a91e22d08a43ae08d94ca447d}{set\+Tx\+Buffer}} (\mbox{\hyperlink{classr2k_1_1ivector}{r2k\+::ivector}}$<$ u8 $>$ \&buffer)
+\item 
+void \mbox{\hyperlink{class_spi_ad356e46ffdf7cc7d674eb871f05e8b0d}{send\+Next\+Byte\+In\+Buffer}} ()
+\item 
+bool \mbox{\hyperlink{class_spi_a8cf0289f4aaa9298b479a48de1dd6cb8}{tx\+Buffer\+Is\+Empty}} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_spi_a27b7b236f911650839cf9465bfc4b972}\label{class_spi_a27b7b236f911650839cf9465bfc4b972}} 
+\index{Spi@{Spi}!Spi@{Spi}}
+\index{Spi@{Spi}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{Spi()}{Spi()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Spi\+::\+Spi (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Constructor used in release build. \mbox{\Hypertarget{class_spi_aa5bff4855080ca494dda262669931973}\label{class_spi_aa5bff4855080ca494dda262669931973}} 
+\index{Spi@{Spi}!Spi@{Spi}}
+\index{Spi@{Spi}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{Spi()}{Spi()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Spi\+::\+Spi (\begin{DoxyParamCaption}\item[{u8 \&}]{pin\+Dir\+Reg,  }\item[{u8 \&}]{control\+Reg,  }\item[{u8 \&}]{stat\+Reg,  }\item[{u8 \&}]{data\+Reg }\end{DoxyParamCaption})}
+
+Constructor used in unit tests. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_spi_af95597dbf2ad61755808ea6d87e587f1}\label{class_spi_af95597dbf2ad61755808ea6d87e587f1}} 
+\index{Spi@{Spi}!send\+Byte@{send\+Byte}}
+\index{send\+Byte@{send\+Byte}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{send\+Byte()}{sendByte()}}
+{\footnotesize\ttfamily void Spi\+::send\+Byte (\begin{DoxyParamCaption}\item[{u8}]{tx\+Byte }\end{DoxyParamCaption})}
+
+Sends single byte over S\+PI in blocking mode, returns after transfer\textquotesingle{}s done. 
+\begin{DoxyParams}{Parameters}
+{\em byte} & to transfer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_spi_ad356e46ffdf7cc7d674eb871f05e8b0d}\label{class_spi_ad356e46ffdf7cc7d674eb871f05e8b0d}} 
+\index{Spi@{Spi}!send\+Next\+Byte\+In\+Buffer@{send\+Next\+Byte\+In\+Buffer}}
+\index{send\+Next\+Byte\+In\+Buffer@{send\+Next\+Byte\+In\+Buffer}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{send\+Next\+Byte\+In\+Buffer()}{sendNextByteInBuffer()}}
+{\footnotesize\ttfamily void Spi\+::send\+Next\+Byte\+In\+Buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sends the next byte in the tx\+Buffer and updates the byte index if buffer none-\/empty, otherwise sends a zero. \mbox{\Hypertarget{class_spi_aee3ca300877494f2c66be7c99d831ee1}\label{class_spi_aee3ca300877494f2c66be7c99d831ee1}} 
+\index{Spi@{Spi}!set\+Bit\+Order@{set\+Bit\+Order}}
+\index{set\+Bit\+Order@{set\+Bit\+Order}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{set\+Bit\+Order()}{setBitOrder()}}
+{\footnotesize\ttfamily void Spi\+::set\+Bit\+Order (\begin{DoxyParamCaption}\item[{Spi\+Bit\+Order}]{order }\end{DoxyParamCaption})}
+
+Determines what order to transmit bits, least significant bit first or most significant bit first. 
+\begin{DoxyParams}{Parameters}
+{\em enum} & determining L\+SB or M\+SB first. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_spi_af36b174c9f4ab3dcd3d1b24587d396c8}\label{class_spi_af36b174c9f4ab3dcd3d1b24587d396c8}} 
+\index{Spi@{Spi}!set\+Clock\+Speed@{set\+Clock\+Speed}}
+\index{set\+Clock\+Speed@{set\+Clock\+Speed}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{set\+Clock\+Speed()}{setClockSpeed()}}
+{\footnotesize\ttfamily void Spi\+::set\+Clock\+Speed (\begin{DoxyParamCaption}\item[{Spi\+Clock\+Speed}]{clock\+Speed }\end{DoxyParamCaption})}
+
+Sets the speed of the serial clock used to drive the S\+PI slave by writing a number from a table to designated register bits.
+
+
+\begin{DoxyParams}{Parameters}
+{\em clock\+Speed} & selected with a prescaler for the system clock. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_spi_a11ab7b1a91e22d08a43ae08d94ca447d}\label{class_spi_a11ab7b1a91e22d08a43ae08d94ca447d}} 
+\index{Spi@{Spi}!set\+Tx\+Buffer@{set\+Tx\+Buffer}}
+\index{set\+Tx\+Buffer@{set\+Tx\+Buffer}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{set\+Tx\+Buffer()}{setTxBuffer()}}
+{\footnotesize\ttfamily void Spi\+::set\+Tx\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classr2k_1_1ivector}{r2k\+::ivector}}$<$ u8 $>$ \&}]{buffer }\end{DoxyParamCaption})}
+
+Set a buffer of bytes to use for transferring data.
+
+Note Bene\+: Use the \char`\"{}tx\+Buffer\+Is\+Empty\char`\"{}-\/method to check if more bytes need to be transfered, and transfer them using the \char`\"{}send\+Next\+Buffer\+Byte\char`\"{} method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em buffer} & reference to byte buffer to transfer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_spi_a8cf0289f4aaa9298b479a48de1dd6cb8}\label{class_spi_a8cf0289f4aaa9298b479a48de1dd6cb8}} 
+\index{Spi@{Spi}!tx\+Buffer\+Is\+Empty@{tx\+Buffer\+Is\+Empty}}
+\index{tx\+Buffer\+Is\+Empty@{tx\+Buffer\+Is\+Empty}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{tx\+Buffer\+Is\+Empty()}{txBufferIsEmpty()}}
+{\footnotesize\ttfamily bool Spi\+::tx\+Buffer\+Is\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+\begin{DoxyReturn}{Returns}
+true if all bytes in tx buffer have ben transferred 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+..\textbackslash{}..\textbackslash{}software/drivers/spi/inc/spi.\+h\item 
+..\textbackslash{}..\textbackslash{}software/drivers/spi/src/spi.\+cpp\end{DoxyCompactItemize}

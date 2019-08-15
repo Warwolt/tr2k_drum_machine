@@ -1,0 +1,39 @@
+\hypertarget{class_tempo_timing_manager}{}\section{Tempo\+Timing\+Manager Class Reference}
+\label{class_tempo_timing_manager}\index{Tempo\+Timing\+Manager@{Tempo\+Timing\+Manager}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_tempo_timing_manager_a1001a3fdd1d051076fb440da068cf11a}\label{class_tempo_timing_manager_a1001a3fdd1d051076fb440da068cf11a}} 
+{\bfseries Tempo\+Timing\+Manager} (\mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}} \&tempo\+Timer)
+\item 
+void \mbox{\hyperlink{class_tempo_timing_manager_aff742971bd50205edc863163c7674740}{add\+Playback\+Step\+Handler}} (Playback\+Step\+Handler handler)
+\item 
+void \mbox{\hyperlink{class_tempo_timing_manager_a697545e7fa499a13630d2f224eac4fac}{handle\+Playback}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_tempo_timing_manager_aa0987abea44aeac79ca46b859ae444a1}\label{class_tempo_timing_manager_aa0987abea44aeac79ca46b859ae444a1}} 
+static constexpr u8 {\bfseries max\+Num\+Handlers} = 16
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_tempo_timing_manager_aff742971bd50205edc863163c7674740}\label{class_tempo_timing_manager_aff742971bd50205edc863163c7674740}} 
+\index{Tempo\+Timing\+Manager@{Tempo\+Timing\+Manager}!add\+Playback\+Step\+Handler@{add\+Playback\+Step\+Handler}}
+\index{add\+Playback\+Step\+Handler@{add\+Playback\+Step\+Handler}!Tempo\+Timing\+Manager@{Tempo\+Timing\+Manager}}
+\subsubsection{\texorpdfstring{add\+Playback\+Step\+Handler()}{addPlaybackStepHandler()}}
+{\footnotesize\ttfamily void Tempo\+Timing\+Manager\+::add\+Playback\+Step\+Handler (\begin{DoxyParamCaption}\item[{Playback\+Step\+Handler}]{handler }\end{DoxyParamCaption})}
+
+Add a new callback to be called in the \mbox{\hyperlink{class_tempo_timing_manager_a697545e7fa499a13630d2f224eac4fac}{handle\+Playback()}} method. If maximum number of callbacks registered, this method does nothing. \mbox{\Hypertarget{class_tempo_timing_manager_a697545e7fa499a13630d2f224eac4fac}\label{class_tempo_timing_manager_a697545e7fa499a13630d2f224eac4fac}} 
+\index{Tempo\+Timing\+Manager@{Tempo\+Timing\+Manager}!handle\+Playback@{handle\+Playback}}
+\index{handle\+Playback@{handle\+Playback}!Tempo\+Timing\+Manager@{Tempo\+Timing\+Manager}}
+\subsubsection{\texorpdfstring{handle\+Playback()}{handlePlayback()}}
+{\footnotesize\ttfamily void Tempo\+Timing\+Manager\+::handle\+Playback (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks with the \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}} if a playback step is due for execution. If it is, all registered playback step handler callbacks are called. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+..\textbackslash{}..\textbackslash{}software/domain/rhythm\+\_\+playback/tempo\+\_\+timing\+\_\+manager/inc/tempotimingmanager.\+h\item 
+..\textbackslash{}..\textbackslash{}software/domain/rhythm\+\_\+playback/tempo\+\_\+timing\+\_\+manager/src/tempotimingmanager.\+cpp\end{DoxyCompactItemize}
