@@ -34,5 +34,8 @@
 *.sublime-project
 *.sublime-workspace
 
-# stackdump
+# Stackdump
 *.stackdump
+
+# Visual Studio Code workspaces
+*.code-workspace
