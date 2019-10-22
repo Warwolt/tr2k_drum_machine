@@ -34,21 +34,25 @@
 
 
 /* Instantiations --------------------------------------------------------------------------------*/
-static Spi spi;
-static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
-static SegmentDisplay74HC595 tempoDisplay = SegmentDisplay74HC595(spi);
-static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
-
-static Timer1 tim1;
-static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
-static TempoTimingManager tempoTimingManager = TempoTimingManager(tempoTimer);
-static GpioPin rhythmLedPin = GpioPin(Pin5, PortC, DigitalOutput);
-
+/* Rotary encoder (input) */
 static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput);
 static GpioPin encoderPinB = GpioPin(Pin3, PortC, DigitalInput);
 static RotaryEncoder<GpioPin> rotaryEncoder = RotaryEncoder<GpioPin>(encoderPinA, encoderPinB);
 static DigitalTempoKnob<GpioPin> tempoKnob = DigitalTempoKnob<GpioPin>(rotaryEncoder);
 
+/* Display for tempo (output) */
+static Spi spi;
+static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
+static SegmentDisplay74HC595 tempoDisplay = SegmentDisplay74HC595(spi);
+static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput); // slave select for display spi
+
+/* Timing manager and LED (model) */
+static Timer1 tim1;
+static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
+static TempoTimingManager tempoTimingManager = TempoTimingManager(tempoTimer);
+static GpioPin rhythmLedPin = GpioPin(Pin5, PortC, DigitalOutput); // blinked by timing manager
+
+/* UI for controlling tempo (view and controller) */
 static RhythmPlaybackController playbackCtrl = RhythmPlaybackController(tempoTimer);
 static TempoControlView tempoControlView = TempoControlView(playbackCtrl, tempoKnob, tempoDisplay);
 
