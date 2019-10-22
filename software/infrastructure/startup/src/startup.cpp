@@ -86,7 +86,7 @@ TempoTimingManager& Startup::getTempoTimingManager()
 	return tempoTimingManager;
 }
 
-/* Configure all objects instanciated by the Startup module. NB: this function
+/* Configure all objects instantiated by the Startup module. NB: this function
  * MUST be called before using any object to guarantee correct behavior! */
 void Startup::init()
 {
@@ -117,9 +117,10 @@ void setupSpi()
 	registerSpiInterrupt();
 }
 
-/* Attach a lamba to the SpiTransferComplete IRQ that triggers sending the next
- * byte in the buffer, to create an asynchronous transfer from the perspective
- * of the spi client code. */
+/* The SPI peripheral supports transfer of an enire byte buffer. This function
+ * attaches a lamba to the SpiTransferComplete IRQ that triggers sending the
+ * next byte in the buffer, to create an asynchronous transfer from the
+ * perspective of the spi client code. */
 void registerSpiInterrupt()
 {
 	InterruptHandler spiTransferISR = []
@@ -140,7 +141,7 @@ void registerSpiInterrupt()
 }
 
 /* Setup the tempo timer object by enabling timer1, setting a default tempo and
- * starting it. */
+ * starting the timer. */
 void setupTempoTimer()
 {
 	registerTempoTimerInterrupt();
@@ -180,7 +181,7 @@ void registerPlaybackHandlers()
 }
 
 /* Configure the millisecond timer to trigger once every millisecond by using
- * the microcontroller 16 MHz oscillator (1/16 us period), scaling that to
+ * the microcontrollers 16 MHz CPU clock (1/16 us period), scaling that to
  * 250Khz (1/250 ms per tick) and setting a period to 250 ticks. */
 void setupMillisecondTimer()
 {
@@ -190,9 +191,10 @@ void setupMillisecondTimer()
 	tim0.start();
 }
 
-/* Attach a lambda to Timer0CompareMatch IRQ that cycle what digit [0-3] that
- * the tempo display should output to use persistence of vision to make it
- * appear as though all digits are on at the same time. */
+/* The 74HC595 four digit segment display can only display one digit at a time.
+ * This function attaches a lambda to Timer0CompareMatch IRQ that cycles what
+ * current digit [0-3] that the display should output to use persistence of
+ * vision to make it appear as though all digits are on at the same time. */
 void registerDisplayDriverInterrupt()
 {
 	static u8 currentDigit = 0;
