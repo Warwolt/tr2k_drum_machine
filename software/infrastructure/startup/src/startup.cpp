@@ -8,6 +8,7 @@
 /* Includes --------------------------------------------------------------------------------------*/
 #include "startup.h"
 #include <util/delay.h>
+#include <avr/io.h>
 
 /* Presentation */
 #include "rhythm_playback_controller.h"
