@@ -35,7 +35,7 @@
 
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Rotary encoder (input) */
-static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput);
+static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput); // triggers IRQ on voltage change
 static GpioPin encoderPinB = GpioPin(Pin3, PortC, DigitalInput);
 static RotaryEncoder<GpioPin> rotaryEncoder = RotaryEncoder<GpioPin>(encoderPinA, encoderPinB);
 static DigitalTempoKnob<GpioPin> tempoKnob = DigitalTempoKnob<GpioPin>(rotaryEncoder);
