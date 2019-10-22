@@ -35,7 +35,7 @@
 
 /* Instantiations --------------------------------------------------------------------------------*/
 static Spi spi;
-static Timer0 tim0;
+static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
 static SegmentDisplay74HC595 tempoDisplay = SegmentDisplay74HC595(spi);
 static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput);
 
