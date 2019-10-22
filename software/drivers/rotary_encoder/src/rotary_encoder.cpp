@@ -24,17 +24,35 @@ s16 RotaryEncoder<IGpioPin>::getNumRotations()
 }
 
 template<typename IGpioPin>
+void RotaryEncoder<IGpioPin>::setRotationCeiling(s16 ceil)
+{
+	rotationCeiling = ceil;
+}
+
+template<typename IGpioPin>
+void RotaryEncoder<IGpioPin>::setRotationFloor(s16 floor)
+{
+	rotationFloor = floor;
+}
+
+template<typename IGpioPin>
 void RotaryEncoder<IGpioPin>::handleEdge()
 {
 	if(pinA.read() == LogicState::Low)
 	{
 		if(pinB.read() == LogicState::Low)
 		{
-			numRotations++;
+			if(numRotations < rotationCeiling)
+			{
+				numRotations++;
+			}
 		}
 		else
 		{
-			numRotations--;
+			if(numRotations > rotationFloor)
+			{
+				numRotations--;
+			}
 		}
 	}
 }
