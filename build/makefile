@@ -1,5 +1,8 @@
 .PHONY: bin test
 
+help:
+	@echo "usage: {bin|test}"
+
 bin: makebin.mk
 	@make -f makebin.mk --no-print-directory
 
@@ -8,9 +11,6 @@ flash: makebin.mk
 
 test:
 	@make -f maketest.mk --no-print-directory
-
-help:
-	@echo "usage: {bin|test}"
 
 clean:
 	@make -f makebin.mk --no-print-directory clean
