@@ -10,6 +10,8 @@
 
 #include "tempo_control_view.h"
 #include "tempotimingmanager.h"
+#include "charlieplex_matrix.h" // only temporary
+#include "gpiopin.h" // only temporary
 
 namespace Startup
 {
@@ -17,6 +19,7 @@ namespace Startup
 void init();
 TempoControlView& getTempoControlView();
 TempoTimingManager& getTempoTimingManager();
+CharlieplexMatrix<GpioPin>& getLedMatrix();
 
 };
 

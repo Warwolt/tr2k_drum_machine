@@ -9,15 +9,25 @@
 */
 
 #include "startup.h"
+#include "charlieplex_matrix.h"
+#include "gpiopin.h"
 
 int main()
 {
 	TempoControlView& tempoControlView = Startup::getTempoControlView();
 	TempoTimingManager& tempoTimingManager = Startup::getTempoTimingManager();
+	CharlieplexMatrix<GpioPin> ledMatrix = Startup::getLedMatrix(); // only temporary
 
 	/* Initialize the tempo control view and the tempo timing manager, along
 	 * with all of their dependencies. */
 	Startup::init();
+
+	// quick and dirty way to make sure all leds are on, while trying out the
+	// charlieplex matrix in hardware.
+	for(int i = 0; i < 16; i++)
+	{
+		ledMatrix.setLed(i);
+	}
 
 	while(1)
 	{
@@ -29,5 +39,9 @@ int main()
 		 * (16th note), and if it is due the manager calls all the playback
 		 * handler functions registered in the Startup::init() function. */
 		tempoTimingManager.handlePlayback();
+
+		// quick and dirty way of testing that led output works, should be
+		// moved into a timer compare interrupt running every 50 microseconds!
+		ledMatrix.outputNextLed();
 	}
 }

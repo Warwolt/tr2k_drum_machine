@@ -2,30 +2,36 @@
 -include $(APP_ROOT)/common/makefile.mk
 
 # Presentation
--include $(APP_ROOT)/presentation/tempo_control/tempo_control_view/makefile.mk
--include $(APP_ROOT)/presentation/tempo_control/tempo_knob/makefile.mk
+PRESENTATION_DIR = $(APP_ROOT)/presentation
+-include $(PRESENTATION_DIR)/tempo_control/tempo_control_view/makefile.mk
+-include $(PRESENTATION_DIR)/tempo_control/tempo_knob/makefile.mk
 
 # Application
--include $(APP_ROOT)/application/rhythm_playback_controller/makefile.mk
+APPLICATION_DIR = $(APP_ROOT)/application
+-include $(APPLICATION_DIR)/rhythm_playback_controller/makefile.mk
 
 # Domain
--include $(APP_ROOT)/domain/rhythm_playback/beats_per_minute/makefile.mk
--include $(APP_ROOT)/domain/rhythm_playback/rhythm_playback_controller/makefile.mk
--include $(APP_ROOT)/domain/rhythm_playback/tempo_timer/makefile.mk
--include $(APP_ROOT)/domain/rhythm_playback/tempo_timing_manager/makefile.mk
+DOMAIN_DIR = $(APP_ROOT)/domain
+-include $(DOMAIN_DIR)/rhythm_playback/beats_per_minute/makefile.mk
+-include $(DOMAIN_DIR)/rhythm_playback/rhythm_playback_controller/makefile.mk
+-include $(DOMAIN_DIR)/rhythm_playback/tempo_timer/makefile.mk
+-include $(DOMAIN_DIR)/rhythm_playback/tempo_timing_manager/makefile.mk
 
 # Infrastructure
--include $(APP_ROOT)/infrastructure/interrupts/makefile.mk
--include $(APP_ROOT)/infrastructure/startup/makefile.mk
+INFRASRTUCTURE_DIR = $(APP_ROOT)/infrastructure
+-include $(INFRASRTUCTURE_DIR)/interrupts/makefile.mk
+-include $(INFRASRTUCTURE_DIR)/startup/makefile.mk
 
 # Hardware Abstraction Layer
--include $(APP_ROOT)/hal/makefile.mk
+HAL_DIR = $(APP_ROOT)/hal
+-include $(HAL_DIR)/makefile.mk
 
 # Drivers
--include $(APP_ROOT)/drivers/gpio/makefile.mk
--include $(APP_ROOT)/drivers/rotary_encoder/makefile.mk
--include $(APP_ROOT)/drivers/segment_display/makefile.mk
--include $(APP_ROOT)/drivers/spi/makefile.mk
--include $(APP_ROOT)/drivers/timer0/makefile.mk
--include $(APP_ROOT)/drivers/timer1/makefile.mk
-
+DRIVERS_DIR = $(APP_ROOT)/drivers
+-include $(DRIVERS_DIR)/gpio/makefile.mk
+-include $(DRIVERS_DIR)/charlieplex_matrix/makefile.mk
+-include $(DRIVERS_DIR)/rotary_encoder/makefile.mk
+-include $(DRIVERS_DIR)/segment_display/makefile.mk
+-include $(DRIVERS_DIR)/spi/makefile.mk
+-include $(DRIVERS_DIR)/timer0/makefile.mk
+-include $(DRIVERS_DIR)/timer1/makefile.mk

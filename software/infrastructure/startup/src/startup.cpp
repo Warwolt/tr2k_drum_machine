@@ -28,15 +28,25 @@
 #include "timer1.h"
 #include "rotary_encoder.h"
 #include "segmentdisplay.h"
+#include "charlieplex_matrix.h"
 
 /* Infrastructure */
 #include "interrupts.h"
 
 
 /* Instantiations --------------------------------------------------------------------------------*/
+/* Pattern edit interface (buttons + LEDs) */
+static PinStatePair fivePinLut[20] =
+{
+	{1,0},{0,1},{2,1},{1,2},{2,0},{0,2},{3,2},{2,3},{3,1},{1,3},
+	{3,0},{0,3},{4,3},{3,4},{4,2},{2,4},{4,1},{1,4},{4,0},{0,4}
+};
+static GpioPin ledPins[5] = {GpioPin(Pin1, PortC), GpioPin(Pin2, PortC), GpioPin(Pin3, PortC),
+	GpioPin(Pin4, PortC), GpioPin(Pin5, PortC)};
+static CharlieplexMatrix<GpioPin> ledMatrix = CharlieplexMatrix<GpioPin>(5, ledPins, fivePinLut);
 /* Rotary encoder (input) */
 static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput); // triggers IRQ on voltage change
-static GpioPin encoderPinB = GpioPin(Pin3, PortC, DigitalInput);
+static GpioPin encoderPinB = GpioPin(Pin0, PortC, DigitalInput);
 static RotaryEncoder<GpioPin> rotaryEncoder = RotaryEncoder<GpioPin>(encoderPinA, encoderPinB);
 static DigitalTempoKnob<GpioPin> tempoKnob = DigitalTempoKnob<GpioPin>(rotaryEncoder);
 
@@ -50,7 +60,7 @@ static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput); // slave sele
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
 static TempoTimingManager tempoTimingManager = TempoTimingManager(tempoTimer);
-static GpioPin rhythmLedPin = GpioPin(Pin5, PortC, DigitalOutput); // blinked by timing manager
+static GpioPin rhythmLedPin = GpioPin(Pin3, PortD, DigitalOutput); // blinked by timing manager
 
 /* UI for controlling tempo (view and controller) */
 static RhythmPlaybackController playbackCtrl = RhythmPlaybackController(tempoTimer);
@@ -89,6 +99,11 @@ TempoControlView& Startup::getTempoControlView()
 TempoTimingManager& Startup::getTempoTimingManager()
 {
 	return tempoTimingManager;
+}
+
+CharlieplexMatrix<GpioPin>& Startup::getLedMatrix()
+{
+	return ledMatrix;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function
