@@ -20,14 +20,14 @@ public:
 	RotaryEncoder<GpioPinMock> encoder = RotaryEncoder<GpioPinMock>(pinA, pinB);
 	DigitalTempoKnob<GpioPinMock> knob = DigitalTempoKnob<GpioPinMock>(encoder);
 
-	void increaseMockKnobRotations()
+	void increaseNumMockKnobRotations()
 	{
 		EXPECT_CALL(pinA, read()).WillOnce(Return(LogicState::Low));
 		EXPECT_CALL(pinB, read()).WillOnce(Return(LogicState::Low));
 		encoder.handleEdge();
 	}
 
-	void decreaseMockKnobRotations()
+	void decreaseNumMockKnobRotations()
 	{
 		EXPECT_CALL(pinA, read()).WillOnce(Return(LogicState::Low));
 		EXPECT_CALL(pinB, read()).WillOnce(Return(LogicState::High));
@@ -48,28 +48,14 @@ TEST_F(DigitalTempoKnobTest, Reference_bpm_value_can_be_set)
 
 TEST_F(DigitalTempoKnobTest, Bpm_increases_when_encoder_rotations_increases)
 {
-	increaseMockKnobRotations();
-	increaseMockKnobRotations();
+	increaseNumMockKnobRotations();
+	increaseNumMockKnobRotations();
 	EXPECT_EQ(BeatsPerMinute(120 + 2), knob.read());
 }
 
 TEST_F(DigitalTempoKnobTest, Bpm_decreases_when_encoder_rotations_decreases)
 {
-	decreaseMockKnobRotations();
-	decreaseMockKnobRotations();
+	decreaseNumMockKnobRotations();
+	decreaseNumMockKnobRotations();
 	EXPECT_EQ(BeatsPerMinute(120 - 2), knob.read());
-}
-
-TEST_F(DigitalTempoKnobTest, Lowest_bpm_setting_is_60)
-{
-	knob.setReferenceTempo(60);
-	decreaseMockKnobRotations(); // should do nothing
-	EXPECT_EQ(BeatsPerMinute(60), knob.read());
-}
-
-TEST_F(DigitalTempoKnobTest, Highest_bpm_setting_is_200)
-{
-	knob.setReferenceTempo(200);
-	increaseMockKnobRotations(); // should do nothing
-	EXPECT_EQ(BeatsPerMinute(200), knob.read());
 }

@@ -11,11 +11,17 @@
 #include "igpiopin_mock.h"
 #endif
 
+#include "traceprint.h"
+
 template<typename IGpioPin>
 DigitalTempoKnob<IGpioPin>::DigitalTempoKnob(RotaryEncoder<IGpioPin>& encoder)
 	: rotaryEncoder(encoder)
 {
-
+	// these two lines don't have unit tests but not really worth the hassle to
+	// make worth testing so I'm skipping it. (Already tested that methods work
+	// in rotary encoder unit tests!)
+	encoder.setRotationCeiling((maximumTempo - (s16)initialReferenceTempo));
+	encoder.setRotationFloor((minimumTempo - (s16)initialReferenceTempo));
 }
 
 template<typename IGpioPin>
@@ -28,17 +34,6 @@ template<typename IGpioPin>
 BeatsPerMinute DigitalTempoKnob<IGpioPin>::read() const
 {
 	s16 currentTempo = referenceTempo + rotaryEncoder.getNumRotations();
-
-	if(currentTempo < minimumTempo)
-	{
-		currentTempo = minimumTempo;
-	}
-
-	if(currentTempo > maximumTempo)
-	{
-		currentTempo = maximumTempo;
-	}
-
 	return BeatsPerMinute(static_cast<u8>(currentTempo));
 }
 
