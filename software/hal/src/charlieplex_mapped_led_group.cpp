@@ -13,6 +13,13 @@
 #endif
 
 template<typename IGpioPin>
+CharlieplexMappedLedGroup<IGpioPin>::CharlieplexMappedLedGroup(u8 numLeds,
+    CharlieplexMatrix<IGpioPin>& matrix) : numLeds(numLeds), ledOffset(0), matrix(matrix)
+{
+
+}
+
+template<typename IGpioPin>
 CharlieplexMappedLedGroup<IGpioPin>::CharlieplexMappedLedGroup(u8 numLeds, u8 ledOffset,
     CharlieplexMatrix<IGpioPin>& matrix) : numLeds(numLeds), ledOffset(ledOffset), matrix(matrix)
 {

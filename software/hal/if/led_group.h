@@ -4,6 +4,9 @@
 ****************************************************************************************************
 */
 
+#ifndef LED_GROUP_H
+#define LED_GROUP_H
+
 #include "linuxtypes.h"
 
 class LedGroup
@@ -15,3 +18,5 @@ public:
     virtual void toggleLed(u8 ledNum) = 0;
     virtual u8 getNumLeds() const = 0;
 };
+
+#endif /* LED_GROUP_H */
