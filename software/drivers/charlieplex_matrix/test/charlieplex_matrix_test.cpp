@@ -4,14 +4,6 @@
 ****************************************************************************************************
 */
 
-// todo:
-//  [x] test 2 pin matrix with only H and L states
-//      [x] define 2 pin LUT
-//      [x] define array with 2 mock pins
-//      [x] construct matrix with 2 pin LUT
-//  [ ] test 3 pin matrix with only H and L states
-//  [ ] test 3 pin matrix also with Z states
-
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"

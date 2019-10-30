@@ -20,7 +20,7 @@ class CharlieplexMatrix
 {
 public:
     CharlieplexMatrix(u8 numPins, IGpioPin* pins, PinStatePair* stateLUT);
-    u8 getNumLeds();
+    u8 getNumLeds() const;
     void setLed(u8 ledNum);
     void clearLed(u8 ledNum);
     void toggleLed(u8 ledNum);
@@ -29,8 +29,8 @@ public:
 private:
     void outputLed(u8 ledNum);
 
-    u8 numPins;
-    u8 numLeds;
+    const u8 numPins;
+    const u8 numLeds;
     u8 currentLedNum = 0;
     u8 previousLedNum;
     u16 ledStates = 0;

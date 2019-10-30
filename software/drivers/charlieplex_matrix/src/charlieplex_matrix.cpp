@@ -20,7 +20,7 @@ CharlieplexMatrix<IGpioPin>::CharlieplexMatrix(u8 numPins, IGpioPin *pins, PinSt
 }
 
 template<typename IGpioPin>
-u8 CharlieplexMatrix<IGpioPin>::getNumLeds()
+u8 CharlieplexMatrix<IGpioPin>::getNumLeds() const
 {
     return numLeds;
 }
