@@ -21,6 +21,9 @@
 #include "tempotimer16bit.h"
 #include "tempotimingmanager.h"
 
+/* Hardware Abstraction Layer */
+#include "charlieplex_mapped_led_group.h"
+
 /* Drivers */
 #include "gpiopin.h"
 #include "spi.h"
@@ -35,7 +38,7 @@
 
 
 /* Instantiations --------------------------------------------------------------------------------*/
-/* Pattern edit interface (buttons + LEDs) */
+/* Pattern edit LEDs */
 static PinStatePair fivePinLut[20] =
 {
 	{1,0},{0,1},{2,1},{1,2},{2,0},{0,2},{3,2},{2,3},{3,1},{1,3},
@@ -44,6 +47,10 @@ static PinStatePair fivePinLut[20] =
 static GpioPin ledPins[5] = {GpioPin(Pin1, PortC), GpioPin(Pin2, PortC), GpioPin(Pin3, PortC),
 	GpioPin(Pin4, PortC), GpioPin(Pin5, PortC)};
 static CharlieplexMatrix<GpioPin> ledMatrix = CharlieplexMatrix<GpioPin>(5, ledPins, fivePinLut);
+constexpr u8 numStepLeds = 16;
+static CharlieplexMappedLedGroup<GpioPin> charlieStepLeds = CharlieplexMappedLedGroup<GpioPin>(numStepLeds, ledMatrix);
+static LedGroup& stepLeds = charlieStepLeds;
+
 /* Rotary encoder (input) */
 static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput); // triggers IRQ on voltage change
 static GpioPin encoderPinB = GpioPin(Pin0, PortC, DigitalInput);
@@ -101,9 +108,9 @@ TempoTimingManager& Startup::getTempoTimingManager()
 	return tempoTimingManager;
 }
 
-CharlieplexMatrix<GpioPin>& Startup::getLedMatrix()
+LedGroup& Startup::getStepLeds()
 {
-	return ledMatrix;
+	return stepLeds;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function
@@ -222,6 +229,11 @@ void registerDisplayDriverInterrupt()
 	{
 		tempoDisplay.outputDigit(currentDigit);
 		currentDigit = (currentDigit + 1) % 5;
+
+		// quick and dirty way of testing that led output works, should be moved
+		// into a timer compare interrupt running every 50 microseconds!
+		// TODO move this somewhere much more fitting!
+		ledMatrix.outputNextLed();
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer0CompareMatch;
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
