@@ -9,8 +9,6 @@
 */
 
 #include "startup.h"
-#include "charlieplex_matrix.h"
-#include "gpiopin.h"
 
 int main()
 {
