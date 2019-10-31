@@ -28,8 +28,9 @@ HAL_DIR = $(APP_ROOT)/hal
 
 # Drivers
 DRIVERS_DIR = $(APP_ROOT)/drivers
--include $(DRIVERS_DIR)/gpio/makefile.mk
 -include $(DRIVERS_DIR)/charlieplex_matrix/makefile.mk
+-include $(DRIVERS_DIR)/gpio_matrix/makefile.mk
+-include $(DRIVERS_DIR)/gpio/makefile.mk
 -include $(DRIVERS_DIR)/rotary_encoder/makefile.mk
 -include $(DRIVERS_DIR)/segment_display/makefile.mk
 -include $(DRIVERS_DIR)/spi/makefile.mk
