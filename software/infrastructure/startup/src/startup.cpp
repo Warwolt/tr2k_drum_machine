@@ -84,7 +84,7 @@ static void registerTempoTimerInterrupt();
 static void registerPlaybackHandlers();
 
 /* Tempo display */
-static void setupMillisecondTimer();
+static void setupTimer0();
 static void registerDisplayDriverInterrupt();
 
 /* Tempo Knob */
@@ -127,7 +127,7 @@ void Startup::init()
 	registerPlaybackHandlers();
 
 	/* Tempo tempoDisplay */
-	setupMillisecondTimer();
+	setupTimer0();
 	registerDisplayDriverInterrupt();
 	tempoDisplay.enableDecimalPoint(1);
 
@@ -207,14 +207,12 @@ void registerPlaybackHandlers()
 	});
 }
 
-/* Configure the millisecond timer to trigger once every millisecond by using
- * the microcontrollers 16 MHz CPU clock (1/16 us period), scaling that to
- * 250Khz (1/250 ms per tick) and setting a period to 250 ticks. */
-void setupMillisecondTimer()
+/* Configure timer0 so that periodical interrupts will trigger. */
+void setupTimer0()
 {
 	tim0.enablePeriodicInterrupts();
 	tim0.setPrescaler(Timer8Bit::PrescaleOption::_64);
-	tim0.setPeriod(250);
+	tim0.setPeriod(65);
 	tim0.start();
 }
 
