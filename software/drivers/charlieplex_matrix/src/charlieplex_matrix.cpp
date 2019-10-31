@@ -53,8 +53,8 @@ void CharlieplexMatrix<IGpioPin>::outputNextLed()
     bool previousLedActive = ledStates & (0x1 << previousLedNum);
     if(previousLedActive)
     {
-        IGpioPin& previousHighPin = pins[stateLUT[currentLedNum].highPinNum];
-        IGpioPin& previousLowPin = pins[stateLUT[currentLedNum].lowPinNum];
+        IGpioPin& previousHighPin = pins[stateLUT[previousLedNum].highPinNum];
+        IGpioPin& previousLowPin = pins[stateLUT[previousLedNum].lowPinNum];
         previousHighPin.setDirection(DigitalInput);
         previousLowPin.setDirection(DigitalInput);
     }
@@ -68,7 +68,7 @@ void CharlieplexMatrix<IGpioPin>::outputNextLed()
         lowPin.setDirection(DigitalOutput);
         lowPin.clear();
     }
-    else
+    else /* Led inactive */
     {
         highPin.setDirection(DigitalInput);
         lowPin.setDirection(DigitalInput);

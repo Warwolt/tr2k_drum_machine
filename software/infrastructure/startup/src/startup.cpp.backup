@@ -23,6 +23,7 @@
 
 /* Hardware Abstraction Layer */
 #include "charlieplex_mapped_led_group.h"
+#include "microsecond_period_millisecond_timer.h"
 
 /* Drivers */
 #include "gpiopin.h"
@@ -38,19 +39,6 @@
 
 
 /* Instantiations --------------------------------------------------------------------------------*/
-/* Pattern edit LEDs */
-static PinStatePair fivePinLut[20] =
-{
-	{1,0},{0,1},{2,1},{1,2},{2,0},{0,2},{3,2},{2,3},{3,1},{1,3},
-	{3,0},{0,3},{4,3},{3,4},{4,2},{2,4},{4,1},{1,4},{4,0},{0,4}
-};
-static GpioPin ledPins[5] = {GpioPin(Pin1, PortC), GpioPin(Pin2, PortC), GpioPin(Pin3, PortC),
-	GpioPin(Pin4, PortC), GpioPin(Pin5, PortC)};
-static CharlieplexMatrix<GpioPin> ledMatrix = CharlieplexMatrix<GpioPin>(5, ledPins, fivePinLut);
-constexpr u8 numStepLeds = 16;
-static CharlieplexMappedLedGroup<GpioPin> charlieStepLeds = CharlieplexMappedLedGroup<GpioPin>(numStepLeds, ledMatrix);
-static LedGroup& stepLeds = charlieStepLeds;
-
 /* Rotary encoder (input) */
 static GpioPin encoderPinA = GpioPin(Pin2, PortD, DigitalInput); // triggers IRQ on voltage change
 static GpioPin encoderPinB = GpioPin(Pin0, PortC, DigitalInput);
@@ -59,7 +47,7 @@ static DigitalTempoKnob<GpioPin> tempoKnob = DigitalTempoKnob<GpioPin>(rotaryEnc
 
 /* Display for tempo (output) */
 static Spi spi;
-static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
+// static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
 static SegmentDisplay74HC595 tempoDisplay = SegmentDisplay74HC595(spi);
 static GpioPin dataLatchPin = GpioPin(Pin2, PortB, DigitalOutput); // slave select for display spi
 
@@ -73,6 +61,39 @@ static GpioPin rhythmLedPin = GpioPin(Pin3, PortD, DigitalOutput); // blinked by
 static RhythmPlaybackController playbackCtrl = RhythmPlaybackController(tempoTimer);
 static TempoControlView tempoControlView = TempoControlView(playbackCtrl, tempoKnob, tempoDisplay);
 
+/* Pattern edit LEDs */
+static PinStatePair fivePinLut[20] =
+{
+	{1,0},{0,1},{2,1},{1,2},{2,0},{0,2},{3,2},{2,3},{3,1},{1,3},
+	{3,0},{0,3},{4,3},{3,4},{4,2},{2,4},{4,1},{1,4},{4,0},{0,4}
+};
+static GpioPin ledPins[5] = {GpioPin(Pin1, PortC), GpioPin(Pin2, PortC), GpioPin(Pin3, PortC),
+	GpioPin(Pin4, PortC), GpioPin(Pin5, PortC)};
+static CharlieplexMatrix<GpioPin> ledMatrix = CharlieplexMatrix<GpioPin>(5, ledPins, fivePinLut);
+constexpr u8 numStepLeds = 16;
+static CharlieplexMappedLedGroup<GpioPin> charlieStepLeds = CharlieplexMappedLedGroup<GpioPin>(numStepLeds, ledMatrix);
+static LedGroup& stepLeds = charlieStepLeds;
+
+/* Pattern edit buttons*/
+// NOTE: While mucking about with testing the button matrix in hardware I'm
+// currently reusing some of the gpio pins that were assigned above! Later on I
+// will have to make an implementation of the button matrix that uses a shift
+// register for gpio expansion, but until then I will run without the 4 digit
+// display and the rotary encoder and just use the buttons and leds.
+
+static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
+static constexpr u16 microsecondPeriod = 520; // 1920 Hz, 120 Hz per LED for 16 LEDs (enough for flicker fusion)
+static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
+static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 5; // ms
+static constexpr u8 numButtonColumns = 4;
+static constexpr u8 numButtonRows = 5;
+static GpioPin buttonColumnPins[numButtonColumns] = {GpioPin(Pin3, PortB), GpioPin(Pin2, PortB),
+	GpioPin(Pin1, PortB), GpioPin(Pin0, PortB)};
+static GpioPin buttonRowPins[numButtonRows] = {GpioPin(Pin6, PortD), GpioPin(Pin5, PortD),
+	GpioPin(Pin4, PortD), GpioPin(Pin3, PortD), GpioPin(Pin2, PortD)};
+static GpioMatrix<GpioPin> buttonMatrix = GpioMatrix<GpioPin>(buttonColumnPins, numButtonColumns,
+	buttonRowPins, numButtonRows, microsecondTimer, buttonDebounceTime);
+
 /* Private function declarations -----------------------------------------------------------------*/
 /* Spi */
 static void setupSpi();
@@ -85,10 +106,12 @@ static void registerPlaybackHandlers();
 
 /* Tempo display */
 static void setupTimer0();
-static void registerDisplayDriverInterrupt();
+static void registerTimer0InterruptHandlers();
 
 /* Tempo Knob */
 static void setupExternalPinInterrupt();
+
+/* Button matrix*/
 
 // TODO: move this to Interrupts, currently used for rotary encoder
 ISR(INT0_vect)
@@ -113,6 +136,11 @@ LedGroup& Startup::getStepLeds()
 	return stepLeds;
 }
 
+GpioMatrix<GpioPin>& Startup::getButtonMatrix()
+{
+	return buttonMatrix;
+}
+
 /* Configure all objects instantiated by the Startup module. NB: this function
  * MUST be called before using any object to guarantee correct behavior! */
 void Startup::init()
@@ -120,7 +148,7 @@ void Startup::init()
 	Interrupts::enableInterruptsGlobally();
 
 	/* Spi */
-	setupSpi();
+	// setupSpi();
 
 	/* Tempo timng */
 	setupTempoTimer();
@@ -128,7 +156,7 @@ void Startup::init()
 
 	/* Tempo tempoDisplay */
 	setupTimer0();
-	registerDisplayDriverInterrupt();
+	registerTimer0InterruptHandlers();
 	tempoDisplay.enableDecimalPoint(1);
 
 	/* Rotary encoder interrupts */
@@ -211,8 +239,9 @@ void registerPlaybackHandlers()
 void setupTimer0()
 {
 	tim0.enablePeriodicInterrupts();
-	tim0.setPrescaler(Timer8Bit::PrescaleOption::_64);
-	tim0.setPeriod(65);
+	// prescaler and period set by MicrosecondPeriodMillisecondTimer
+	// tim0.setPrescaler(Timer8Bit::PrescaleOption::_64);
+	// tim0.setPeriod(65);
 	tim0.start();
 }
 
@@ -220,7 +249,7 @@ void setupTimer0()
  * This function attaches a lambda to Timer0CompareMatch IRQ that cycles what
  * current digit [0-3] that the display should output to use persistence of
  * vision to make it appear as though all digits are on at the same time. */
-void registerDisplayDriverInterrupt()
+void registerTimer0InterruptHandlers()
 {
 	static u8 currentDigit = 0;
 	InterruptHandler timerISR = []
@@ -232,6 +261,10 @@ void registerDisplayDriverInterrupt()
 		// into a timer compare interrupt running every 50 microseconds!
 		// TODO move this somewhere much more fitting!
 		ledMatrix.outputNextLed();
+
+		// quick and dirty way of testing that microsecond period millisecond
+		// timer works for debouncing buttons in the gpio matrix.
+		microsecondTimer.countPeriod();
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer0CompareMatch;
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);

@@ -8,34 +8,31 @@
 ****************************************************************************************************
 */
 
-#include "startup.h"
+#include "startup2.h"
 
 int main()
 {
-	TempoControlView& tempoControlView = Startup::getTempoControlView();
-	TempoTimingManager& tempoTimingManager = Startup::getTempoTimingManager();
-	LedGroup& stepLeds = Startup::getStepLeds(); // only temporary
+	LedGroup& stepLeds = Startup2::getStepLeds();
+	GpioMatrix<GpioPin>& buttonMatrix = Startup2::getButtonMatrix();
 
 	/* Initialize the tempo control view and the tempo timing manager, along
 	 * with all of their dependencies. */
-	Startup::init();
+	Startup2::init();
 
-	// quick and dirty way to make sure all leds are on, while trying out the
-	// charlieplex matrix in hardware.
-	for(int i = 0; i < 16; i++)
-	{
-		stepLeds.setLed(i);
-	}
-
+	constexpr u8 numButtons = 20;
 	while(1)
 	{
-		/* Update view that consists of a 4-digit display showing the current
-		 * tempo in beats per minute, and a rotary encoder to set the tempo.*/
-		tempoControlView.handleTempoControl();
+		for(int i = 0; i < numButtons; i++)
+		{
+			if(buttonMatrix.readElement(i) == LogicState::High)
+			{
+				stepLeds.setLed(i);
+			}
+			else
+			{
+				stepLeds.clearLed(i);
+			}
 
-		/* Manager checks with the tempo timer if next playback step is due
-		 * (16th note), and if it is due the manager calls all the playback
-		 * handler functions registered in the Startup::init() function. */
-		tempoTimingManager.handlePlayback();
+		}
 	}
 }
