@@ -46,7 +46,7 @@ static LedGroup& stepLeds = charlieStepLeds;
 static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
 static constexpr u16 microsecondPeriod = 52; // 19200 Hz, 1200 Hz per LED for 16 LEDs (enough for flicker fusion)
 static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
-static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 5; // ms
+static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 0; // ms
 static constexpr u8 numButtonColumns = 4;
 static constexpr u8 numButtonRows = 5;
 static GpioPin buttonColumnPins[numButtonColumns] = {GpioPin(Pin3, PortB), GpioPin(Pin2, PortB),

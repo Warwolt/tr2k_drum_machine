@@ -9,30 +9,28 @@
 */
 
 #include "startup2.h"
+#include "matrix_mapped_button_group.h"
 
 int main()
 {
 	LedGroup& stepLeds = Startup2::getStepLeds();
 	GpioMatrix<GpioPin>& buttonMatrix = Startup2::getButtonMatrix();
+	// quick test of button group
+	constexpr u8 numButtons = 16;
+	MatrixMappedButtonGroup<GpioPin> buttonGroup(buttonMatrix, numButtons, 0);
 
 	/* Initialize the tempo control view and the tempo timing manager, along
 	 * with all of their dependencies. */
 	Startup2::init();
 
-	constexpr u8 numButtons = 20;
 	while(1)
 	{
 		for(int i = 0; i < numButtons; i++)
 		{
-			if(buttonMatrix.readElement(i) == LogicState::High)
+			if(buttonGroup.buttonPressedNow(i))
 			{
-				stepLeds.setLed(i);
+				stepLeds.toggleLed(i);
 			}
-			else
-			{
-				stepLeds.clearLed(i);
-			}
-
 		}
 	}
 }
