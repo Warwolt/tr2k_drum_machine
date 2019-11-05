@@ -9,9 +9,10 @@
 
 #include "linuxtypes.h"
 #include "gpio_matrix.h"
+#include "button_group.h"
 
 template<typename IGpioPin>
-class MatrixMappedButtonGroup
+class MatrixMappedButtonGroup : public ButtonGroup
 {
 public:
     MatrixMappedButtonGroup(GpioMatrix<IGpioPin>& matrix, u8 numButtons, u8 elementOffset);
