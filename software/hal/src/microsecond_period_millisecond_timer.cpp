@@ -14,15 +14,15 @@
 
 using milliseconds = MillisecondTimer::milliseconds;
 
-static constexpr u32 clockFrequency = 16e6;
+static constexpr u32 clockFrequency = 16; // MHz
 
 MicrosecondPeriodMillisecondTimer::MicrosecondPeriodMillisecondTimer(Timer8Bit& timer,
-    microseconds period) : microsecondPeriod(period)
+    microseconds microsecondPeriod) : microsecondPeriod(microsecondPeriod)
 {
     u8 prescaler;
     Timer8Bit::PrescaleOption prescalerOption;
 
-    if(period > 128)
+    if(microsecondPeriod > 128)
     {
         prescaler = 64;
         prescalerOption = Timer8Bit::PrescaleOption::_64;
@@ -33,7 +33,8 @@ MicrosecondPeriodMillisecondTimer::MicrosecondPeriodMillisecondTimer(Timer8Bit& 
         prescalerOption = Timer8Bit::PrescaleOption::_8;
     }
 
-    u8 tickPeriod = round(period * 1000 / (clockFrequency / static_cast<float>(prescaler)));
+    float clockPeriod = (prescaler / static_cast<float>(clockFrequency));
+    u8 tickPeriod = round(static_cast<float>(microsecondPeriod) / clockPeriod);
 
     timer.setPeriod(tickPeriod);
     timer.setPrescaler(prescalerOption);

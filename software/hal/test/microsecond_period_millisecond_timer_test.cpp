@@ -30,8 +30,7 @@ public:
 TEST_F(MicrosecondPeriodMillisecondTimerTest, Period_up_to_128_usec_uses_prescaler_8)
 {
     const microseconds period = 64;
-    const float prescaler = 8;
-    const u8 expectedTickPeriod = std::round(period * 1000.0 / (float)(clockFrequency / prescaler));
+    const u8 expectedTickPeriod = 128;
     EXPECT_CALL(mockTimer, setPrescaler(Timer8Bit::PrescaleOption::_8));
     EXPECT_CALL(mockTimer, setPeriod(expectedTickPeriod));
     usecMillisecondTimer(mockTimer, period);
@@ -40,8 +39,7 @@ TEST_F(MicrosecondPeriodMillisecondTimerTest, Period_up_to_128_usec_uses_prescal
 TEST_F(MicrosecondPeriodMillisecondTimerTest, Period_over_128_usec_uses_prescaler_64)
 {
     const microseconds period = 130;
-    const float prescaler = 64;
-    const u8 expectedTickPeriod = std::round(period * 1000.0 / (float)(clockFrequency / prescaler));
+    const u8 expectedTickPeriod = 33;
     EXPECT_CALL(mockTimer, setPrescaler(Timer8Bit::PrescaleOption::_64));
     EXPECT_CALL(mockTimer, setPeriod(expectedTickPeriod));
     usecMillisecondTimer(mockTimer, period);
