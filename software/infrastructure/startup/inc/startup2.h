@@ -11,6 +11,7 @@
 #include "tempo_control_view.h"
 #include "tempotimingmanager.h"
 #include "led_group.h"
+#include "button_group.h"
 #include "gpio_matrix.h"
 #include "gpiopin.h"
 
@@ -19,7 +20,7 @@ namespace Startup2
 
 void init();
 LedGroup& getStepLeds();
-GpioMatrix<GpioPin>& getButtonMatrix();
+ButtonGroup& getStepButtons();
 
 };
 

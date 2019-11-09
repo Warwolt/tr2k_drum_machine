@@ -13,6 +13,7 @@
 /* Hardware Abstraction Layer */
 #include "charlieplex_mapped_led_group.h"
 #include "microsecond_period_millisecond_timer.h"
+#include "matrix_mapped_button_group.h"
 
 /* Drivers */
 #include "gpiopin.h"
@@ -37,14 +38,8 @@ static CharlieplexMappedLedGroup<GpioPin> charlieStepLeds = CharlieplexMappedLed
 static LedGroup& stepLeds = charlieStepLeds;
 
 /* Pattern edit buttons*/
-// NOTE: While mucking about with testing the button matrix in hardware I'm
-// currently reusing some of the gpio pins that were assigned above! Later on I
-// will have to make an implementation of the button matrix that uses a shift
-// register for gpio expansion, but until then I will run without the 4 digit
-// display and the rotary encoder and just use the buttons and leds.
-
-static Timer0 tim0; // timer0 interrupts used to cycle through digits in segment display
-static constexpr u16 microsecondPeriod = 52; // 19200 Hz, 1200 Hz per LED for 16 LEDs (enough for flicker fusion)
+static Timer0 tim0;
+static constexpr u16 microsecondPeriod = 100; // IF THIS IS LESS THAN 100us BUTTON GROUP WON'T WORK!
 static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
 static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 0; // ms
 static constexpr u8 numButtonColumns = 4;
@@ -55,6 +50,8 @@ static GpioPin buttonRowPins[numButtonRows] = {GpioPin(Pin6, PortD), GpioPin(Pin
 	GpioPin(Pin4, PortD), GpioPin(Pin3, PortD), GpioPin(Pin2, PortD)};
 static GpioMatrix<GpioPin> buttonMatrix = GpioMatrix<GpioPin>(buttonColumnPins, numButtonColumns,
 	buttonRowPins, numButtonRows, microsecondTimer, buttonDebounceTime);
+static constexpr u8 numStepButtons = 16;
+static MatrixMappedButtonGroup<GpioPin> stepButtons = MatrixMappedButtonGroup<GpioPin>(buttonMatrix, numStepButtons, 0);
 
 /* Private function declarations -----------------------------------------------------------------*/
 static void setupTimer0();
@@ -66,9 +63,9 @@ LedGroup& Startup2::getStepLeds()
 	return stepLeds;
 }
 
-GpioMatrix<GpioPin>& Startup2::getButtonMatrix()
+ButtonGroup& Startup2::getStepButtons()
 {
-	return buttonMatrix;
+	return stepButtons;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function
@@ -97,16 +94,9 @@ void registerTimer0InterruptHandlers()
 {
 	InterruptHandler timerISR = []
 	{
-		// quick and dirty way of testing that led output works, should be moved
-		// into a timer compare interrupt running every 50 microseconds!
-		// TODO move this somewhere much more fitting!
 		ledMatrix.outputNextLed();
-
-		// quick and dirty way of testing that microsecond period millisecond
-		// timer works for debouncing buttons in the gpio matrix.
 		microsecondTimer.countPeriod();
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer0CompareMatch;
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
 }
-

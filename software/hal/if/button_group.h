@@ -13,6 +13,7 @@ class ButtonGroup
 {
 public:
     virtual ~ButtonGroup() {};
+    virtual u8 getNumButtons() = 0;
     virtual bool buttonPressedNow(u8 buttonNum) = 0;
     virtual bool buttonReleasedNow(u8 buttonNum) = 0;
     virtual bool buttonIsUp(u8 buttonNum) = 0;

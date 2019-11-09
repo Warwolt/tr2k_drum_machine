@@ -20,6 +20,12 @@ MatrixMappedButtonGroup<IGpioPin>::MatrixMappedButtonGroup(GpioMatrix<IGpioPin>&
 }
 
 template<typename IGpioPin>
+u8 MatrixMappedButtonGroup<IGpioPin>::getNumButtons()
+{
+    return numButtons;
+}
+
+template<typename IGpioPin>
 bool MatrixMappedButtonGroup<IGpioPin>::buttonPressedNow(u8 buttonNum)
 {
     LogicState currentReadState = matrix.readElement(buttonNum + elementOffset);
