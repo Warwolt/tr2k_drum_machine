@@ -1,0 +1,63 @@
+@startuml
+
+skinparam linetype ortho
+
+title TempoTimer implementation
+
+
+''' Class definitions '''
+
+Package "Domain"
+{
+	class PlaybackManager
+	{
+
+	}
+
+	interface TempoTimer
+	{
+		setTempo(bpm : Integer)
+		clearCounter()
+		start()
+		stop()
+	}
+}
+
+Package "Hardware Abstraction Layer"
+{
+	class TempoTimer16Bit
+	{
+
+	}
+
+	interface Timer16Bit
+	{
+		setPeriod(Integer)
+		setPrescaler(PrescaleOption)
+		clearCounter()
+		start()
+		stop()
+	}
+}
+
+Package "Drivers"
+{
+	class Timer1
+	{
+		setPeriod(Integer)
+		setPrescaler(PrescaleOption)
+		clearCounter()
+		start()
+		stop()
+	}
+}
+
+
+''' Class relations '''
+
+PlaybackManager --> TempoTimer
+TempoTimer <|.. TempoTimer16Bit
+TempoTimer16Bit --> Timer16Bit
+Timer16Bit <|.. Timer1
+
+@enduml

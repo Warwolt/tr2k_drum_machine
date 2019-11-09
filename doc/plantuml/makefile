@@ -4,9 +4,9 @@ IMG_DIR := img
 SEQ_DIR := sequence_diagrams
 CLASS_DIR := class_diagrams
 
-SRC := $(wildcard $(SRC_DIR)/$(SEQ_DIR)**/*.txt)
-SRC += $(wildcard $(SRC_DIR)/$(CLASS_DIR)**/*.txt)
-IMG := $(patsubst %.txt,%.png, $(patsubst $(SRC_DIR)/%, $(IMG_DIR)/%, $(SRC)))
+SRC := $(wildcard $(SRC_DIR)/$(SEQ_DIR)**/*.puml)
+SRC += $(wildcard $(SRC_DIR)/$(CLASS_DIR)**/*.puml)
+IMG := $(patsubst %.puml,%.png, $(patsubst $(SRC_DIR)/%, $(IMG_DIR)/%, $(SRC)))
 
 .PHONY: clean doc
 all: $(IMG_DIR) doc
@@ -15,15 +15,15 @@ all: $(IMG_DIR) doc
 doc: $(IMG)
 
 # Todo: Generalize the two rules below into one single rule that takes any
-# .txt file in any depth relative to the src folder and produces a .png image
+# .puml file in any depth relative to the src folder and produces a .png image
 # file with the same path relative to the img folder.
 
-# Create png from txt source in sequence_diagrams subdirectory
-$(IMG_DIR)/$(SEQ_DIR)%.png: $(SRC_DIR)/$(SEQ_DIR)%.txt
+# Create png from puml source in sequence_diagrams subdirectory
+$(IMG_DIR)/$(SEQ_DIR)%.png: $(SRC_DIR)/$(SEQ_DIR)%.puml
 	java -jar jar/plantuml.jar $^ -o ../../$(IMG_DIR)/$(SEQ_DIR)
 
-# Create png from txt source in class_diagrams subdirectory
-$(IMG_DIR)/$(CLASS_DIR)%.png: $(SRC_DIR)/$(CLASS_DIR)%.txt
+# Create png from puml source in class_diagrams subdirectory
+$(IMG_DIR)/$(CLASS_DIR)%.png: $(SRC_DIR)/$(CLASS_DIR)%.puml
 	java -jar jar/plantuml.jar $^ -o ../../$(IMG_DIR)/$(CLASS_DIR)
 
 # Test that graphvizdot is installed and configured

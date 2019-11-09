@@ -1,0 +1,16 @@
+@startuml
+
+title Execute Playback Step
+
+Client->PlaybackTimingManager : handlePlayback()
+PlaybackTimingManager->TempoTimer : playbackStepIsDue()
+TempoTimer-->PlaybackTimingManager : true
+note left: if false, do nothing
+
+loop for each subcriber in subscribers
+
+	PlaybackTimingManager->PlaybackTimingSubscriber : handlePlaybackStep()
+
+end
+
+@enduml
