@@ -42,22 +42,22 @@ all: $(OBJ_DIR) $(BIN)
 
 # Avr header mocks
 $(OBJ_DIR)/%.o: $(AVR_MOCK_DIR)/%.cpp
-	$(CC) $(INC) $(FLAGS) -c $< -MMD -o $@
+	@echo "Compiling AVR header mock $(notdir $@)"
+	@$(CC) $(INC) $(FLAGS) -c $< -MMD -o $@
 
 # Include all dependency .d files
 DEP = $(OBJ:%.o=%.d)
 -include $(DEP)
 
 $(BIN): $(OBJ)
-	@echo Building executable $@
-	$(CC) $(FLAGS) $(INC) $^ $(LIB) $(LINK_FLAGS) -o $@
+	@echo "Linking $(notdir $@)"
+	@$(CC) $(FLAGS) $(INC) $^ $(LIB) $(LINK_FLAGS) -o $@
 
+# Makes folder if missing
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR) # Makes folder if missing
+	@mkdir -p $(OBJ_DIR)
 
 clean:
-	@echo Cleaning folder
-	rm -rf $(OBJ_DIR) $(BIN)
+	@echo "Cleaning test build folders"
+	@rm -rf $(OBJ_DIR) $(BIN)
 
-debug:
-	$(CC) -E $(FLAGS) $(PROJ_ROOT)/app/infrastructure/ihm/src/ihm.cpp $(INC) $(LIB) $(LINK_FLAGS)

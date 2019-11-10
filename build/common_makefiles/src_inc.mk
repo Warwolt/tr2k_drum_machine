@@ -14,4 +14,5 @@ OBJ += $(patsubst %.cpp,%.o, $(patsubst $(SRC_DIR)/%, $(OBJ_DIR)/%, $(SRC)))
 
 # Rule for compiling local source files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) $(INC) $(FLAGS) -c $< -MMD -o $@
+	@echo "Compiling $(notdir $<)"
+	@$(CC) $(INC) $(FLAGS) -c $< -MMD -o $@

@@ -43,11 +43,14 @@ DEP = $(OBJ:%.o=%.d)
 
 # Make avr binary
 $(BIN): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) $(LIB) -MMD -o $(BIN)
-	$(OBJCOPY) -j .text -j .data -O ihex $(BIN) $(HEXFILE)
+	@echo "Linking $(notdir $@)"
+	@$(CC) $(FLAGS) $(OBJ) $(LIB) -MMD -o $(BIN)
+	@echo "Creating hex-file $(notdir $(HEXFILE))"
+	@$(OBJCOPY) -j .text -j .data -O ihex $(BIN) $(HEXFILE)
 
 $(OBJ_DIR)/main.o: $(APP_ROOT)/main.cpp
-	$(CC) $(FLAGS) $(INC) $< -MMD -c -o $@
+	@echo "Compiling $(notdir $<)"
+	@$(CC) $(FLAGS) $(INC) $< -MMD -c -o $@
 
 # Flash program to microcontroller
 flash:
@@ -58,8 +61,8 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 clean:
-	@echo Cleaning folder
-	rm -rf $(BIN) $(OBJ_DIR)
+	@echo "Cleaning binary build folders"
+	@rm -rf $(BIN) $(OBJ_DIR)
 
 debug:
 	$(CC) -E $(FLAGS) $(INC) $(PROJ_ROOT)/app/main.cpp $(LIB) $(LINK_FLAGS)
