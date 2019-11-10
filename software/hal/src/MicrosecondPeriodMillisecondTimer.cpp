@@ -5,7 +5,7 @@
 ****************************************************************************************************
 */
 
-#include "microsecond_period_millisecond_timer.h"
+#include "MicrosecondPeriodMillisecondTimer.h"
 #include <math.h>
 
 #ifdef UNIT_TESTING

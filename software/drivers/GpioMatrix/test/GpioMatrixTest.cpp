@@ -7,9 +7,9 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "igpiopin_mock.h"
-#include "millisecond_timer_mock.h"
-#include "gpio_matrix.h"
+#include "IGpioPinMock.h"
+#include "MillisecondTimerMock.h"
+#include "GpioMatrix.h"
 
 using ::testing::NiceMock;
 using ::testing::Return;

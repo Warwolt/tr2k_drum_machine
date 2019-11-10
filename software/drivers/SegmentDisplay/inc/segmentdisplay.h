@@ -9,7 +9,7 @@
 
 #include "fourdigitdisplay.h"
 #include "linuxtypes.h"
-#include "spi.h"
+#include "Spi.h"
 
 class SegmentDisplay74HC595 : public FourDigitDisplay
 {

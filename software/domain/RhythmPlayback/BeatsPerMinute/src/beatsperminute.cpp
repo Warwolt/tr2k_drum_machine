@@ -4,7 +4,7 @@
 ****************************************************************************************************
 */
 
-#include "beatsperminute.h"
+#include "BeatsPerMinute.h"
 
 BeatsPerMinute::BeatsPerMinute(u8 wholePart)
 {

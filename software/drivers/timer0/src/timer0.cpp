@@ -4,7 +4,7 @@
 ****************************************************************************************************
 */
 
-#include "timer0.h"
+#include "Timer0.h"
 
 /**
  * Default constructor, initializes register pointers.

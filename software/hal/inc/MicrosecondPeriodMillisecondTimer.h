@@ -9,8 +9,8 @@
 #define MICROSECOND_PERIOD_MILLISECOND_TIMER_H
 
 #include "linuxtypes.h"
-#include "millisecond_timer.h"
-#include "timer8bit.h"
+#include "MillisecondTimer.h"
+#include "Timer8Bit.h"
 
 class MicrosecondPeriodMillisecondTimer : public MillisecondTimer
 {

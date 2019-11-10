@@ -6,7 +6,7 @@
 
 #include "gtest/gtest.h"
 #include "traceprint.h"
-#include "gpiopin.h"
+#include "GpioPin.h"
 #include <vector>
 
 class TestGpioPin : public ::testing::Test

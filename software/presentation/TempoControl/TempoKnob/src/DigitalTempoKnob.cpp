@@ -5,10 +5,10 @@
 */
 
 #include "DigitalTempoKnob.h"
-#include "gpiopin.h"
+#include "GpioPin.h"
 
 #ifdef UNIT_TESTING
-#include "igpiopin_mock.h"
+#include "IGpioPinMock.h"
 #endif
 
 #include "traceprint.h"

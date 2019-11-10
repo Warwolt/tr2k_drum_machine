@@ -9,8 +9,8 @@
 int main()
 {
 	Startup::init();
-	LedGroup& stepLeds = Startup2::getStepLeds();
-	ButtonGroup& stepButtons = Startup2::getStepButtons();
+	LedGroup& stepLeds = Startup::getStepLeds();
+	ButtonGroup& stepButtons = Startup::getStepButtons();
 
 	while(1)
 	{

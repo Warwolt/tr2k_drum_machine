@@ -9,7 +9,7 @@
 
 #include "linuxtypes.h"
 #include "TempoKnob.h"
-#include "rotary_encoder.h"
+#include "RotaryEncoder.h"
 
 template<typename IGpioPin>
 class DigitalTempoKnob : public TempoKnob

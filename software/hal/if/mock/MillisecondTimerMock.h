@@ -8,7 +8,7 @@
 #define MILLISECOND_TIMER_MOCK
 
 #include "gmock/gmock.h"
-#include "millisecond_timer.h"
+#include "MillisecondTimer.h"
 #include "linuxtypes.h"
 
 class MillisecondTimerMock : public MillisecondTimer

@@ -9,7 +9,7 @@
 #define TEMPO_TIMING_MANAGER_H
 
 #include "linuxtypes.h"
-#include "tempotimer.h"
+#include "TempoTimer.h"
 
 /**
  * Callback function that executes some playback related code.

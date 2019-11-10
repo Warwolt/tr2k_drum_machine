@@ -8,7 +8,7 @@
 #define TIMER_16_BIT_MOCK_H
 
 #include "gmock/gmock.h"
-#include "tempotimer.h"
+#include "TempoTimer.h"
 #include "linuxtypes.h"
 
 class TempoTimerMock : public TempoTimer

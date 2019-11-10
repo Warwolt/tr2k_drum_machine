@@ -7,9 +7,9 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "tempotimer16bit.h"
+#include "tempoTimer16Bit.h"
 #include "timer16bitmock.h"
-#include "beatsperminute.h"
+#include "BeatsPerMinute.h"
 #include <cmath>
 
 using testing::NiceMock;

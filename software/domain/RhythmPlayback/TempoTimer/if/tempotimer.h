@@ -8,7 +8,7 @@
 #ifndef TEMPO_TIMER_H
 #define TEMPO_TIMER_H
 
-#include "beatsperminute.h"
+#include "BeatsPerMinute.h"
 
 class TempoTimer
 {

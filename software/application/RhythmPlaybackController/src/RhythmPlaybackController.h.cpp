@@ -4,9 +4,9 @@
 ****************************************************************************************************
 */
 
-#include "rhythm_playback_controller.h"
+#include "RhythmPlaybackController.h"
 #include "TempoKnob.h"
-#include "fourdigitdisplay.h"
+#include "FourDigitDisplay.h"
 
 RhythmPlaybackController::RhythmPlaybackController(TempoTimer& timer) : tempoTimer(timer)
 {

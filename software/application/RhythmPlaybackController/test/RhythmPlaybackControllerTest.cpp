@@ -7,8 +7,8 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "rhythm_playback_controller.h"
-#include "tempotimermock.h"
+#include "RhythmPlaybackController.h"
+#include "TempoTimerMock.h"
 
 class TestRhythmPlaybackController : public ::testing::Test
 {

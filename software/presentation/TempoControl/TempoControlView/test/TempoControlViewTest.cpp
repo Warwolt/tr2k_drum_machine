@@ -9,8 +9,8 @@
 #include "linuxtypes.h"
 #include "TempoControlView.h"
 #include "TempoKnobMock.h"
-#include "fourdigitdisplaymock.h"
-#include "tempotimermock.h"
+#include "FourDigitDisplayMock.h"
+#include "TempoTimerMock.h"
 
 using ::testing::Return;
 using ::testing::NiceMock;

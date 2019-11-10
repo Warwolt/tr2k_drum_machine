@@ -9,7 +9,7 @@
 
 #include "linuxtypes.h"
 #include <avr/io.h>
-#include "timer8bit.h"
+#include "Timer8Bit.h"
 
 class Timer0 : public Timer8Bit
 {

@@ -7,7 +7,7 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "timer0.h"
+#include "Timer0.h"
 
 class TestTimer0 : public ::testing::Test
 {

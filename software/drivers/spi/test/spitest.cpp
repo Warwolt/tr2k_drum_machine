@@ -7,7 +7,7 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "spi.h"
+#include "Spi.h"
 
 constexpr u8 MOSI_PIN_NUMBER = 3;
 constexpr u8 SCK_PIN_NUMBER = 5;

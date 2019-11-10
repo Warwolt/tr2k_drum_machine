@@ -7,7 +7,7 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "beatsperminute.h"
+#include "BeatsPerMinute.h"
 
 static const float precision = 0.01; // precise to 100ths place
 

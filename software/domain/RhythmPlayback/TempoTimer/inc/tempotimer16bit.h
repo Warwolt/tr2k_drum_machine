@@ -8,8 +8,8 @@
 #define TEMPO_TIMER_16_BIT_H
 
 #include "linuxtypes.h"
-#include "tempotimer.h"
-#include "timer16bit.h"
+#include "TempoTimer.h"
+#include "Timer16Bit.h"
 
 class TempoTimer16Bit : public TempoTimer
 {

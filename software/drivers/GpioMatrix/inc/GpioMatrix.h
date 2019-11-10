@@ -9,8 +9,8 @@
 #define GPIO_MATRIX_H
 
 #include "linuxtypes.h"
-#include "igpiopin.h"
-#include "millisecond_timer.h"
+#include "IGpioPin.h"
+#include "MillisecondTimer.h"
 
 template<typename IGpioPin>
 class GpioMatrix

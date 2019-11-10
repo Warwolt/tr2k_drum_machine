@@ -4,11 +4,11 @@
 ****************************************************************************************************
 */
 
-#include "charlieplex_mapped_led_group.h"
-#include "gpiopin.h"
+#include "CharlieplexMappedLedGroup.h"
+#include "GpioPin.h"
 
 #ifdef UNIT_TESTING
-#include "igpiopin_mock.h"
+#include "IGpioPinMock.h"
 #include "traceprint.h"
 #endif
 

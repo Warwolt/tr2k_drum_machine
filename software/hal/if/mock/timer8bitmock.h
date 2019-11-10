@@ -8,7 +8,7 @@
 #define TIMER_8_BIT_MOCK_H
 
 #include "gmock/gmock.h"
-#include "timer8bit.h"
+#include "Timer8Bit.h"
 #include "linuxtypes.h"
 
 class Timer8BitMock : public Timer8Bit

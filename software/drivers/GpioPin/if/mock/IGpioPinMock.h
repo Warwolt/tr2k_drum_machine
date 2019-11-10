@@ -9,7 +9,7 @@
 
 #include "gmock/gmock.h"
 #include "linuxtypes.h"
-#include "igpiopin.h"
+#include "IGpioPin.h"
 
 class GpioPinMock : public IGpioPin
 {

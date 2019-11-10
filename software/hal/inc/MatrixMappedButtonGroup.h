@@ -8,7 +8,7 @@
 #define MATRIX_MAPPED_BUTTON_GROUP_H
 
 #include "linuxtypes.h"
-#include "gpio_matrix.h"
+#include "GpioMatrix.h"
 #include "ButtonGroup.h"
 
 template<typename IGpioPin>

@@ -7,8 +7,8 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "rotary_encoder.h"
-#include "igpiopin_mock.h"
+#include "RotaryEncoder.h"
+#include "IGpioPinMock.h"
 
 using ::testing::Return;
 

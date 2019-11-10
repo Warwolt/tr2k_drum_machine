@@ -9,7 +9,7 @@
 
 #include "gmock/gmock.h"
 #include "linuxtypes.h"
-#include "fourdigitdisplay.h"
+#include "FourDigitDisplay.h"
 
 class FourDigitDisplayMock : public FourDigitDisplay
 {

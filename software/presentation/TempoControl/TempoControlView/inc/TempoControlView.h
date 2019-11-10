@@ -7,7 +7,7 @@
 #ifndef TEMPO_CONTROL_VIEW_H
 #define TEMPO_CONTROL_VIEW_H
 
-#include "rhythm_playback_controller.h"
+#include "RhythmPlaybackController.h"
 #include "TempoKnob.h"
 #include "fourdigitdisplay.h"
 

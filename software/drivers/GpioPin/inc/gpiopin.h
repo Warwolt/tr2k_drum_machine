@@ -7,7 +7,7 @@
 #ifndef GPIO_PIN_H
 #define GPIO_PIN_H
 
-#include "igpiopin.h"
+#include "IGpioPin.h"
 #include <stdio.h>
 #include <avr/io.h>
 #include "linuxtypes.h"

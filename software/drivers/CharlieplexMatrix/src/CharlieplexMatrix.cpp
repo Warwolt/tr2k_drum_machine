@@ -4,11 +4,11 @@
 ****************************************************************************************************
 */
 
-#include "charlieplex_matrix.h"
-#include "gpiopin.h"
+#include "CharlieplexMatrix.h"
+#include "GpioPin.h"
 
 #ifdef UNIT_TESTING
-#include "igpiopin_mock.h"
+#include "IGpioPinMock.h"
 #include "traceprint.h"
 #endif
 

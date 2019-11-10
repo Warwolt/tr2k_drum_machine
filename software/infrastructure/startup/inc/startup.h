@@ -8,12 +8,12 @@
 #ifndef STARTUP_2_H
 #define STARTUP_2_H
 
-#include "tempo_control_view.h"
-#include "tempotimingmanager.h"
-#include "led_group.h"
-#include "button_group.h"
-#include "gpio_matrix.h"
-#include "gpiopin.h"
+#include "TempoControlView.h"
+#include "TempoTimingManager.h"
+#include "LedGroup.h"
+#include "ButtonGroup.h"
+#include "GpioMatrix.h"
+#include "GpioPin.h"
 
 namespace Startup
 {

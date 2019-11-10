@@ -4,12 +4,12 @@
 ****************************************************************************************************
 */
 
-#include "matrix_mapped_button_group.h"
+#include "MatrixMappedButtonGroup.h"
 #include "linuxtypes.h"
-#include "gpiopin.h"
+#include "GpioPin.h"
 
 #ifdef UNIT_TESTING
-#include "igpiopin_mock.h"
+#include "IGpioPinMock.h"
 #endif
 
 template<typename IGpioPin>

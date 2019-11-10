@@ -7,8 +7,8 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "charlieplex_matrix.h"
-#include "igpiopin_mock.h"
+#include "CharlieplexMatrix.h"
+#include "IGpioPinMock.h"
 
 using ::testing::Return;
 using ::testing::AtLeast;

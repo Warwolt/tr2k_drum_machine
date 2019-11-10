@@ -6,7 +6,7 @@
 
 #include "gtest/gtest.h"
 #include "traceprint.h"
-#include "segmentdisplay.h"
+#include "SegmentDisplay.h"
 #include <map>
 
 using digitValue = u8;

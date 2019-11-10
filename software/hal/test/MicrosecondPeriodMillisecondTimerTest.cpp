@@ -7,8 +7,8 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "igpiopin_mock.h"
-#include "microsecond_period_millisecond_timer.h"
+#include "IGpioPinMock.h"
+#include "MicrosecondPeriodMillisecondTimer.h"
 #include "timer8bitmock.h"
 #include <cmath>
 

@@ -7,9 +7,9 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "charlieplex_mapped_led_group.h"
-#include "charlieplex_matrix.h"
-#include "igpiopin_mock.h"
+#include "CharlieplexMappedLedGroup.h"
+#include "CharlieplexMatrix.h"
+#include "IGpioPinMock.h"
 
 using ::testing::Return;
 using ::testing::AtLeast;

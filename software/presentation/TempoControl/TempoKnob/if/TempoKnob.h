@@ -7,7 +7,7 @@
 #ifndef TEMPO_KNOB_H
 #define TEMPO_KNOB_H
 
-#include "beatsperminute.h"
+#include "BeatsPerMinute.h"
 
 class TempoKnob
 {

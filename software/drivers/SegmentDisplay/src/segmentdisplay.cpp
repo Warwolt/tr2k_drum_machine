@@ -4,7 +4,7 @@
 ****************************************************************************************************
 */
 
-#include "segmentdisplay.h"
+#include "SegmentDisplay.h"
 #include "traceprint.h"
 
 static constexpr u8 segmentDataLookupTable[10]

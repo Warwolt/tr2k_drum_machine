@@ -11,14 +11,14 @@
 #include <avr/io.h>
 
 /* Hardware Abstraction Layer */
-#include "charlieplex_mapped_led_group.h"
-#include "microsecond_period_millisecond_timer.h"
-#include "matrix_mapped_button_group.h"
+#include "CharlieplexMappedLedGroup.h"
+#include "MicrosecondPeriodMillisecondTimer.h"
+#include "MatrixMappedButtonGroup.h"
 
 /* Drivers */
-#include "gpiopin.h"
-#include "timer0.h"
-#include "charlieplex_matrix.h"
+#include "GpioPin.h"
+#include "Timer0.h"
+#include "CharlieplexMatrix.h"
 
 /* Infrastructure */
 #include "interrupts.h"

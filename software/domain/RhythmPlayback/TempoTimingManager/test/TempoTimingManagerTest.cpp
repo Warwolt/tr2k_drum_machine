@@ -8,7 +8,7 @@
 #include "gmock/gmock.h"
 #include "traceprint.h"
 #include "tempotimingmanager.h"
-#include "tempotimermock.h"
+#include "TempoTimerMock.h"
 
 using testing::NiceMock;
 using testing::Return;

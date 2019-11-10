@@ -7,8 +7,8 @@
 #ifndef CHARLIEPLEX_MAPPED_LED_GROUP_H
 #define CHARLIEPLEX_MAPPED_LED_GROUP_H
 
-#include "led_group.h"
-#include "charlieplex_matrix.h"
+#include "LedGroup.h"
+#include "CharlieplexMatrix.h"
 
 template<typename IGpioPin>
 class CharlieplexMappedLedGroup : public LedGroup
