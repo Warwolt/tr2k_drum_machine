@@ -8,7 +8,7 @@
 #define TEMPO_CONTROL_VIEW_H
 
 #include "rhythm_playback_controller.h"
-#include "tempo_knob.h"
+#include "TempoKnob.h"
 #include "fourdigitdisplay.h"
 
 class TempoControlView

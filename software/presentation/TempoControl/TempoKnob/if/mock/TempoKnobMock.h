@@ -8,7 +8,7 @@
 #define TEMPO_KNOB_MOCK_H
 
 #include "gmock/gmock.h"
-#include "tempo_knob.h"
+#include "TempoKnob.h"
 
 class TempoKnobMock : public TempoKnob
 {

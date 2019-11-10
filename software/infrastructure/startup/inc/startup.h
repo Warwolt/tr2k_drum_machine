@@ -5,12 +5,13 @@
 ****************************************************************************************************
 */
 
-#ifndef STARTUP_H
-#define STARTUP_H
+#ifndef STARTUP_2_H
+#define STARTUP_2_H
 
 #include "tempo_control_view.h"
 #include "tempotimingmanager.h"
 #include "led_group.h"
+#include "button_group.h"
 #include "gpio_matrix.h"
 #include "gpiopin.h"
 
@@ -18,11 +19,9 @@ namespace Startup
 {
 
 void init();
-TempoControlView& getTempoControlView();
-TempoTimingManager& getTempoTimingManager();
 LedGroup& getStepLeds();
-GpioMatrix<GpioPin>& getButtonMatrix();
+ButtonGroup& getStepButtons();
 
 };
 
-#endif /* STARTUP_H */
+#endif /* STARTUP_2_H */

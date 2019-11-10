@@ -7,8 +7,8 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "tempo_control_view.h"
-#include "tempo_knob_mock.h"
+#include "TempoControlView.h"
+#include "TempoKnobMock.h"
 #include "fourdigitdisplaymock.h"
 #include "tempotimermock.h"
 

@@ -7,7 +7,7 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "digital_tempo_knob.h"
+#include "DigitalTempoKnob.h"
 #include "rotary_encoder.h"
 #include "igpiopin_mock.h"
 

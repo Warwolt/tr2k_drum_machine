@@ -4,7 +4,7 @@
 ****************************************************************************************************
 */
 
-#include "tempo_control_view.h"
+#include "TempoControlView.h"
 
 TempoControlView::TempoControlView(RhythmPlaybackController& controller, TempoKnob& knob,
 		FourDigitDisplay& display) : controller(controller), knob(knob), display(display)

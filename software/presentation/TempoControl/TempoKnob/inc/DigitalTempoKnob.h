@@ -8,7 +8,7 @@
 #define DIGITAL_TEMPO_KNOB_H
 
 #include "linuxtypes.h"
-#include "tempo_knob.h"
+#include "TempoKnob.h"
 #include "rotary_encoder.h"
 
 template<typename IGpioPin>

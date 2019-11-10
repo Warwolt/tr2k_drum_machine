@@ -4,11 +4,11 @@
 ****************************************************************************************************
 */
 
-#include "startup2.h"
+#include "Startup.h"
 
 int main()
 {
-	Startup2::init();
+	Startup::init();
 	LedGroup& stepLeds = Startup2::getStepLeds();
 	ButtonGroup& stepButtons = Startup2::getStepButtons();
 

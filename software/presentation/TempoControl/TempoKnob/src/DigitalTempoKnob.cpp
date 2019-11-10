@@ -4,7 +4,7 @@
 ****************************************************************************************************
 */
 
-#include "digital_tempo_knob.h"
+#include "DigitalTempoKnob.h"
 #include "gpiopin.h"
 
 #ifdef UNIT_TESTING

@@ -9,7 +9,7 @@
 
 #include "linuxtypes.h"
 #include "gpio_matrix.h"
-#include "button_group.h"
+#include "ButtonGroup.h"
 
 template<typename IGpioPin>
 class MatrixMappedButtonGroup : public ButtonGroup

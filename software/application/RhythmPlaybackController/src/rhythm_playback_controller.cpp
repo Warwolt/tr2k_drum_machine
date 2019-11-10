@@ -5,7 +5,7 @@
 */
 
 #include "rhythm_playback_controller.h"
-#include "tempo_knob.h"
+#include "TempoKnob.h"
 #include "fourdigitdisplay.h"
 
 RhythmPlaybackController::RhythmPlaybackController(TempoTimer& timer) : tempoTimer(timer)

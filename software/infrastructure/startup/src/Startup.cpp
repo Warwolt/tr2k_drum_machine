@@ -6,7 +6,7 @@
 */
 
 /* Includes --------------------------------------------------------------------------------------*/
-#include "startup2.h"
+#include "Startup.h"
 #include <util/delay.h>
 #include <avr/io.h>
 
@@ -58,19 +58,19 @@ static void setupTimer0();
 static void registerTimer0InterruptHandlers();
 
 /* Public function definitions -------------------------------------------------------------------*/
-LedGroup& Startup2::getStepLeds()
+LedGroup& Startup::getStepLeds()
 {
 	return stepLeds;
 }
 
-ButtonGroup& Startup2::getStepButtons()
+ButtonGroup& Startup::getStepButtons()
 {
 	return stepButtons;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function
  * MUST be called before using any object to guarantee correct behavior! */
-void Startup2::init()
+void Startup::init()
 {
 	Interrupts::enableInterruptsGlobally();
 

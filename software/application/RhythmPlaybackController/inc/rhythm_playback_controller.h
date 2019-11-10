@@ -8,7 +8,7 @@
 #define RHYTHM_PLAYBACK_CONTROLLER_H
 
 #include "linuxtypes.h"
-#include "tempotimer.h"
+#include "TempoTimer.h"
 
 class RhythmPlaybackController
 {
