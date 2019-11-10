@@ -1,0 +1,56 @@
+@startuml
+
+title Overall Step Sequencer MVC-Architecture
+
+''' Class definitions '''
+package Presentation
+{
+    class PlaybackTempoView
+    class PlaybackTransportView
+    class RhythmEditView
+}
+
+package Application
+{
+    class PlaybackTempoController
+    class PlaybackTransportController
+    class RhythmEditController
+}
+
+package Domain
+{
+    class PlaybackChannelManager
+    note left of PlaybackChannelManager : Handles outputing trigger signals
+
+    class RhythmPatternManager
+    note right of RhythmPatternManager : Stores programmed rhythms
+
+    class RhythmPlaybackHandler <<callback function>>
+    note left of RhythmPlaybackHandler : Handles a single playback step
+
+    interface TempoTimer
+    note right of TempoTimer : Keeps track of when 16th notes occur
+
+    class TempoTimingManager
+    note left of TempoTimingManager : Coordinates playback handling with tempo
+}
+
+''' Class relations '''
+' Views '
+PlaybackTempoView -down-> PlaybackTempoController
+PlaybackTransportView -down-> PlaybackTransportController
+RhythmEditView -down-> RhythmEditController
+
+' Controllers '
+PlaybackTempoController -down-> TempoTimer : << write >>
+PlaybackTransportController -down-> TempoTimer : << write >>
+PlaybackTransportController -down-> TempoTimingManager : << write >>
+RhythmEditController -down-> RhythmPatternManager : << write >>
+
+' Domain '
+TempoTimingManager *-down->"1..*" RhythmPlaybackHandler : << call >>
+TempoTimingManager -down-> TempoTimer : << read >>
+RhythmPlaybackHandler -down-> PlaybackChannelManager : << call >>
+RhythmPlaybackHandler -down-> RhythmPatternManager : << read >>
+
+@enduml
