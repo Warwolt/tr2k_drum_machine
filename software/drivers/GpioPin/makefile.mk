@@ -2,7 +2,7 @@
 # This file is included in the main makefile
 #
 
-MODULE_DIR := $(APP_ROOT)/application/rhythm_playback_controller
+MODULE_DIR := $(APP_ROOT)/drivers/GpioPin
 -include common_makefiles/if.mk
 -include common_makefiles/src_inc.mk
 -include common_makefiles/test.mk
