@@ -6,11 +6,13 @@
 
 #include "Startup.h"
 
+static LedGroup& stepLeds = Startup::getStepLeds();
+static ButtonGroup& stepButtons = Startup::getStepButtons();
+static CallbackScheduler& scheduler = Startup::getCallbackScheduler();
+
 int main()
 {
 	Startup::init();
-	LedGroup& stepLeds = Startup::getStepLeds();
-	ButtonGroup& stepButtons = Startup::getStepButtons();
 
 	while(1)
 	{
@@ -19,7 +21,10 @@ int main()
 			if(stepButtons.buttonPressedNow(i))
 			{
 				stepLeds.toggleLed(i);
+				scheduler.scheduleCallback([](u16 x){ stepLeds.clearLed(x);}, i, 1500);
 			}
 		}
+
+		scheduler.checkSchedule();
 	}
 }

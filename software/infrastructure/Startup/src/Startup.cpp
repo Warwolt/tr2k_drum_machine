@@ -21,7 +21,7 @@
 #include "CharlieplexMatrix.h"
 
 /* Infrastructure */
-#include "interrupts.h"
+#include "Interrupts.h"
 
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Pattern edit LEDs */
@@ -41,7 +41,7 @@ static LedGroup& stepLeds = charlieStepLeds;
 static Timer0 tim0;
 static constexpr u16 microsecondPeriod = 100; // IF THIS IS LESS THAN 100us BUTTON GROUP WON'T WORK!
 static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
-static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 0; // ms
+static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 50; // ms
 static constexpr u8 numButtonColumns = 4;
 static constexpr u8 numButtonRows = 5;
 static GpioPin buttonColumnPins[numButtonColumns] = {GpioPin(Pin3, PortB), GpioPin(Pin2, PortB),
@@ -66,6 +66,13 @@ LedGroup& Startup::getStepLeds()
 ButtonGroup& Startup::getStepButtons()
 {
 	return stepButtons;
+}
+
+// quick dirty test, don't commit this to master!
+static CallbackScheduler scheduler = CallbackScheduler(microsecondTimer);
+CallbackScheduler& Startup::getCallbackScheduler()
+{
+	return scheduler;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function

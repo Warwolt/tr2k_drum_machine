@@ -7,8 +7,8 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "tempoTimer16Bit.h"
-#include "timer16bitmock.h"
+#include "TempoTimer16Bit.h"
+#include "Timer16BitMock.h"
 #include "BeatsPerMinute.h"
 #include <cmath>
 

@@ -7,7 +7,7 @@
 #ifndef SEGMENT_DISPLAY_H
 #define SEGMENT_DISPLAY_H
 
-#include "fourdigitdisplay.h"
+#include "FourDigitDisplay.h"
 #include "linuxtypes.h"
 #include "Spi.h"
 

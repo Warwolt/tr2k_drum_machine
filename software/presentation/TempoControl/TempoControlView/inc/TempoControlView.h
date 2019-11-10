@@ -9,7 +9,7 @@
 
 #include "RhythmPlaybackController.h"
 #include "TempoKnob.h"
-#include "fourdigitdisplay.h"
+#include "FourDigitDisplay.h"
 
 class TempoControlView
 {

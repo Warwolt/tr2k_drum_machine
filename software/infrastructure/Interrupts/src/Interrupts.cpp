@@ -5,7 +5,7 @@
 ****************************************************************************************************
 */
 
-#include "interrupts.h"
+#include "Interrupts.h"
 
 static InterruptHandler timer0CompareHandler = nullptr;
 static InterruptHandler timer1CompareHandler = nullptr;

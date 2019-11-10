@@ -4,7 +4,7 @@
 ****************************************************************************************************
 */
 
-#include "tempotimer16Bit.h"
+#include "TempoTimer16Bit.h"
 #include <math.h>
 
 TempoTimer16Bit::TempoTimer16Bit(Timer16Bit& timer16Bit) : timer16Bit(timer16Bit)
