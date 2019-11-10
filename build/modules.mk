@@ -18,6 +18,7 @@ DOMAIN_DIR = $(APP_ROOT)/domain
 
 # Infrastructure
 INFRASRTUCTURE_DIR = $(APP_ROOT)/infrastructure
+-include $(INFRASRTUCTURE_DIR)/CallbackScheduler/makefile.mk
 -include $(INFRASRTUCTURE_DIR)/Interrupts/makefile.mk
 -include $(INFRASRTUCTURE_DIR)/startup/makefile.mk
 
