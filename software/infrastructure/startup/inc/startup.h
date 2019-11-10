@@ -14,6 +14,7 @@
 #include "ButtonGroup.h"
 #include "GpioMatrix.h"
 #include "GpioPin.h"
+#include "CallbackScheduler.h"
 
 namespace Startup
 {
@@ -21,6 +22,7 @@ namespace Startup
 void init();
 LedGroup& getStepLeds();
 ButtonGroup& getStepButtons();
+CallbackScheduler& getCallbackScheduler();
 
 };
 

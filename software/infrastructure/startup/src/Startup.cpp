@@ -68,6 +68,13 @@ ButtonGroup& Startup::getStepButtons()
 	return stepButtons;
 }
 
+// quick dirty test, don't commit this to master!
+static CallbackScheduler scheduler = CallbackScheduler(microsecondTimer);
+CallbackScheduler& Startup::getCallbackScheduler()
+{
+	return scheduler;
+}
+
 /* Configure all objects instantiated by the Startup module. NB: this function
  * MUST be called before using any object to guarantee correct behavior! */
 void Startup::init()
