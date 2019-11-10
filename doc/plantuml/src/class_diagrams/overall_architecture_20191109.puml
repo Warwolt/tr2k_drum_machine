@@ -1,56 +1,219 @@
 @startuml
 
+' skinparam linetype ortho
+
 title Overall Step Sequencer MVC-Architecture
 
 ''' Class definitions '''
 package Presentation
 {
-    class PlaybackTempoView
+    class TempoControlView
+    {
+        handleTempoControl()
+    }
+
     class PlaybackTransportView
+    {
+        handleTransportControl()
+    }
+
     class RhythmEditView
+    {
+        handleRhythmEditing()
+    }
+
+    class TempoKnob
+    {
+        read() : BeatsPerMinute
+    }
+
+    class DigitalTempoKnob
+    {
+        read() : BeatsPerMinute
+    }
 }
 
 package Application
 {
-    class PlaybackTempoController
-    class PlaybackTransportController
+    class RhythmPlaybackController
+    {
+        setTempo(bpm : BeatsPerMinute)
+	    restartPlayback()
+	    stopPlayback()
+	    continuePlayback()
+    }
+
     class RhythmEditController
+    {
+        selectActivePattern(patternNum : int)
+        toggleActivePatternStep(stepNum : int)
+        getActivePatternState() : PatternState
+        clearActivePattern()
+    }
 }
 
 package Domain
 {
+    ' note left of PlaybackChannelManager : Handles outputing trigger signals
     class PlaybackChannelManager
-    note left of PlaybackChannelManager : Handles outputing trigger signals
+    {
+        outputSignal(channelNum : int)
+    }
 
+    ' note right of RhythmPatternManager : Stores programmed rhythms
     class RhythmPatternManager
-    note right of RhythmPatternManager : Stores programmed rhythms
+    {
+        patternStepIsActive(patternNum : int, stepNum : int) : bool
+        toggleStepInPattern(patternNum : int, stepNum : int)
+        clearPattern(patternNum : int)
+        incrementAllPlaybackPositions()
+        resetAllPlaybackackPositions()
+    }
 
-    class RhythmPlaybackHandler <<callback function>>
-    note left of RhythmPlaybackHandler : Handles a single playback step
+    ' note left of PlaybackStepHandler : Handles a single playback step\n(including but not limited to outputing signals)
+    class PlaybackStepHandler <<callback function>>
+    {
+        handlePlaybackStep()
+    }
 
+    ' note right of TempoTimer : Keeps track of when 16th notes occur
     interface TempoTimer
-    note right of TempoTimer : Keeps track of when 16th notes occur
+    {
+        setTempo(BeatsPerMinute)
+        start()
+        stop()
+        clear()
+        playbackStepIsDue() : bool
+        startCountingNextStep()
+    }
 
+    class TempoTimer16Bit
+    {
+        setTempo(BeatsPerMinute bpm)
+        start()
+        stop()
+        clear()
+        countPulse()
+        playbackStepIsDue() : bool
+        startCountingNextStep()
+    }
+
+    ' note left of TempoTimingManager : Coordinates playback handling with tempo
     class TempoTimingManager
-    note left of TempoTimingManager : Coordinates playback handling with tempo
+    {
+        addPlaybackStepHandler(handler : PlaybackStepHandler)
+        handlePlayback()
+    }
 }
+
+package HardwareAbstractionLayer
+{
+    interface ButtonGroup
+    {
+        getNumButtons() : int
+        buttonPressedNow(u8 buttonNum) : bool
+        buttonReleasedNow(u8 buttonNum) : bool
+        buttonIsUp(u8 buttonNum) : bool
+        buttonIsDown(u8 buttonNum) : bool
+    }
+
+    interface LedGroup
+    {
+        getNumLeds() : int
+        setLed(ledNum : int)
+        clearLed(ledNum : int)
+        toggleLed(ledNum : int)
+    }
+
+    interface FourDigitDisplay
+    {
+	    setNumberToDisplay(number : int)
+	    enableDecimalPoint(digit : int)
+	    disableDecimalPoint(digit : int)
+    }
+
+    class CharlieplexMappedLedGroup
+    class MatrixMappedButtonGroup
+
+    interface Timer16bit
+    {
+        setPrescaler(prescaler : PrescaleOption)
+        setPeriod(period : int)
+        start()
+        stop()
+        clear()
+    }
+}
+
+Package Driver
+{
+    class CharlieplexMatrix
+    class GpioMatrix
+
+    class GpioPin
+    {
+        setDirection(dir : GpioPinDirection)
+        set()
+        clear()
+        toggle()
+    }
+
+    class RotaryEncoder
+    {
+	    handleEdge()
+	    setRotationCeiling(ceil : int)
+	    setRotationFloor(floor : int)
+	    getNumRotations() : int
+    }
+
+    class SegmentDisplay74HC595
+    class Spi
+    class Timer1
+}
+
+''' Package relations '''
+Presentation -[hidden]down-> Application
+Presentation -[hidden]down-> HardwareAbstractionLayer
+Application -[hidden]down-> Domain
 
 ''' Class relations '''
 ' Views '
-PlaybackTempoView -down-> PlaybackTempoController
-PlaybackTransportView -down-> PlaybackTransportController
+TempoControlView -down-> RhythmPlaybackController
+TempoControlView -down-> FourDigitDisplay
+TempoControlView -down-> TempoKnob
+TempoKnob <|.down. DigitalTempoKnob
+DigitalTempoKnob -down-> RotaryEncoder
+PlaybackTransportView -down-> RhythmPlaybackController
+PlaybackTransportView -down-> ButtonGroup
 RhythmEditView -down-> RhythmEditController
+RhythmEditView -down-> ButtonGroup
+RhythmEditView -down-> LedGroup
 
 ' Controllers '
-PlaybackTempoController -down-> TempoTimer : << write >>
-PlaybackTransportController -down-> TempoTimer : << write >>
-PlaybackTransportController -down-> TempoTimingManager : << write >>
-RhythmEditController -down-> RhythmPatternManager : << write >>
+RhythmPlaybackController -down-> TempoTimer
+RhythmPlaybackController -down-> RhythmPatternManager
+RhythmEditController -down-> RhythmPatternManager
 
 ' Domain '
-TempoTimingManager *-down->"1..*" RhythmPlaybackHandler : << call >>
-TempoTimingManager -down-> TempoTimer : << read >>
-RhythmPlaybackHandler -down-> PlaybackChannelManager : << call >>
-RhythmPlaybackHandler -down-> RhythmPatternManager : << read >>
+TempoTimingManager *-down->"1..*" PlaybackStepHandler
+TempoTimingManager -down-> TempoTimer
+PlaybackStepHandler -down-> PlaybackChannelManager
+PlaybackStepHandler -down-> RhythmPatternManager
+
+' Hardware Abstraction Layer '
+LedGroup <|.down. CharlieplexMappedLedGroup
+ButtonGroup <|.down. MatrixMappedButtonGroup
+CharlieplexMappedLedGroup -down-> CharlieplexMatrix
+MatrixMappedButtonGroup -down-> GpioMatrix
+FourDigitDisplay <|.down. SegmentDisplay74HC595
+SegmentDisplay74HC595 -down-> Spi
+TempoTimer <|.down. TempoTimer16Bit
+TempoTimer16Bit -down-> Timer16bit
+
+' Driver '
+CharlieplexMatrix -down-> GpioPin
+GpioMatrix -down-> GpioPin
+RotaryEncoder -down-> GpioPin
+Timer16bit <|.down. Timer1
 
 @enduml
