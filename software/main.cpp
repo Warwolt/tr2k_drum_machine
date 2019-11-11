@@ -23,8 +23,7 @@ int main()
 			if(stepButtons.buttonPressedNow(i))
 			{
 				stepLeds.toggleLed(i);
-				// No access to closures so we just run with it and set the Led arg to zero
-				scheduler.scheduleCallback([](){ stepLeds.clearLed(0);}, 1000);
+				scheduler.scheduleCallback([](u16 x){ stepLeds.clearLed(x);}, i, 1000);
 			}
 		}
 
