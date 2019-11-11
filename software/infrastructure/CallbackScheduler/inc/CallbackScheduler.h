@@ -13,16 +13,20 @@
 class CallbackScheduler
 {
 public:
-    using CallbackFunction = void(*)();
+    using CallbackFunction0 = void(*)();
+    using CallbackFunction1 = void(*)(u16 x);
 
     CallbackScheduler(MillisecondTimer& timer);
-    void scheduleCallback(CallbackFunction func, MillisecondTimer::milliseconds waitTime);
+    void scheduleCallback(CallbackFunction0 func, MillisecondTimer::milliseconds waitTime);
+    void scheduleCallback(CallbackFunction1 func, u16 arg, MillisecondTimer::milliseconds waitTime);
     void checkSchedule();
 
 private:
     struct ScheduleInfo
     {
-        CallbackFunction func;
+        CallbackFunction0 func;
+        bool has_arg;
+        u16 arg;
         MillisecondTimer::milliseconds startTime;
         MillisecondTimer::milliseconds waitTime;
     };

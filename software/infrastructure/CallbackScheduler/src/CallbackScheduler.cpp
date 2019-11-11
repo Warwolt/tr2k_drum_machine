@@ -16,16 +16,48 @@ CallbackScheduler::CallbackScheduler(MillisecondTimer& timer) : timer(timer)
 
 /**
  * @brief Add a callback function to be called after some time
- * @param func      CallbackFunction to call
+ * @param func      callback function taking zero arguments to call
  * @param waitTime  Number of milliseconds to wait before calling
  */
-void CallbackScheduler::scheduleCallback(CallbackFunction func, milliseconds waitTime)
+void CallbackScheduler::scheduleCallback(CallbackFunction0 func, milliseconds waitTime)
 {
+    if(!func)
+    {
+        return;
+    }
+
     if(numScheduledCallbacks < maxNumScheduledCallbacks)
     {
-        scheduledCallbacks[numScheduledCallbacks].func = func;
-        scheduledCallbacks[numScheduledCallbacks].startTime = timer.getCurrentTime();
-        scheduledCallbacks[numScheduledCallbacks].waitTime = waitTime;
+        ScheduleInfo& scheduling = scheduledCallbacks[numScheduledCallbacks];
+        scheduling.func = func;
+        scheduling.has_arg = false;
+        scheduling.startTime = timer.getCurrentTime();
+        scheduling.waitTime = waitTime;
+        numScheduledCallbacks++;
+    }
+}
+
+/**
+ * @brief Add a callback function to be called after some time
+ * @param func      callback function taking zero arguments to call
+ * @param arg       argument to pass to callback function
+ * @param waitTime  Number of milliseconds to wait before calling
+ */
+void CallbackScheduler::scheduleCallback(CallbackFunction1 func, u16 arg, milliseconds waitTime)
+{
+    if(!func)
+    {
+        return;
+    }
+
+    if(numScheduledCallbacks < maxNumScheduledCallbacks)
+    {
+        ScheduleInfo& scheduling = scheduledCallbacks[numScheduledCallbacks];
+        scheduling.func = reinterpret_cast<CallbackFunction0>(func); // only store address
+        scheduling.has_arg = true;
+        scheduling.arg = arg;
+        scheduling.startTime = timer.getCurrentTime();
+        scheduling.waitTime = waitTime;
         numScheduledCallbacks++;
     }
 }
@@ -44,13 +76,20 @@ void CallbackScheduler::callAllDueCallbacks(milliseconds currentTime)
 {
     for(int i = 0; i < numScheduledCallbacks; i++)
     {
-        ScheduleInfo currentScheduling = scheduledCallbacks[i];
-        if(currentTime - currentScheduling.startTime >= currentScheduling.waitTime)
+        ScheduleInfo scheduling = scheduledCallbacks[i];
+        if(currentTime - scheduling.startTime >= scheduling.waitTime)
         {
-            if(currentScheduling.func != NULL)
+            if(scheduling.has_arg)
             {
-                currentScheduling.func(); // Call the scheduled callback function
+                CallbackFunction1 func = reinterpret_cast<CallbackFunction1>(scheduling.func);
+                func(scheduling.arg);
             }
+            else
+            {
+                CallbackFunction0& func0 = scheduling.func;
+                func0();
+            }
+
         }
     }
 }
