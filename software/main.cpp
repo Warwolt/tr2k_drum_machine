@@ -8,13 +8,11 @@
 
 static LedGroup& stepLeds = Startup::getStepLeds();
 static ButtonGroup& stepButtons = Startup::getStepButtons();
+static CallbackScheduler& scheduler = Startup::getCallbackScheduler();
 
 int main()
 {
 	Startup::init();
-
-	// quick test of callback scheduler
-	CallbackScheduler& scheduler = Startup::getCallbackScheduler();
 
 	while(1)
 	{
@@ -23,7 +21,7 @@ int main()
 			if(stepButtons.buttonPressedNow(i))
 			{
 				stepLeds.toggleLed(i);
-				scheduler.scheduleCallback([](u16 x){ stepLeds.clearLed(x);}, i, 1000);
+				scheduler.scheduleCallback([](u16 x){ stepLeds.clearLed(x);}, i, 1500);
 			}
 		}
 

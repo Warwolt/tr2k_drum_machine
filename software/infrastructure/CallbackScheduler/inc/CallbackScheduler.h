@@ -35,7 +35,7 @@ private:
     void cleanUpSchedule(MillisecondTimer::milliseconds currentTime);
 
     MillisecondTimer& timer;
-    static constexpr u8 maxNumScheduledCallbacks = 16;
+    static constexpr u8 maxNumScheduledCallbacks = 32;
     u8 numScheduledCallbacks = 0;
     ScheduleInfo scheduledCallbacks[maxNumScheduledCallbacks];
 };

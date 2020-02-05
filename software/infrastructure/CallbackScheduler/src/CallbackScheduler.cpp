@@ -16,6 +16,7 @@ CallbackScheduler::CallbackScheduler(MillisecondTimer& timer) : timer(timer)
 
 /**
  * @brief Add a callback function to be called after some time
+ *
  * @param func      callback function taking zero arguments to call
  * @param waitTime  Number of milliseconds to wait before calling
  */
@@ -39,6 +40,7 @@ void CallbackScheduler::scheduleCallback(CallbackFunction0 func, milliseconds wa
 
 /**
  * @brief Add a callback function to be called after some time
+ *
  * @param func      callback function taking zero arguments to call
  * @param arg       argument to pass to callback function
  * @param waitTime  Number of milliseconds to wait before calling
@@ -72,6 +74,9 @@ void CallbackScheduler::checkSchedule()
     cleanUpSchedule(currentTime);
 }
 
+/**
+ * @brief Call every callback that have waited enough time
+ */
 void CallbackScheduler::callAllDueCallbacks(milliseconds currentTime)
 {
     for(int i = 0; i < numScheduledCallbacks; i++)
@@ -94,12 +99,16 @@ void CallbackScheduler::callAllDueCallbacks(milliseconds currentTime)
     }
 }
 
+/**
+ * @brief Remove any callbacks that have been executed from the schedule
+ */
 void CallbackScheduler::cleanUpSchedule(milliseconds currentTime)
 {
     for(int i = 0; i < numScheduledCallbacks; i++)
     {
         ScheduleInfo currentScheduling = scheduledCallbacks[i];
-        if(currentTime - currentScheduling.startTime >= currentScheduling.waitTime)
+        milliseconds elapsedTime = currentTime - currentScheduling.startTime;
+        if(elapsedTime >= currentScheduling.waitTime)
         {
             /* Remove function by replacing it with last function in list */
             scheduledCallbacks[i] = scheduledCallbacks[numScheduledCallbacks - 1];
