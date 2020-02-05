@@ -7,7 +7,7 @@
 #include "gtest/gtest.h"
 #include "traceprint.h"
 #include "linuxtypes.h"
-#include "interrupts.h"
+#include "Interrupts.h"
 
 /* Import interrupt handlers, made possible by a mocked implementation of avr/interrupt.h */
 extern void TIMER0_COMPA_vect (void);

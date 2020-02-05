@@ -21,7 +21,7 @@
 #include "CharlieplexMatrix.h"
 
 /* Infrastructure */
-#include "interrupts.h"
+#include "Interrupts.h"
 
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Pattern edit LEDs */

@@ -5,7 +5,7 @@
 ****************************************************************************************************
 */
 
-#include "tempotimingmanager.h"
+#include "TempoTimingManager.h"
 #include <stddef.h>
 
 TempoTimingManager::TempoTimingManager(TempoTimer& tempoTimer) : tempoTimer(tempoTimer)

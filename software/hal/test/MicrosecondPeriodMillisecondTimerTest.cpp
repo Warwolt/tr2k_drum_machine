@@ -9,7 +9,7 @@
 #include "linuxtypes.h"
 #include "IGpioPinMock.h"
 #include "MicrosecondPeriodMillisecondTimer.h"
-#include "timer8bitmock.h"
+#include "Timer8BitMock.h"
 #include <cmath>
 
 using milliseconds = MillisecondTimer::milliseconds;

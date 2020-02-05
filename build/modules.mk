@@ -20,7 +20,7 @@ DOMAIN_DIR = $(APP_ROOT)/domain
 INFRASRTUCTURE_DIR = $(APP_ROOT)/infrastructure
 -include $(INFRASRTUCTURE_DIR)/CallbackScheduler/makefile.mk
 -include $(INFRASRTUCTURE_DIR)/Interrupts/makefile.mk
--include $(INFRASRTUCTURE_DIR)/startup/makefile.mk
+-include $(INFRASRTUCTURE_DIR)/Startup/makefile.mk
 
 # Hardware Abstraction Layer
 HAL_DIR = $(APP_ROOT)/hal
