@@ -16,15 +16,12 @@ int main()
 
 	while(1)
 	{
-		for(int i = 0; i < stepButtons.getNumButtons(); i++)
+		for(int buttonNum = 0; buttonNum < stepButtons.getNumButtons(); buttonNum++)
 		{
-			if(stepButtons.buttonPressedNow(i))
+			if(stepButtons.buttonPressedNow(buttonNum))
 			{
-				stepLeds.toggleLed(i);
-				scheduler.scheduleCallback([=]()
-				{
-					stepLeds.clearLed(i);
-				}, 1500);
+				stepLeds.toggleLed(buttonNum);
+				scheduler.scheduleCallback([=]() { stepLeds.clearLed(buttonNum); }, 1500);
 			}
 		}
 
