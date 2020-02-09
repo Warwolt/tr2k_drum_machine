@@ -18,16 +18,16 @@ public:
 	{
 		functionWasCalled = false;
 	}
-
-	void memberFunction()
-	{
-		functionWasCalled = true;
-	}
 };
 
 static void freeFunction()
 {
 	functionWasCalled = true;
+}
+
+static void functionClient(r2k::function<void()> func)
+{
+	func();
 }
 
 TEST_F(r2kFunctionTest, Free_function_can_be_wrapped_then_called)
@@ -49,5 +49,20 @@ TEST_F(r2kFunctionTest, Closure_function_can_be_wrapped_then_called)
 	bool t = true;
 	r2k::function<void()> func = [=](){ functionWasCalled = t; };
 	func();
+	EXPECT_TRUE(functionWasCalled);
+}
+
+TEST_F(r2kFunctionTest, Wrapped_free_function_can_be_used_as_callback)
+{
+	r2k::function<void()> func = freeFunction;
+	functionClient(func);
+	EXPECT_TRUE(functionWasCalled);
+}
+
+TEST_F(r2kFunctionTest, Wrapped_closure_can_be_used_as_callback)
+{
+	bool t = true;
+	r2k::function<void()> func = [=](){ functionWasCalled = t; };
+	functionClient(func);
 	EXPECT_TRUE(functionWasCalled);
 }

@@ -58,7 +58,7 @@ public:
 	 */
 	function<ReturnType(Args...)>(const function<ReturnType(Args...)>& other)
 	{
-		wrapped_function = wrapped_function->clone();
+		wrapped_function = other.wrapped_function->clone();
 	}
 
 	/**
@@ -68,7 +68,6 @@ public:
 	{
 		if (wrapped_function)
 		{
-			INFO_PRINT("deleting wrapped_function = %p", wrapped_function);
 			delete wrapped_function;
 		}
 	}
@@ -94,11 +93,8 @@ public:
 	 */
 	ReturnType operator()(Args... args) const
 	{
-		INFO_PRINT("function<ReturnType(Args...)>::operator() called");
 		if (wrapped_function)
 		{
-			INFO_PRINT("wrapped_function = %p", wrapped_function);
-			INFO_PRINT("wrapped_function->invoke(args...)");
 			return wrapped_function->invoke(args...);
 		}
 	}
@@ -138,8 +134,6 @@ private:
 		 */
 		ReturnType invoke(Args... args) override final
 		{
-			INFO_PRINT("Callable::invoke()");
-			INFO_PRINT("f = %p", f); //
 			return f(args...);
 		}
 
