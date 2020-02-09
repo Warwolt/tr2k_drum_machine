@@ -37,6 +37,15 @@ TEST_F(r2kFunctionTest, Free_function_can_be_wrapped_then_called)
 	EXPECT_TRUE(functionWasCalled);
 }
 
+TEST_F(r2kFunctionTest, Free_function_is_copied_in_wrapper)
+{
+	void(*func_ptr)() = freeFunction;
+	r2k::function<void()> func = func_ptr;
+	func_ptr = nullptr; // this should not affect anything!
+	func();
+	EXPECT_TRUE(functionWasCalled);
+}
+
 TEST_F(r2kFunctionTest, Lambda_function_can_be_wrapped_then_called)
 {
 	r2k::function<void()> func = [](){ functionWasCalled = true; };
@@ -64,5 +73,13 @@ TEST_F(r2kFunctionTest, Wrapped_closure_can_be_used_as_callback)
 	bool t = true;
 	r2k::function<void()> func = [=](){ functionWasCalled = t; };
 	functionClient(func);
+	EXPECT_TRUE(functionWasCalled);
+}
+
+TEST_F(r2kFunctionTest, Wrapped_free_function_can_be_assigned_to_another_wrapper)
+{
+	r2k::function<void()> func = freeFunction;
+	r2k::function<void()> func2 = func;
+	func2();
 	EXPECT_TRUE(functionWasCalled);
 }

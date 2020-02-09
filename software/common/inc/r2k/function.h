@@ -29,9 +29,10 @@ class function<ReturnType(Args...)>
 {
 public:
 	/**
-	 * @brief Uninitalized constructor
+	 * @brief Non-initializing constructor
 	 *
-	 * Used to declare r2k::function<> members in other classes
+	 * Used to declare r2k::function<> members in other classes that can later
+	 * be assigned a useful value.
 	 */
 	function<ReturnType(Args...)>() : wrapped_function(nullptr)
 	{
@@ -40,8 +41,9 @@ public:
 	/**
 	 * @brief Assignment constructor
 	 *
-	 * The primary constructor that should be used, wraps some wrapped_function type
-	 * so that it can later be called by a client.
+	 * The primary constructor that should be used, wraps some callable type so
+	 * that it can later be called by a client without knowing any concrete
+	 * details.
 	 *
 	 * @param f  An instance of some function type
 	 */
@@ -53,8 +55,8 @@ public:
 	/**
 	 * @brief Copy constructor
 	 *
-	 * Needed in order to make sure that function wrappers assigned to other
-	 * function wrappers are deep copied properly.
+	 * Needed in order to make sure that function wrappers constructed from
+	 * other function wrappers are deep copied properly.
 	 */
 	function<ReturnType(Args...)>(const function<ReturnType(Args...)>& other)
 	{
@@ -62,13 +64,26 @@ public:
 	}
 
 	/**
-	 * @brief Destructor that gets rid of wrapped function if it exists
+	 * @brief Copy assignment
+	 *
+	 * Needed in order to make sure that function wrappers assigned to other
+	 * function wrappers are deep copied properly.
+	 */
+	function<ReturnType(Args...)> operator=(const function<ReturnType(Args...)>& other)
+	{
+		wrapped_function = other.wrapped_function->clone();
+		return *this;
+	}
+
+	/**
+	 * @brief Destructor, deletes wrapped function if it exists
 	 */
 	~function<ReturnType(Args...)>()
 	{
 		if (wrapped_function)
 		{
 			delete wrapped_function;
+			wrapped_function = nullptr;
 		}
 	}
 
@@ -138,12 +153,12 @@ private:
 		}
 
 		/**
-		 * @brief
-		 * @param other  asdf
+		 * @brief Copy constructor that can be called via ICallable interface
 		 */
 		ICallable *clone()
 		{
-			return new Callable(f);
+			auto callable = new Callable(f);
+			return callable;
 		}
 	private:
 		F f;
