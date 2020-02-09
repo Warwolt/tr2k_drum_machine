@@ -14,11 +14,11 @@ int main()
 {
 	Startup::init();
 
-	while(1)
+	while (1)
 	{
-		for(int buttonNum = 0; buttonNum < stepButtons.getNumButtons(); buttonNum++)
+		for (int buttonNum = 0; buttonNum < stepButtons.getNumButtons(); buttonNum++)
 		{
-			if(stepButtons.buttonPressedNow(buttonNum))
+			if (stepButtons.buttonPressedNow(buttonNum))
 			{
 				stepLeds.toggleLed(buttonNum);
 				scheduler.scheduleCallback([=]() { stepLeds.clearLed(buttonNum); }, 1500);

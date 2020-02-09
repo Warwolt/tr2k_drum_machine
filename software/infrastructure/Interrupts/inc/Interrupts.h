@@ -9,17 +9,23 @@
 #define INTERRUPTS_H
 
 #include <avr/interrupt.h>
+#include "r2k/function.h"
 
-enum class InterruptRequest {Timer0CompareMatch, Timer1CompareMatch, SpiTransferComplete};
-using InterruptHandler = void(*)();
+enum class InterruptRequest
+{
+    Timer0CompareMatch,
+    Timer1CompareMatch,
+    SpiTransferComplete
+};
+using InterruptHandler = r2k::function<void()>;
 
 namespace Interrupts
 {
 
 void enableInterruptsGlobally();
 void disableInterruptsGlobally();
-void setHandlerForInterrupt(InterruptHandler handler, InterruptRequest request);
+void setHandlerForInterrupt(const InterruptHandler &handler, InterruptRequest request);
 
-};
+}; // namespace Interrupts
 
 #endif /* INTERRUPTS_H */
