@@ -30,28 +30,40 @@ static PinStatePair fivePinLut[20] =
 	{1,0},{0,1},{2,1},{1,2},{2,0},{0,2},{3,2},{2,3},{3,1},{1,3},
 	{3,0},{0,3},{4,3},{3,4},{4,2},{2,4},{4,1},{1,4},{4,0},{0,4}
 };
-static GpioPin ledPins[5] = {GpioPin(Pin1, PortC), GpioPin(Pin2, PortC), GpioPin(Pin3, PortC),
-	GpioPin(Pin4, PortC), GpioPin(Pin5, PortC)};
+static GpioPin ledPins[5] =
+{	GpioPin(Pin1, PortC), GpioPin(Pin2, PortC), GpioPin(Pin3, PortC), GpioPin(Pin4, PortC),
+	GpioPin(Pin5, PortC)
+};
 static CharlieplexMatrix<GpioPin> ledMatrix = CharlieplexMatrix<GpioPin>(5, ledPins, fivePinLut);
 constexpr u8 numStepLeds = 16;
-static CharlieplexMappedLedGroup<GpioPin> charlieStepLeds = CharlieplexMappedLedGroup<GpioPin>(numStepLeds, ledMatrix);
+static CharlieplexMappedLedGroup<GpioPin> charlieStepLeds =
+	CharlieplexMappedLedGroup<GpioPin>(numStepLeds, ledMatrix);
 static LedGroup& stepLeds = charlieStepLeds;
 
 /* Pattern edit buttons*/
 static Timer0 tim0;
 static constexpr u16 microsecondPeriod = 100; // IF THIS IS LESS THAN 100us BUTTON GROUP WON'T WORK!
 static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
-static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 50; // ms
+static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 12; // ms
 static constexpr u8 numButtonColumns = 4;
 static constexpr u8 numButtonRows = 5;
-static GpioPin buttonColumnPins[numButtonColumns] = {GpioPin(Pin3, PortB), GpioPin(Pin2, PortB),
-	GpioPin(Pin1, PortB), GpioPin(Pin0, PortB)};
-static GpioPin buttonRowPins[numButtonRows] = {GpioPin(Pin6, PortD), GpioPin(Pin5, PortD),
-	GpioPin(Pin4, PortD), GpioPin(Pin3, PortD), GpioPin(Pin2, PortD)};
-static GpioMatrix<GpioPin> buttonMatrix = GpioMatrix<GpioPin>(buttonColumnPins, numButtonColumns,
-	buttonRowPins, numButtonRows, microsecondTimer, buttonDebounceTime);
+static GpioPin buttonColumnPins[numButtonColumns] =
+{
+	GpioPin(Pin3, PortB), GpioPin(Pin2, PortB), GpioPin(Pin1, PortB), GpioPin(Pin0, PortB)
+};
+static GpioPin buttonRowPins[numButtonRows] =
+{
+	GpioPin(Pin6, PortD), GpioPin(Pin5, PortD), GpioPin(Pin4, PortD), GpioPin(Pin3, PortD),
+	GpioPin(Pin2, PortD)
+};
+static GpioMatrix<GpioPin> buttonMatrix = GpioMatrix<GpioPin>
+	(
+		buttonColumnPins, numButtonColumns, buttonRowPins,
+		numButtonRows, microsecondTimer, buttonDebounceTime
+	);
 static constexpr u8 numStepButtons = 16;
-static MatrixMappedButtonGroup<GpioPin> stepButtons = MatrixMappedButtonGroup<GpioPin>(buttonMatrix, numStepButtons, 0);
+static MatrixMappedButtonGroup<GpioPin> stepButtons =
+	MatrixMappedButtonGroup<GpioPin>(buttonMatrix, numStepButtons, 0);
 
 /* Private function declarations -----------------------------------------------------------------*/
 static void setupTimer0();
