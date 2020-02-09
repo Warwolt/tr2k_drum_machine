@@ -11,7 +11,6 @@ using milliseconds = MillisecondTimer::milliseconds;
 
 CallbackScheduler::CallbackScheduler(MillisecondTimer& timer) : timer(timer)
 {
-
 }
 
 /**
@@ -20,44 +19,12 @@ CallbackScheduler::CallbackScheduler(MillisecondTimer& timer) : timer(timer)
  * @param func      callback function taking zero arguments to call
  * @param waitTime  Number of milliseconds to wait before calling
  */
-void CallbackScheduler::scheduleCallback(CallbackFunction0 func, milliseconds waitTime)
+void CallbackScheduler::scheduleCallback(const CallbackFunction& func, milliseconds waitTime)
 {
-    if(!func)
-    {
-        return;
-    }
-
-    if(numScheduledCallbacks < maxNumScheduledCallbacks)
+    if (numScheduledCallbacks < maxNumScheduledCallbacks)
     {
         ScheduleInfo& scheduling = scheduledCallbacks[numScheduledCallbacks];
-        scheduling.func = func;
-        scheduling.has_arg = false;
-        scheduling.startTime = timer.getCurrentTime();
-        scheduling.waitTime = waitTime;
-        numScheduledCallbacks++;
-    }
-}
-
-/**
- * @brief Add a callback function to be called after some time
- *
- * @param func      callback function taking zero arguments to call
- * @param arg       argument to pass to callback function
- * @param waitTime  Number of milliseconds to wait before calling
- */
-void CallbackScheduler::scheduleCallback(CallbackFunction1 func, u16 arg, milliseconds waitTime)
-{
-    if(!func)
-    {
-        return;
-    }
-
-    if(numScheduledCallbacks < maxNumScheduledCallbacks)
-    {
-        ScheduleInfo& scheduling = scheduledCallbacks[numScheduledCallbacks];
-        scheduling.func = reinterpret_cast<CallbackFunction0>(func); // only store address
-        scheduling.has_arg = true;
-        scheduling.arg = arg;
+        scheduling.callback = func;
         scheduling.startTime = timer.getCurrentTime();
         scheduling.waitTime = waitTime;
         numScheduledCallbacks++;
@@ -84,17 +51,7 @@ void CallbackScheduler::callAllDueCallbacks(milliseconds currentTime)
         ScheduleInfo scheduling = scheduledCallbacks[i];
         if(currentTime - scheduling.startTime >= scheduling.waitTime)
         {
-            if(scheduling.has_arg)
-            {
-                CallbackFunction1 func = reinterpret_cast<CallbackFunction1>(scheduling.func);
-                func(scheduling.arg);
-            }
-            else
-            {
-                CallbackFunction0& func0 = scheduling.func;
-                func0();
-            }
-
+            scheduling.callback();
         }
     }
 }

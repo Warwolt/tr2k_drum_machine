@@ -8,25 +8,21 @@
 #define CALLBACK_SCHEDULER_H
 
 #include "MillisecondTimer.h"
+#include "r2k/function.h"
 #include "linuxtypes.h"
 
 class CallbackScheduler
 {
 public:
-    using CallbackFunction0 = void(*)();
-    using CallbackFunction1 = void(*)(u16 x);
-
+    using CallbackFunction = r2k::function<void()>;
     CallbackScheduler(MillisecondTimer& timer);
-    void scheduleCallback(CallbackFunction0 func, MillisecondTimer::milliseconds waitTime);
-    void scheduleCallback(CallbackFunction1 func, u16 arg, MillisecondTimer::milliseconds waitTime);
+    void scheduleCallback(const CallbackFunction& func, MillisecondTimer::milliseconds waitTime);
     void checkSchedule();
 
 private:
     struct ScheduleInfo
     {
-        CallbackFunction0 func;
-        bool has_arg;
-        u16 arg;
+        CallbackFunction callback;
         MillisecondTimer::milliseconds startTime;
         MillisecondTimer::milliseconds waitTime;
     };

@@ -21,7 +21,10 @@ int main()
 			if(stepButtons.buttonPressedNow(i))
 			{
 				stepLeds.toggleLed(i);
-				scheduler.scheduleCallback([](u16 x){ stepLeds.clearLed(x);}, i, 1500);
+				scheduler.scheduleCallback([=]()
+				{
+					stepLeds.clearLed(i);
+				}, 1500);
 			}
 		}
 
