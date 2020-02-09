@@ -10,7 +10,7 @@
 
 #include "TempoControlView.h"
 #include "TempoTimingManager.h"
-#include "LedGroup.h"
+#include "BlinkableLedGroup.h"
 #include "ButtonGroup.h"
 #include "GpioMatrix.h"
 #include "GpioPin.h"
@@ -20,7 +20,7 @@ namespace Startup
 {
 
 void init();
-LedGroup& getStepLeds();
+BlinkableLedGroup& getStepLeds();
 ButtonGroup& getStepButtons();
 CallbackScheduler& getCallbackScheduler();
 

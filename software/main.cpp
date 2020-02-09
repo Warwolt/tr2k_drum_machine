@@ -6,13 +6,15 @@
 
 #include "Startup.h"
 
-static LedGroup& stepLeds = Startup::getStepLeds();
+static BlinkableLedGroup& stepLeds = Startup::getStepLeds();
 static ButtonGroup& stepButtons = Startup::getStepButtons();
 static CallbackScheduler& scheduler = Startup::getCallbackScheduler();
+using milliseconds = MillisecondTimer::milliseconds;
 
 int main()
 {
 	Startup::init();
+	constexpr milliseconds blinkPeriod = 1500;
 
 	while (1)
 	{
@@ -20,8 +22,7 @@ int main()
 		{
 			if (stepButtons.buttonPressedNow(buttonNum))
 			{
-				stepLeds.toggleLed(buttonNum);
-				scheduler.scheduleCallback([=]() { stepLeds.clearLed(buttonNum); }, 1500);
+				stepLeds.blinkLed(buttonNum, blinkPeriod);
 			}
 		}
 
