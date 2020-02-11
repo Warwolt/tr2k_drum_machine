@@ -1,6 +1,6 @@
 /*
 ****************************************************************************************************
-* brief : Manages the timing of TempoTimingSubscribers by polling a TempoTimer instance for when
+* brief : Manages the timing of PlaybackStepHandler by polling a TempoTimer instance for when
 *         playback steps are due.
 ****************************************************************************************************
 */
@@ -19,9 +19,9 @@ TempoTimingManager::TempoTimingManager(TempoTimer& tempoTimer) : tempoTimer(temp
  */
 void TempoTimingManager::addPlaybackStepHandler(PlaybackStepHandler handler)
 {
-	if (currentNumHandlers < maxNumHandlers)
+	if (playbackStepHandlers.size() < playbackStepHandlers.capacity())
 	{
-		playbackStepHandlers[currentNumHandlers++] = handler;
+		playbackStepHandlers.push_back(handler);
 	}
 }
 
@@ -40,9 +40,8 @@ void TempoTimingManager::handlePlayback()
 
 inline void TempoTimingManager::callPlaybackStephandlers()
 {
-	for (size_t i = 0; i < currentNumHandlers; i++)
+	for (auto& handlePlaybackStep : playbackStepHandlers)
 	{
-		auto& handlePlaybackStep = playbackStepHandlers[i];
 		handlePlaybackStep();
 	}
 }
