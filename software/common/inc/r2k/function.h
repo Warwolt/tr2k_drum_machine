@@ -1,6 +1,6 @@
 /*
 ****************************************************************************************************
-* brief : Minimal implementation of an std::function equivalent using static allocation.
+* brief : Minimal implementation of an std::function equivalent.
 *         Based on: https://shaharmike.com/cpp/naive-std-function/
 ****************************************************************************************************
 */
@@ -8,7 +8,12 @@
 #ifndef R2K_FUNCTION_H
 #define R2K_FUNCTION_H
 
-#include "traceprint.h"
+#include "linuxtypes.h"
+#ifdef UNIT_TESTING
+#include <new> // this is implemented in newdelete.cpp for production build
+#else
+#include "newdelete.h"
+#endif
 
 namespace r2k
 {
@@ -48,8 +53,10 @@ public:
 	 * @param f  An instance of some function type
 	 */
 	template <typename F>
-	function<ReturnType(Args...)>(F f) : wrapped_function(new Callable<F>(f))
+	function<ReturnType(Args...)>(F f)
 	{
+		static_assert(sizeof(F) <= sizeof(callableBuffer));
+		wrapped_function = new(callableBuffer) Callable<F>(f);
 	}
 
 	/**
@@ -60,7 +67,7 @@ public:
 	 */
 	function<ReturnType(Args...)>(const function<ReturnType(Args...)>& other)
 	{
-		wrapped_function = other.wrapped_function->clone();
+		wrapped_function = other.wrapped_function->clone(callableBuffer);
 	}
 
 	/**
@@ -71,7 +78,7 @@ public:
 	 */
 	function<ReturnType(Args...)> operator=(const function<ReturnType(Args...)>& other)
 	{
-		wrapped_function = other.wrapped_function->clone();
+		wrapped_function = other.wrapped_function->clone(callableBuffer);
 		return *this;
 	}
 
@@ -82,7 +89,7 @@ public:
 	{
 		if (wrapped_function)
 		{
-			delete wrapped_function;
+			wrapped_function->~ICallable();
 			wrapped_function = nullptr;
 		}
 	}
@@ -96,9 +103,10 @@ public:
 	{
 		if (wrapped_function)
 		{
-			delete wrapped_function;
+			wrapped_function->~ICallable();
+			wrapped_function = nullptr;
 		}
-		wrapped_function = new Callable<F>(f);
+		wrapped_function = new(callableBuffer) Callable<F>(f);
 		return *this;
 	}
 
@@ -115,6 +123,7 @@ public:
 	}
 
 private:
+	u8 callableBuffer[24];
 	class ICallable;
 	ICallable *wrapped_function;
 
@@ -129,7 +138,7 @@ private:
 	public:
 		virtual ~ICallable() = default;
 		virtual ReturnType invoke(Args...) = 0;
-		virtual ICallable *clone() = 0;
+		virtual ICallable *clone(uint8_t *callableBuffer) = 0;
 	};
 
 	/**
@@ -140,7 +149,10 @@ private:
 	class Callable : public ICallable
 	{
 	public:
-		Callable(const F& f) : f(f) {}
+		Callable(const F& f) : f(f)
+		{
+		}
+
 		~Callable() override = default;
 
 		/**
@@ -155,10 +167,9 @@ private:
 		/**
 		 * @brief Copy constructor that can be called via ICallable interface
 		 */
-		ICallable *clone()
+		ICallable *clone(uint8_t *callableBuffer)
 		{
-			auto callable = new Callable(f);
-			return callable;
+			return new(callableBuffer) Callable(f);
 		}
 	private:
 		F f;

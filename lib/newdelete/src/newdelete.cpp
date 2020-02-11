@@ -12,13 +12,13 @@ void* operator new(size_t objsize)
 }
 
 // this is the "placement new" operator
-void* operator new(size_t objsize, void* ptr)
+void *operator new(size_t objsize, void *ptr)
 {
 	return ptr;
 }
 
 // this prototype needed by the ETL library
-void* operator new(size_t objsize, unsigned char* ptr)
+void *operator new(size_t objsize, unsigned char *ptr)
 {
 	return ptr;
 }

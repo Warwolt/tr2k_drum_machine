@@ -10,9 +10,9 @@
 
 #include <stdlib.h>
 
-void* operator new(size_t objsize);
-void* operator new(size_t objsize, void* ptr);
-void* operator new(size_t, unsigned char*);
+void *operator new(size_t objsize);
+void *operator new(size_t objsize, void *ptr);
+void *operator new(size_t, unsigned char*);
 void operator delete(void* obj);
 
 __extension__ typedef int __guard __attribute__((mode (__DI__)));
