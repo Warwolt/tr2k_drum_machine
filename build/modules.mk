@@ -35,4 +35,4 @@ DRIVERS_DIR = $(APP_ROOT)/drivers
 -include $(DRIVERS_DIR)/SegmentDisplay/makefile.mk
 -include $(DRIVERS_DIR)/Spi/makefile.mk
 -include $(DRIVERS_DIR)/Timer0/makefile.mk
--include $(DRIVElRS_DIR)/Timer1/makefile.mk
+-include $(DRIVERS_DIR)/Timer1/makefile.mk
