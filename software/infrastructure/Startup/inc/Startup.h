@@ -8,7 +8,6 @@
 #ifndef STARTUP_2_H
 #define STARTUP_2_H
 
-#include "TempoControlView.h"
 #include "TempoTimingManager.h"
 #include "BlinkableLedGroup.h"
 #include "ButtonGroup.h"

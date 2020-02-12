@@ -99,17 +99,18 @@ void Startup::init()
 }
 
 /* Private function definitions ------------------------------------------------------------------*/
-/* Configure timer0 so that periodical interrupts will trigger. */
+/**
+ * @brief Configure timer0 so that periodical interrupts will trigger
+ */
 void setupTimer0()
 {
 	tim0.enablePeriodicInterrupts();
 	tim0.start();
 }
 
-/* The 74HC595 four digit segment display can only display one digit at a time.
- * This function attaches a lambda to Timer0CompareMatch IRQ that cycles what
- * current digit [0-3] that the display should output to use persistence of
- * vision to make it appear as though all digits are on at the same time. */
+/**
+ * @brief Register timing based actions for HW timer tim0
+ */
 void registerTimer0InterruptHandlers()
 {
 	InterruptHandler timerISR = []
