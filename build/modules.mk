@@ -3,12 +3,12 @@
 
 # Presentation
 PRESENTATION_DIR = $(APP_ROOT)/presentation
--include $(PRESENTATION_DIR)/TempoControl/TempoControlView/makefile.mk
--include $(PRESENTATION_DIR)/TempoControl/TempoKnob/makefile.mk
+# -include $(PRESENTATION_DIR)/TempoControl/TempoControlView/makefile.mk
+# -include $(PRESENTATION_DIR)/TempoControl/TempoKnob/makefile.mk
 
 # Application
 APPLICATION_DIR = $(APP_ROOT)/application
--include $(APPLICATION_DIR)/RhythmPlaybackController/makefile.mk
+# -include $(APPLICATION_DIR)/RhythmPlaybackController/makefile.mk
 
 # Domain
 DOMAIN_DIR = $(APP_ROOT)/domain
