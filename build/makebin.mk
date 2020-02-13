@@ -16,7 +16,7 @@ FLAGS += -fmax-errors=5
 # AVR specific
 MCU = atmega328p
 F_CPU = 16000000
-FLAGS += -g -O3 -mmcu=$(MCU) -DF_CPU=$(F_CPU)
+FLAGS += -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)
 TARGET := main
 BIN  := $(OBJ_DIR)/$(TARGET).bin
 HEXFILE := $(OBJ_DIR)/$(TARGET).hex
