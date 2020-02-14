@@ -23,6 +23,15 @@
 /* Infrastructure */
 #include "Interrupts.h"
 
+// debugging
+#include "Timer1.h"
+#include "TempoTimer16Bit.h"
+#include "TempoTimingManager.h"
+
+static Timer1 tim1;
+static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
+static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
+
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Pattern edit LEDs */
 static PinStatePair fivePinLut[20] =
