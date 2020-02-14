@@ -1,0 +1,60 @@
+@startuml
+
+title Transport Control View
+
+Package Presentation {
+    Class TransportControlView {
+        update()
+    }
+}
+
+Package Application {
+    Class RhythmPlaybackController {
+	    restartPlayback()
+	    stopPlayback()
+	    continuePlayback()
+    }
+}
+
+Package RhythmPlayback {
+    Class TempoTimingManager {
+	    addPlaybackStepHandler(handler : PlaybackStepHandler)
+	    handlePlayback()
+    }
+
+    Interface TempoTimer {
+        start()
+        stop()
+        clear()
+        playbackStepIsDue() : bool
+        startCountingNextStep()
+    }
+
+    Class PlaybackStepHandler {
+        handlePlaybackStep()
+    }
+}
+
+Package HardwareAbstractionLayer {
+    Interface ButtonGroup {
+        getNumButtons() : u8
+        buttonPressedNow(buttonNum : u8) : bool
+        buttonReleasedNow(buttonNum : u8) : bool
+    }
+}
+
+TransportControlView --> RhythmPlaybackController
+TransportControlView --> ButtonGroup
+
+RhythmPlaybackController --> TempoTimer
+TempoTimingManager --> TempoTimer
+TempoTimingManager --> PlaybackStepHandler
+
+ButtonGroup -[hidden]left- RhythmPlaybackController
+
+note top of ButtonGroup
+    Start
+    Stop/Continue
+end note
+
+@enduml
