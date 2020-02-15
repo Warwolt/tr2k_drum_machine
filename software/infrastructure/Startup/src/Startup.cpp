@@ -28,9 +28,12 @@
 #include "TempoTimer16Bit.h"
 #include "TempoTimingManager.h"
 
+// debugging
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
-static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
+// static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
+GpioPin ledPin {Pin5, PortB, DataDirection::DigitalOutput}; // global only while doing some testing
+GpioPin ledPin2{Pin4, PortB, DataDirection::DigitalOutput}; // global only while doing some testing
 
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Pattern edit LEDs */
@@ -50,7 +53,7 @@ static LedGroup& stepLeds = charlieStepLeds;
 static Timer0 tim0;
 static constexpr u16 microsecondPeriod = 100; // IF THIS IS LESS THAN 100us BUTTON GROUP WON'T WORK!
 static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
-static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 50; // ms
+static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 10; // ms
 static constexpr u8 numButtonColumns = 4;
 static constexpr u8 numButtonRows = 5;
 static GpioPin buttonColumnPins[numButtonColumns] = {GpioPin(Pin3, PortB), GpioPin(Pin2, PortB),
@@ -62,9 +65,12 @@ static GpioMatrix<GpioPin> buttonMatrix = GpioMatrix<GpioPin>(buttonColumnPins, 
 static constexpr u8 numStepButtons = 16;
 static MatrixMappedButtonGroup<GpioPin> stepButtons = MatrixMappedButtonGroup<GpioPin>(buttonMatrix, numStepButtons, 0);
 
+// quick dirty test, don't commit this to master!
+static CallbackScheduler callbackScheduler {microsecondTimer};
+
 /* Private function declarations -----------------------------------------------------------------*/
-static void setupTimer0();
 static void registerTimer0InterruptHandlers();
+static void registerTimer1InterruptHandlers();
 
 /* Public function definitions -------------------------------------------------------------------*/
 LedGroup& Startup::getStepLeds()
@@ -77,11 +83,9 @@ ButtonGroup& Startup::getStepButtons()
 	return stepButtons;
 }
 
-// quick dirty test, don't commit this to master!
-static CallbackScheduler scheduler = CallbackScheduler(microsecondTimer);
 CallbackScheduler& Startup::getCallbackScheduler()
 {
-	return scheduler;
+	return callbackScheduler;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function
@@ -90,29 +94,43 @@ void Startup::init()
 {
 	Interrupts::enableInterruptsGlobally();
 
-	setupTimer0();
+	/* Set up HW timers */
 	registerTimer0InterruptHandlers();
+	registerTimer1InterruptHandlers();
+
+	tim0.enablePeriodicInterrupts();
+	tim1.enablePeriodicInterrupts();
+	tim0.start();
+
+	tempoTimer.setTempo(120); // we have to set tempo else timer doesn't start
+	tempoTimer.start();
 }
 
 /* Private function definitions ------------------------------------------------------------------*/
-/* Configure timer0 so that periodical interrupts will trigger. */
-void setupTimer0()
-{
-	tim0.enablePeriodicInterrupts();
-	tim0.start();
-}
-
-/* The 74HC595 four digit segment display can only display one digit at a time.
- * This function attaches a lambda to Timer0CompareMatch IRQ that cycles what
- * current digit [0-3] that the display should output to use persistence of
- * vision to make it appear as though all digits are on at the same time. */
+/**
+ * @brief Register timing based actions for HW timer tim0
+ */
 void registerTimer0InterruptHandlers()
 {
 	InterruptHandler timerISR = []
 	{
-		ledMatrix.outputNextLed();
-		microsecondTimer.countPeriod();
+		// ledMatrix.outputNextLed();
+		// microsecondTimer.countPeriod();
+		ledPin.toggle(); // check if ISR gets called
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer0CompareMatch;
+	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
+}
+
+/**
+ * @brief Register timing based actions for HW timer tim1
+ */
+void registerTimer1InterruptHandlers()
+{
+	InterruptHandler timerISR = []
+	{
+		ledPin2.toggle(); // check if ISR gets called
+	};
+	InterruptRequest timerIRQ = InterruptRequest::Timer1CompareMatch;
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
 }
