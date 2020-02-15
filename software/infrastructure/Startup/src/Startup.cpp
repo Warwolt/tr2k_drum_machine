@@ -63,7 +63,7 @@ static GpioPin buttonRowPins[numButtonRows] {
 	GpioPin(Pin6, PortD), GpioPin(Pin5, PortD), GpioPin(Pin4, PortD),
 	GpioPin(Pin3, PortD), GpioPin(Pin2, PortD)
 };
-static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 10;
+static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 40;
 static GpioMatrix<GpioPin> buttonMatrix {
 	buttonColumnPins, numButtonColumns,buttonRowPins,
 	numButtonRows, microsecondTimer, buttonDebounceTime
@@ -75,6 +75,10 @@ static MatrixMappedButtonGroup<GpioPin> stepButtons {buttonMatrix, numStepButton
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer {tim1};
 static TempoTimingManager timingManager {tempoTimer};
+
+// todo make accessor functions
+MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 2, numStepButtons};
+RhythmPlaybackController playbackController {tempoTimer};
 
 /* Private function declarations -----------------------------------------------------------------*/
 static void setupTimers();
@@ -102,6 +106,16 @@ TempoTimingManager& Startup::getTempoTimingManager()
 	return timingManager;
 }
 
+MatrixMappedButtonGroup<GpioPin>& Startup::getTransportButtons()
+{
+	return transportButtons;
+}
+
+RhythmPlaybackController& Startup::getPlaybackController()
+{
+	return playbackController;
+}
+
 /* Configure all objects instantiated by the Startup module. NB: this function
  * MUST be called before using any object to guarantee correct behavior! */
 void Startup::init()
@@ -127,7 +141,6 @@ static void setupTimers()
 
 	/* Start timers */
 	tim0.start(); // starts msec timer
-	tempoTimer.start();
 }
 
 /**

@@ -15,6 +15,7 @@
 #include "GpioMatrix.h"
 #include "GpioPin.h"
 #include "CallbackScheduler.h"
+#include "MatrixMappedButtonGroup.h"
 
 namespace Startup
 {
@@ -24,6 +25,9 @@ LedGroup& getStepLeds();
 ButtonGroup& getStepButtons();
 CallbackScheduler& getCallbackScheduler();
 TempoTimingManager& getTempoTimingManager();
+MatrixMappedButtonGroup<GpioPin>& getTransportButtons();
+RhythmPlaybackController& getPlaybackController();
+
 };
 
 #endif /* STARTUP_2_H */
