@@ -23,7 +23,7 @@ void init();
 LedGroup& getStepLeds();
 ButtonGroup& getStepButtons();
 CallbackScheduler& getCallbackScheduler();
-
+TempoTimingManager& getTempoTimingManager();
 };
 
 #endif /* STARTUP_2_H */

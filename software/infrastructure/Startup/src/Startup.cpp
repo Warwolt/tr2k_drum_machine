@@ -28,14 +28,15 @@
 #include "TempoTimer16Bit.h"
 #include "TempoTimingManager.h"
 
-// debugging
-static Timer1 tim1;
-static TempoTimer16Bit tempoTimer = TempoTimer16Bit(tim1);
-// static TempoTimingManager timingManager = TempoTimingManager(tempoTimer);
-GpioPin ledPin {Pin5, PortB, DataDirection::DigitalOutput}; // global only while doing some testing
-GpioPin ledPin2{Pin4, PortB, DataDirection::DigitalOutput}; // global only while doing some testing
-
 /* Instantiations --------------------------------------------------------------------------------*/
+/* Drivers and Hardware Abstraction Layer */
+static Timer0 tim0;
+static constexpr u16 microsecondPeriod = 100; // IF THIS IS LESS THAN 100us BUTTON GROUP WON'T WORK!
+static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
+
+/* Infrastructure */
+static CallbackScheduler callbackScheduler {microsecondTimer};
+
 /* Pattern edit LEDs */
 static PinStatePair fivePinLut[20] =
 {
@@ -50,9 +51,6 @@ static CharlieplexMappedLedGroup<GpioPin> charlieStepLeds = CharlieplexMappedLed
 static LedGroup& stepLeds = charlieStepLeds;
 
 /* Pattern edit buttons*/
-static Timer0 tim0;
-static constexpr u16 microsecondPeriod = 100; // IF THIS IS LESS THAN 100us BUTTON GROUP WON'T WORK!
-static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
 static constexpr MillisecondTimer::milliseconds buttonDebounceTime = 10; // ms
 static constexpr u8 numButtonColumns = 4;
 static constexpr u8 numButtonRows = 5;
@@ -65,10 +63,13 @@ static GpioMatrix<GpioPin> buttonMatrix = GpioMatrix<GpioPin>(buttonColumnPins, 
 static constexpr u8 numStepButtons = 16;
 static MatrixMappedButtonGroup<GpioPin> stepButtons = MatrixMappedButtonGroup<GpioPin>(buttonMatrix, numStepButtons, 0);
 
-// quick dirty test, don't commit this to master!
-static CallbackScheduler callbackScheduler {microsecondTimer};
+/* Rhythm Playback */
+static Timer1 tim1;
+static TempoTimer16Bit tempoTimer {tim1};
+static TempoTimingManager timingManager {tempoTimer};
 
 /* Private function declarations -----------------------------------------------------------------*/
+static void setupTimers();
 static void registerTimer0InterruptHandlers();
 static void registerTimer1InterruptHandlers();
 
@@ -88,35 +89,48 @@ CallbackScheduler& Startup::getCallbackScheduler()
 	return callbackScheduler;
 }
 
+TempoTimingManager& Startup::getTempoTimingManager()
+{
+	return timingManager;
+}
+
 /* Configure all objects instantiated by the Startup module. NB: this function
  * MUST be called before using any object to guarantee correct behavior! */
 void Startup::init()
 {
 	Interrupts::enableInterruptsGlobally();
-
-	/* Set up HW timers */
-	registerTimer0InterruptHandlers();
-	registerTimer1InterruptHandlers();
-
-	tim0.enablePeriodicInterrupts();
-	tim1.enablePeriodicInterrupts();
-	tim0.start();
-
-	tempoTimer.setTempo(120); // we have to set tempo else timer doesn't start
-	tempoTimer.start();
+	setupTimers();
 }
 
 /* Private function definitions ------------------------------------------------------------------*/
 /**
+ *
+ */
+static void setupTimers()
+{
+	/* Set up hardware timers */
+	registerTimer0InterruptHandlers();
+	registerTimer1InterruptHandlers();
+	tim0.enablePeriodicInterrupts();
+	tim1.enablePeriodicInterrupts();
+
+	/* Set up software timers */
+	tempoTimer.setTempo(120); // we have to set tempo else timer doesn't start
+
+	/* Start timers */
+	tim0.start(); // starts msec timer
+	tempoTimer.start();
+}
+
+/**
  * @brief Register timing based actions for HW timer tim0
  */
-void registerTimer0InterruptHandlers()
+static void registerTimer0InterruptHandlers()
 {
 	InterruptHandler timerISR = []
 	{
-		// ledMatrix.outputNextLed();
-		// microsecondTimer.countPeriod();
-		ledPin.toggle(); // check if ISR gets called
+		ledMatrix.outputNextLed();
+		microsecondTimer.countPeriod();
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer0CompareMatch;
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
@@ -125,11 +139,11 @@ void registerTimer0InterruptHandlers()
 /**
  * @brief Register timing based actions for HW timer tim1
  */
-void registerTimer1InterruptHandlers()
+static void registerTimer1InterruptHandlers()
 {
 	InterruptHandler timerISR = []
 	{
-		ledPin2.toggle(); // check if ISR gets called
+		tempoTimer.countPulse();
 	};
 	InterruptRequest timerIRQ = InterruptRequest::Timer1CompareMatch;
 	Interrupts::setHandlerForInterrupt(timerISR, timerIRQ);
