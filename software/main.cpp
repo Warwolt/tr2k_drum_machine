@@ -15,26 +15,33 @@ static GpioPin ledPin {Pin5, PortB, DataDirection::DigitalOutput};
 int main()
 {
 	Startup::init();
-	ledPin.clear();
-	static u8 counter = 0;
+
+	/* Setup LED to blink ones per quarter note */
+	static u8 tempoLedCounter = 0;
 	timingManager.addPlaybackStepHandler([]() {
-		counter++;
-		if (counter == 3)
+		if (tempoLedCounter == 0)
 		{
-			ledPin.set();
-			scheduler.scheduleCallback([](){ ledPin.clear();}, 50);
-			counter = 0;
+			ledPin.toggle();
+			scheduler.scheduleCallback([](){ ledPin.toggle();}, 50);
 		}
+		tempoLedCounter = (tempoLedCounter + 1) % 4;
 	});
 
-	while(1)
+	/* Setup step LEDs to blink */
+	static u8 stepLedCounter = 0;
+	timingManager.addPlaybackStepHandler([]() {
+		stepLeds.toggleLed(stepLedCounter);
+		scheduler.scheduleCallback([](u16 x){ stepLeds.toggleLed(x);}, stepLedCounter, 40);
+		stepLedCounter = (stepLedCounter + 1) % 16;
+	});
+
+	while (1)
 	{
 		for (int i = 0; i < stepButtons.getNumButtons(); i++)
 		{
 			if (stepButtons.buttonPressedNow(i))
 			{
 				stepLeds.toggleLed(i);
-				scheduler.scheduleCallback([](u16 x){ stepLeds.clearLed(x);}, i, 1000);
 			}
 		}
 
