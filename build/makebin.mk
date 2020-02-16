@@ -10,7 +10,7 @@ LIB :=
 CC = avr-g++
 
 FLAGS := -Wall -std=c++11
-FLAGS += -fno-exceptions
+FLAGS += -fno-exceptions -fno-threadsafe-statics
 FLAGS += -fmax-errors=5
 
 # AVR specific
