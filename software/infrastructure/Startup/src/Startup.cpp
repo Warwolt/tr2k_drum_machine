@@ -137,7 +137,7 @@ static void setupTimers()
 	tim1.enablePeriodicInterrupts();
 
 	/* Set up software timers */
-	tempoTimer.setTempo(120); // we have to set tempo else timer doesn't start
+	tempoTimer.setTempo(130); // we have to set tempo else timer doesn't start
 
 	/* Start timers */
 	tim0.start(); // starts msec timer
