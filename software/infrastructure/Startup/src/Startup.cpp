@@ -32,8 +32,7 @@
 /* Drivers and Hardware Abstraction Layer */
 static Timer0 tim0;
 static constexpr u16 microsecondPeriod = 100; // IF THIS IS LESS THAN 100us BUTTON GROUP WON'T WORK!
-// made global only while prototyping new callback scheduler
-MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
+static MicrosecondPeriodMillisecondTimer microsecondTimer(tim0, microsecondPeriod);
 
 /* Infrastructure */
 static CallbackScheduler callbackScheduler {microsecondTimer};
