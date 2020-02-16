@@ -16,6 +16,7 @@ static GpioPin boardLed {Pin5, PortB, DataDirection::DigitalOutput};
 
 static constexpr u8 startButton = 0;
 static constexpr u8 stopButton = 1;
+static constexpr u8 clearButton = 3;
 
 int main()
 {
@@ -65,6 +66,21 @@ int main()
 			playbackController.stopPlayback();
 		}
 
+		/* Clear button */
+		if (transportButtons.buttonIsDown(clearButton))
+		{
+			if (playbackIsOngoing)
+			{
+				/* Clear whatever the playback position passes */
+				playbackPattern &= ~(0x1 << playbackPosition);
+			}
+			else
+			{
+				/* Immediately clear the whole pattern */
+				playbackPattern = 0;
+			}
+		}
+
 		/* Step buttons */
 		if (stepButtons.buttonPressedNow(currentStepIndex))
 		{
@@ -72,47 +88,24 @@ int main()
 		}
 
 		/* Display pattern and playback position on step leds */
+		// fill draw buffer
 		u16 drawBuffer = 0;
 		for (size_t i = 0; i < 16; i++)
 		{
+			/* Rhythm pattern */
 			drawBuffer |= (playbackPattern & (0x1 << i));
 		}
 		if (playbackIsOngoing)
 		{
+			/* Playback position */
 			drawBuffer ^= (0x1 << playbackPosition);
 		}
+		// output draw buffer on leds
 		for (size_t i = 0; i < 16; i++)
 		{
 			(drawBuffer >> i) & 0x1 ? stepLeds.setLed(i) : stepLeds.clearLed(i);
 		}
-		// TODO: unroll this loop
-		// for (size_t i = 0; i < 16; i++)
-		// {
-		// 	bool setPatternLed = (playbackPattern & (0x1 << i));
-		// 	setPatternLed ? stepLeds.setLed(i) : stepLeds.clearLed(i);
-		// }
-		// if (playbackIsOngoing)
-		// {
-		// 	u8 positionLed = playbackPosition;
-		// 	bool setPositionled = !(playbackPattern & (0x1 << playbackPosition));
-		// 	setPositionled ? stepLeds.setLed(positionLed) : stepLeds.clearLed(positionLed);
-		// }
-		// Clear
-		// for (size_t i = 0; i < stepLeds.getNumLeds(); i++) // TODO: unroll this loop so that it's not blocking!
-		// {
-		// 	stepLeds.clearLed(i);
-		// }
-		// Rhythm pattern
-		// bool setPatternLed = (playbackPattern & (0x1 << currentStepIndex));
-		// u8 patternLedNum = currentStepIndex;
-		// setPatternLed ? stepLeds.setLed(patternLedNum) : stepLeds.clearLed(patternLedNum);
-		// Playback position
-		// if (playbackIsOngoing)
-		// {
-		// 	u8 playbackLed = playbackPosition;
-		// 	bool setPlaybackLed = !(playbackPattern & (0x1 << playbackPosition));
-		// 	setPlaybackLed ? stepLeds.setLed(playbackLed) : stepLeds.clearLed(playbackLed);
-		// }
+
 		/* Select next step to handle */
 		currentStepIndex = (currentStepIndex + 1) % stepLeds.getNumLeds();
 

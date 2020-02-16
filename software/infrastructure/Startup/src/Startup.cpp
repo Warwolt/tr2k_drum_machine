@@ -77,7 +77,7 @@ static TempoTimer16Bit tempoTimer {tim1};
 static TempoTimingManager timingManager {tempoTimer};
 
 // todo make accessor functions
-MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 2, numStepButtons};
+MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 4, numStepButtons};
 RhythmPlaybackController playbackController {tempoTimer};
 
 /* Private function declarations -----------------------------------------------------------------*/
