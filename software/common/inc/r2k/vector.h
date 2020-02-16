@@ -55,7 +55,7 @@ public:
 
 	void resize(size_t new_size) final
 	{
-		if(new_size <= CAPACITY)
+		if (new_size <= CAPACITY)
 		{
 			num_elements = new_size;
 		};
@@ -80,7 +80,7 @@ public:
 	/* Modifiers */
 	void push_back(const_reference val) final
 	{
-		if(num_elements < CAPACITY)
+		if (num_elements < CAPACITY)
 		{
 			array[num_elements++] = val;
 		}
