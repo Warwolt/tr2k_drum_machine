@@ -1,0 +1,12 @@
+@startuml
+
+title Stop Playback
+
+-> PlaybackControlView: update()
+PlaybackControlView -> StopButton: justPressed()
+StopButton --> PlaybackControlView: true
+
+PlaybackControlView -> PlaybackController: stopPlayback()
+PlaybackController -> TempoTimer: stop()
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+
+title Select Active Channel
+
+->PatternEditView: update()
+PatternEditView -> ChannelSelectButton: heldDown()
+ChannelSelectButton --> PatternEditView: true
+loop for num in numSteps
+    PatternEditView -> "stepButtons : ButtonGroup": buttonPressedNow(num)
+    "stepButtons : ButtonGroup" --> PatternEditView: true
+    PatternEditView -> PatternEditController: selectActiveChannel(num)
+    PatternEditController -> RhythmPatternManager: setActivePattern(num)
+end
+@enduml

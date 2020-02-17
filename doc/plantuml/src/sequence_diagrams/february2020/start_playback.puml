@@ -1,0 +1,19 @@
+@startuml
+
+title Start Playback
+
+-> PlaybackControlView: update()
+PlaybackControlView -> PlayButton: justPressed()
+PlayButton --> PlaybackControlView: true
+
+PlaybackControlView -> PlaybackController: restartPlayback()
+PlaybackController -> TempoTimingManager: resetPlaybackHandlers()
+
+loop for each PlaybackHandler
+    PlaybackController -> PlaybackHandler: resetPlayback()
+end
+
+PlaybackController -> TempoTimer: clear()
+PlaybackController -> TempoTimer: start()
+
+@enduml

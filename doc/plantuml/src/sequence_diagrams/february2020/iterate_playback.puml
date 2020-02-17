@@ -1,0 +1,13 @@
+@startuml
+
+title Iterate Playback
+
+->TempoTimingManager: handlePlayback()
+TempoTimingManager -> TempoTimer: playbackStepIsDue()
+TempoTimer --> TempoTimingManager: true
+loop for each PlaybackHandler
+    TempoTimingManager -> PlaybackHandler: handlePlaybackStep()
+end
+TempoTimingManager -> TempoTimer: startCountingNextStep()
+
+@enduml

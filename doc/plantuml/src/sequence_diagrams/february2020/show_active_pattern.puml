@@ -1,0 +1,20 @@
+
+@startuml
+
+title Show Active Pattern
+
+->PatternEditView: update()
+PatternEditView -> PatternEditController: getActivePatternState()
+PatternEditController -> RhythmPatternManager: getActivePatternState()
+RhythmPatternManager --> PatternEditController: PatternState
+PatternEditController --> PatternEditView: PatternState
+
+loop for n in PatternState length
+    alt step n active
+        PatternEditView -> LedGroup: setLed(n)
+    else
+        PatternEditView -> LedGroup: clearLed(n)
+    end
+end
+
+@enduml
