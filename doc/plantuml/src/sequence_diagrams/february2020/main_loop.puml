@@ -1,0 +1,47 @@
+@startuml
+
+Title Step Sequncer Main Loop
+' This diagram is a documentation of the single channel step sequencer logic
+' implemented in main.cpp that is to be refactored into a set of modules
+
+start
+
+:initialize;
+:register playback handlers;
+repeat;
+    if (start button pressed?) then (yes)
+        :restart playback;
+    else (no)
+    endif
+    if (stop button pressed?) then (yes)
+        :stop playback;
+    else (no)
+    endif
+    if (clear button pressed?) then (yes)
+        if (playback is ongoing?) then (yes)
+            :clear current playback step in rhythm pattern;
+        else (no)
+            :clear whole rhythm pattern;
+        endif
+    else (no)
+    endif
+    while (for each button N in step buttons)
+        if (button N is pressed?) then (yes)
+            :toggle step N in rhythm pattern;
+        endif
+    endwhile
+    while (for each step N in step leds)
+        if (step N is rhythm?) then (yes)
+            :set led N;
+        else (no)
+            :clear led N;
+        endif
+    endwhile
+    if (playback is ongoing?) then (yes)
+        :toggle led N where N is playback position;
+    else (no)
+    endif
+    :iterate timing managers;
+repeat while ()
+
+@enduml

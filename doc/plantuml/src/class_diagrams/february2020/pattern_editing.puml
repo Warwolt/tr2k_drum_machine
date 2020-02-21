@@ -1,0 +1,60 @@
+' Diagram sketching the relation between classes implementing a view for the
+' rhythm pattern editing feature.
+
+@startuml
+
+Title Pattern Editing
+
+package Presentation {
+    class PatternEditView {
+        stepButtons : ButtonGroup
+        editControlButtons : ButtonGroup
+        stepLeds : LedGroup
+        update()
+    }
+}
+
+package Application {
+    class PatternEditController {
+        getActivePatternPlaybackPosition() : u8
+        getActivePatternState() : PatternState
+        isPlaybackOngoing() : bool
+    }
+}
+
+package Domain {
+    class RhythmPatternManager {
+        getActivePatternState() : PatternState
+    }
+    class TempoTimingManager {
+        getActivePatternPlaybackPosition() : u8
+        isPlaybackOngoing() : bool
+    }
+    interface TempoTimer {
+        start()
+        stop()
+        clear()
+    }
+}
+
+package HardwareAbstractionLayer {
+    interface LedGroup {
+        setLed(ledNum : u8)
+        clearLed(ledNum : u8)
+        toggleLed(ledNum : u8)
+    }
+    interface ButtonGroup {
+        buttonPressedNow(buttonNum : u8) : bool
+        buttonIsDown(buttonNum : u8) : bool
+    }
+}
+
+PatternEditView -down-> PatternEditController
+PatternEditView -down-> ButtonGroup
+PatternEditView -down-> LedGroup
+
+PatternEditController -down-> TempoTimingManager
+PatternEditController -down-> RhythmPatternManager
+TempoTimingManager -down-> TempoTimer
+
+@enduml
