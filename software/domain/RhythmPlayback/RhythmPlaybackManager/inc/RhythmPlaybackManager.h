@@ -5,8 +5,8 @@
 ****************************************************************************************************
 */
 
-#ifndef TEMPO_TIMING_MANAGER_H
-#define TEMPO_TIMING_MANAGER_H
+#ifndef RHYTHM_PLAYBACK_MANAGER
+#define RHYTHM_PLAYBACK_MANAGER
 
 #include "linuxtypes.h"
 #include "TempoTimer.h"
@@ -17,10 +17,10 @@
  */
 using PlaybackStepHandler = void(*)();
 
-class TempoTimingManager
+class RhythmPlaybackManager
 {
 public:
-	TempoTimingManager(TempoTimer& tempoTimer);
+	RhythmPlaybackManager(TempoTimer& tempoTimer);
 	void addPlaybackStepHandler(PlaybackStepHandler handler);
 	void handlePlayback();
 
@@ -34,4 +34,4 @@ private:
 	PlaybackStepHandler playbackStepHandlers[maxNumHandlers];
 };
 
-#endif /* TEMPO_TIMING_MANAGER_H */
+#endif /* RHYTHM_PLAYBACK_MANAGER */

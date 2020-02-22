@@ -14,7 +14,7 @@ APPLICATION_DIR = $(APP_ROOT)/application
 DOMAIN_DIR = $(APP_ROOT)/domain
 -include $(DOMAIN_DIR)/RhythmPlayback/BeatsPerMinute/makefile.mk
 -include $(DOMAIN_DIR)/RhythmPlayback/TempoTimer/makefile.mk
--include $(DOMAIN_DIR)/RhythmPlayback/TempoTimingManager/makefile.mk
+-include $(DOMAIN_DIR)/RhythmPlayback/RhythmPlaybackManager/makefile.mk
 
 # Infrastructure
 INFRASRTUCTURE_DIR = $(APP_ROOT)/infrastructure

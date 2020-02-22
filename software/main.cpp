@@ -9,7 +9,7 @@
 static LedGroup& stepLeds = Startup::getStepLeds();
 static ButtonGroup& stepButtons = Startup::getStepButtons();
 static CallbackScheduler& scheduler = Startup::getCallbackScheduler();
-static TempoTimingManager& tempoTimingManager = Startup::getTempoTimingManager();
+static RhythmPlaybackManager& playbackManager = Startup::getRhythmPlaybackManager();
 static MatrixMappedButtonGroup<GpioPin>& transportButtons = Startup::getTransportButtons();
 static RhythmPlaybackController& playbackController = Startup::getPlaybackController();
 static GpioPin boardLed {Pin5, PortB, DataDirection::DigitalOutput};
@@ -25,7 +25,7 @@ int main()
 
 	/* Setup LED to blink according to programmed pattern */
 	static u8 playbackPosition = 0;
-	tempoTimingManager.addPlaybackStepHandler([]() {
+	playbackManager.addPlaybackStepHandler([]() {
 		if (playbackPattern & (0x1 << playbackPosition))
 		{
 			boardLed.toggle();
@@ -36,7 +36,7 @@ int main()
 
 	/* Setup step LEDs to blink */
 	static u8 stepLedCounter = 0;
-	tempoTimingManager.addPlaybackStepHandler([]() {
+	playbackManager.addPlaybackStepHandler([]() {
 		stepLedCounter = (stepLedCounter + 1) % 16;
 	});
 
@@ -111,6 +111,6 @@ int main()
 
 		/* Check timing managers */
 		scheduler.checkSchedule();
-		tempoTimingManager.handlePlayback();
+		playbackManager.handlePlayback();
 	}
 }

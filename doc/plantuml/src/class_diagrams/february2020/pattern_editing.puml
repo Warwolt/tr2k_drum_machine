@@ -26,7 +26,7 @@ package Domain {
     class RhythmPatternManager {
         getActivePatternState() : PatternState
     }
-    class TempoTimingManager {
+    class RhythmPlaybackManager {
         getActivePatternPlaybackPosition() : u8
         isPlaybackOngoing() : bool
     }
@@ -53,8 +53,8 @@ PatternEditView -down-> PatternEditController
 PatternEditView -down-> ButtonGroup
 PatternEditView -down-> LedGroup
 
-PatternEditController -down-> TempoTimingManager
+PatternEditController -down-> RhythmPlaybackManager
 PatternEditController -down-> RhythmPatternManager
-TempoTimingManager -down-> TempoTimer
+RhythmPlaybackManager -down-> TempoTimer
 
 @enduml

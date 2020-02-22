@@ -26,7 +26,7 @@
 // debugging
 #include "Timer1.h"
 #include "TempoTimer16Bit.h"
-#include "TempoTimingManager.h"
+#include "RhythmPlaybackManager.h"
 
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Drivers and Hardware Abstraction Layer */
@@ -74,7 +74,7 @@ static MatrixMappedButtonGroup<GpioPin> stepButtons {buttonMatrix, numStepButton
 /* Rhythm Playback */
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer {tim1};
-static TempoTimingManager timingManager {tempoTimer};
+static RhythmPlaybackManager timingManager {tempoTimer};
 
 // todo make accessor functions
 MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 4, numStepButtons};
@@ -101,7 +101,7 @@ CallbackScheduler& Startup::getCallbackScheduler()
 	return callbackScheduler;
 }
 
-TempoTimingManager& Startup::getTempoTimingManager()
+RhythmPlaybackManager& Startup::getRhythmPlaybackManager()
 {
 	return timingManager;
 }

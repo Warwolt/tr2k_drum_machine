@@ -9,7 +9,7 @@
 #define STARTUP_2_H
 
 #include "TempoControlView.h"
-#include "TempoTimingManager.h"
+#include "RhythmPlaybackManager.h"
 #include "LedGroup.h"
 #include "ButtonGroup.h"
 #include "GpioMatrix.h"
@@ -24,7 +24,7 @@ void init();
 LedGroup& getStepLeds();
 ButtonGroup& getStepButtons();
 CallbackScheduler& getCallbackScheduler();
-TempoTimingManager& getTempoTimingManager();
+RhythmPlaybackManager& getRhythmPlaybackManager();
 MatrixMappedButtonGroup<GpioPin>& getTransportButtons();
 RhythmPlaybackController& getPlaybackController();
 

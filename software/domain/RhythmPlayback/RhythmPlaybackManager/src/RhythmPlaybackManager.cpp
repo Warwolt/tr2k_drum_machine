@@ -5,10 +5,10 @@
 ****************************************************************************************************
 */
 
-#include "TempoTimingManager.h"
+#include "RhythmPlaybackManager.h"
 #include <stddef.h>
 
-TempoTimingManager::TempoTimingManager(TempoTimer& tempoTimer) : tempoTimer(tempoTimer)
+RhythmPlaybackManager::RhythmPlaybackManager(TempoTimer& tempoTimer) : tempoTimer(tempoTimer)
 {
 
 }
@@ -17,7 +17,7 @@ TempoTimingManager::TempoTimingManager(TempoTimer& tempoTimer) : tempoTimer(temp
  * Add a new callback to be called in the handlePlayback() method.
  * If maximum number of callbacks registered, this method does nothing.
  */
-void TempoTimingManager::addPlaybackStepHandler(PlaybackStepHandler handler)
+void RhythmPlaybackManager::addPlaybackStepHandler(PlaybackStepHandler handler)
 {
 	if (currentNumHandlers < maxNumHandlers)
 	{
@@ -29,7 +29,7 @@ void TempoTimingManager::addPlaybackStepHandler(PlaybackStepHandler handler)
  * Checks with the TempoTimer if a playback step is due for execution.
  * If it is, all registered playback step handler callbacks are called.
  */
-void TempoTimingManager::handlePlayback()
+void RhythmPlaybackManager::handlePlayback()
 {
 	if (tempoTimer.playbackStepIsDue())
 	{
@@ -38,7 +38,7 @@ void TempoTimingManager::handlePlayback()
 	}
 }
 
-inline void TempoTimingManager::callPlaybackStephandlers()
+inline void RhythmPlaybackManager::callPlaybackStephandlers()
 {
 	for (size_t i = 0; i < currentNumHandlers; i++)
 	{
