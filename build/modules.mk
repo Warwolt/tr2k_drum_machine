@@ -3,6 +3,7 @@
 
 # Presentation
 PRESENTATION_DIR = $(APP_ROOT)/presentation
+-include $(PRESENTATION_DIR)/RhythmPatternEditing/makefile.mk
 -include $(PRESENTATION_DIR)/TempoControl/TempoControlView/makefile.mk
 -include $(PRESENTATION_DIR)/TempoControl/TempoKnob/makefile.mk
 
