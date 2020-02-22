@@ -9,6 +9,7 @@
 #define R2K_INTERFACE_VECTOR_H
 
 #include "stlstub/initializer_list.h"
+#include <stddef.h>
 
 namespace r2k
 {
