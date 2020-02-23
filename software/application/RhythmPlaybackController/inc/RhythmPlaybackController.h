@@ -9,17 +9,20 @@
 
 #include "linuxtypes.h"
 #include "TempoTimer.h"
+#include "RhythmPlaybackManager.h"
 
 class RhythmPlaybackController
 {
 public:
-	RhythmPlaybackController(TempoTimer& timer);
+	RhythmPlaybackController(RhythmPlaybackManager& manager, TempoTimer& timer);
 	void setTempo(BeatsPerMinute);
 	void restartPlayback();
 	void stopPlayback();
 	void continuePlayback();
+	bool playbackIsOngoing();
 
 private:
+	RhythmPlaybackManager& playbackManager;
 	TempoTimer& tempoTimer;
 };
 

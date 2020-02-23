@@ -8,10 +8,8 @@
 #include "TempoKnob.h"
 #include "FourDigitDisplay.h"
 
-RhythmPlaybackController::RhythmPlaybackController(TempoTimer& timer) : tempoTimer(timer)
-{
-
-}
+RhythmPlaybackController::RhythmPlaybackController(RhythmPlaybackManager& manager,
+	TempoTimer& timer) : playbackManager(manager), tempoTimer(timer) {}
 
 void RhythmPlaybackController::setTempo(BeatsPerMinute bpm)
 {
@@ -20,16 +18,20 @@ void RhythmPlaybackController::setTempo(BeatsPerMinute bpm)
 
 void RhythmPlaybackController::restartPlayback()
 {
-	tempoTimer.clear(); // resets timer counter
-	tempoTimer.start(); // restarts counting
+	playbackManager.startPlayback();
 }
 
 void RhythmPlaybackController::stopPlayback()
 {
-	tempoTimer.stop(); // stop counting, only pauses playback
+	playbackManager.stopPlayback();
 }
 
 void RhythmPlaybackController::continuePlayback()
 {
-	tempoTimer.start(); // start counting again without clearing counter
+	playbackManager.continuePlayback();
+}
+
+bool RhythmPlaybackController::playbackIsOngoing()
+{
+	return playbackManager.playbackIsOngoing();
 }

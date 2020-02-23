@@ -11,18 +11,27 @@
 #include "linuxtypes.h"
 #include "TempoTimer.h"
 
+
 /**
- * Callback function that executes some playback related code.
- * Called once every playback step (16th note).
+ * @brief Represents an image of a rhythm pattern
+ *
+ * @param handlePlaybackStep  Called once every playback step (16th note)
+ * @param resetPlayback       Called when playback is reset, i.e. start button pressed
  */
-using PlaybackStepHandler = void(*)();
+using CallbackFunction = void(*)();
+struct PlaybackHandler
+{
+	CallbackFunction handlePlaybackStep;
+	CallbackFunction resetPlayback;
+};
 
 class RhythmPlaybackManager
 {
 public:
 	RhythmPlaybackManager(TempoTimer& tempoTimer);
-	void addPlaybackStepHandler(PlaybackStepHandler handler);
+	void addPlaybackHandler(PlaybackHandler handler);
 	void startPlayback();
+	void continuePlayback();
 	void stopPlayback();
 	void handlePlayback();
 	u8 getPlaybackPosition() const;
@@ -35,7 +44,7 @@ private:
 	bool isPlaying = false;
 	u8 currentNumHandlers = 0;
 	u8 playbackPosition = 0;
-	PlaybackStepHandler playbackStepHandlers[maxNumHandlers];
+	PlaybackHandler playbackHandlers[maxNumHandlers]; // TODO: test if r2k::vector based version works on-target
 
 	void callPlaybackStephandlers();
 };

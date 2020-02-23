@@ -8,13 +8,15 @@
 #include "traceprint.h"
 #include "linuxtypes.h"
 #include "RhythmPlaybackController.h"
+#include "RhythmPlaybackManager.h"
 #include "TempoTimerMock.h"
 
 class RhythmPlaybackControllerTest : public ::testing::Test
 {
 public:
 	TempoTimerMock timerMock;
-	RhythmPlaybackController controller = RhythmPlaybackController(timerMock);
+	RhythmPlaybackManager playbackManager {timerMock};
+	RhythmPlaybackController controller {playbackManager, timerMock};
 };
 
 TEST_F(RhythmPlaybackControllerTest, Set_tempo_delegated_to_tempo_timer)

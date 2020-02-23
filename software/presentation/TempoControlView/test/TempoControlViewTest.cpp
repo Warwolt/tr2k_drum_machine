@@ -10,6 +10,7 @@
 #include "TempoControlView.h"
 #include "TempoKnobMock.h"
 #include "FourDigitDisplayMock.h"
+#include "RhythmPlaybackManager.h"
 #include "TempoTimerMock.h"
 
 using ::testing::Return;
@@ -22,7 +23,9 @@ public:
 	NiceMock<TempoTimerMock> timerMock;
 	NiceMock<TempoKnobMock> knobMock;
 	NiceMock<FourDigitDisplayMock> displayMock;
-	RhythmPlaybackController controller = RhythmPlaybackController(timerMock);
+	RhythmPlaybackManager playbackManager {timerMock};
+
+	RhythmPlaybackController controller {playbackManager, timerMock};
 
 	/* Code under test */
 	TempoControlView tempoView = TempoControlView(controller, knobMock, displayMock);

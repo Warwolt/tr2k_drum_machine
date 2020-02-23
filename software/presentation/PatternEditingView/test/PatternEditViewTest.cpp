@@ -27,17 +27,17 @@ public:
 
     /* Dependencies */
     // mocks
-    NiceMock<LedGroupMock> stepLedMock;
-    NiceMock<ButtonGroupMock> editControlButtons;
-    NiceMock<ButtonGroupMock> stepButtons;
-    NiceMock<TempoTimerMock> timerMock;
+    NiceMock<LedGroupMock> mockStepLeds;
+    NiceMock<ButtonGroupMock> mockontrolButtons;
+    NiceMock<ButtonGroupMock> mockStepButtons;
+    NiceMock<TempoTimerMock> mockTimer;
     // concretes
-    RhythmPlaybackManager playbackManager {timerMock};
+    RhythmPlaybackManager playbackManager {mockTimer};
     RhythmPatternManager patternManager;
     PatternEditController editController {playbackManager, patternManager};
 
     /* Class under test */
-    PatternEditView editView {editController, editControlButtons, stepButtons, stepLedMock};
+    PatternEditView editView {editController, mockontrolButtons, mockStepButtons, mockStepLeds};
 
 
     template <typename T>
@@ -51,7 +51,7 @@ public:
         const u8 numSteps = patternManager.getActivePattern().length;
         for (int i = 0; i < numSteps; i++)
         {
-            EXPECT_CALL(stepLedMock, clearLed(i));
+            EXPECT_CALL(mockStepLeds, clearLed(i));
         }
     }
 
@@ -66,11 +66,11 @@ public:
         {
             if (numberIsInVector(num, ledsToSet))
             {
-                EXPECT_CALL(stepLedMock, setLed(num));
+                EXPECT_CALL(mockStepLeds, setLed(num));
             }
             else
             {
-                EXPECT_CALL(stepLedMock, clearLed(num));
+                EXPECT_CALL(mockStepLeds, clearLed(num));
             }
         }
     }
@@ -98,18 +98,18 @@ public:
         for (int num = 0; num < maxNumPatternSteps; num++)
         {
             bool isPressed = (numberIsInVector(num, buttonsToPress));
-            EXPECT_CALL(stepButtons, buttonPressedNow(num)).WillOnce(Return(isPressed));
+            EXPECT_CALL(mockStepButtons, buttonPressedNow(num)).WillOnce(Return(isPressed));
         }
     }
 
     void holdDownChannelSelectButton(bool isDown)
     {
-        EXPECT_CALL(editControlButtons, buttonIsDown(channelSelectButton)).WillOnce(Return(isDown));
+        EXPECT_CALL(mockontrolButtons, buttonIsDown(channelSelectButton)).WillOnce(Return(isDown));
     }
 
     void holdDownClearPatternButton(bool isDown)
     {
-        EXPECT_CALL(editControlButtons, buttonIsDown(patternClearButton)).WillOnce(Return(isDown));
+        EXPECT_CALL(mockontrolButtons, buttonIsDown(patternClearButton)).WillOnce(Return(isDown));
     }
 
     void startPlaybackAndMovePlaybackPositionTo(u8 position)
@@ -117,7 +117,7 @@ public:
         playbackManager.startPlayback(); // playback is now ongoing
         for (int i = 0; i < position; i++)
         {
-            EXPECT_CALL(timerMock, playbackStepIsDue()).WillOnce(Return(true));
+            EXPECT_CALL(mockTimer, playbackStepIsDue()).WillOnce(Return(true));
             playbackManager.handlePlayback(); // moves playback forward once
         }
     }

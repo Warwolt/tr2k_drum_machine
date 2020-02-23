@@ -8,10 +8,7 @@
 #include "RhythmPlaybackManager.h"
 #include <stddef.h>
 
-RhythmPlaybackManager::RhythmPlaybackManager(TempoTimer& tempoTimer) : tempoTimer(tempoTimer)
-{
-
-}
+RhythmPlaybackManager::RhythmPlaybackManager(TempoTimer& tempoTimer) : tempoTimer(tempoTimer) {}
 
 /**
  * @brief Start playback by resetting tempo timer and all playback handlers
@@ -21,7 +18,11 @@ void RhythmPlaybackManager::startPlayback()
 	tempoTimer.clear();
 	tempoTimer.start();
 	isPlaying = true;
-	// TODO: write test for resetting all playback handlers
+
+	for (size_t i = 0; i < currentNumHandlers; i++)
+	{
+		playbackHandlers[i].resetPlayback();
+	}
 }
 
 /**
@@ -34,18 +35,32 @@ void RhythmPlaybackManager::stopPlayback()
 }
 
 /**
- * Add a new callback to be called in the handlePlayback() method.
+ * @brief Continue playback wihtout restarting it
+ */
+void RhythmPlaybackManager::continuePlayback()
+{
+	tempoTimer.start();
+	isPlaying = true;
+}
+
+/**
+ * @brief Register a new playback handler
+ *
+ * Add a pair of callbacks to be called in the handlePlayback() method and
+ * startPlayback() method respectively.
  * If maximum number of callbacks registered, this method does nothing.
  */
-void RhythmPlaybackManager::addPlaybackStepHandler(PlaybackStepHandler handler)
+void RhythmPlaybackManager::addPlaybackHandler(PlaybackHandler handler)
 {
 	if (currentNumHandlers < maxNumHandlers)
 	{
-		playbackStepHandlers[currentNumHandlers++] = handler;
+		playbackHandlers[currentNumHandlers++] = handler;
 	}
 }
 
 /**
+ * @brief Iterate handling of playback one step
+ *
  * Checks with the TempoTimer if a playback step is due for execution.
  * If it is, all registered playback step handler callbacks are called.
  */
@@ -64,8 +79,7 @@ inline void RhythmPlaybackManager::callPlaybackStephandlers()
 {
 	for (size_t i = 0; i < currentNumHandlers; i++)
 	{
-		auto& handlePlaybackStep = playbackStepHandlers[i];
-		handlePlaybackStep();
+		playbackHandlers[i].handlePlaybackStep();
 	}
 }
 

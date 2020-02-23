@@ -13,7 +13,9 @@
 using testing::NiceMock;
 using testing::Return;
 
-static bool callbackWasCalled[2];
+// Spy function variables
+static bool handlePlaybackWasCalled[2];
+static bool resetPlaybackWasCalled[2];
 
 class RhythmPlaybackManagerTest : public ::testing::Test
 {
@@ -25,8 +27,29 @@ public:
 	{
 		for (int i = 0; i < 2; i++)
 		{
-			callbackWasCalled[i] = false;
+			handlePlaybackWasCalled[i] = false;
 		}
+	}
+
+	void addPlaybackHandler0()
+	{
+		playbackManager.addPlaybackHandler({
+			.handlePlaybackStep = []{ handlePlaybackWasCalled[0] = true; },
+			.resetPlayback = []{ resetPlaybackWasCalled[0] = true; },
+		});
+	}
+
+	void addPlaybackHandler1()
+	{
+		playbackManager.addPlaybackHandler({
+			.handlePlaybackStep = []{ handlePlaybackWasCalled[1] = true; },
+			.resetPlayback = []{ resetPlaybackWasCalled[1] = true; },
+		});
+	}
+
+	void signalNextPlaybackStep()
+	{
+		EXPECT_CALL(mockTimer, playbackStepIsDue()).WillOnce(Return(true));
 	}
 };
 
@@ -34,15 +57,15 @@ TEST_F(RhythmPlaybackManagerTest, A_maximum_amount_of_callbacks_can_be_registere
 {
 	for (size_t i = 0; i < playbackManager.maxNumHandlers; i++)
 	{
-		playbackManager.addPlaybackStepHandler([]{ callbackWasCalled[0] = true; });
+		addPlaybackHandler0();
 	}
-	playbackManager.addPlaybackStepHandler([]{ callbackWasCalled[1] = true; });
+	addPlaybackHandler1();
 
-	EXPECT_CALL(mockTimer, playbackStepIsDue()).WillOnce(Return(true));
+	signalNextPlaybackStep();
 	playbackManager.handlePlayback();
 
-	EXPECT_TRUE(callbackWasCalled[0]);
-	EXPECT_FALSE(callbackWasCalled[1]);
+	EXPECT_TRUE(handlePlaybackWasCalled[0]);
+	EXPECT_FALSE(handlePlaybackWasCalled[1]);
 }
 
 TEST_F(RhythmPlaybackManagerTest, Starting_playback_clears_and_restarts_tempo_timer)
@@ -78,19 +101,30 @@ TEST_F(RhythmPlaybackManagerTest, If_playback_step_not_due_then_handling_playbac
 
 TEST_F(RhythmPlaybackManagerTest, If_playback_step_is_due_then_all_callbacks_are_called)
 {
-	playbackManager.addPlaybackStepHandler([]{ callbackWasCalled[0] = true; });
-	playbackManager.addPlaybackStepHandler([]{ callbackWasCalled[1] = true; });
+	addPlaybackHandler0();
+	addPlaybackHandler1();
 
-	EXPECT_CALL(mockTimer, playbackStepIsDue()).WillOnce(Return(true));
+	signalNextPlaybackStep();
 	playbackManager.handlePlayback();
 
-	EXPECT_TRUE(callbackWasCalled[0]);
-	EXPECT_TRUE(callbackWasCalled[1]);
+	EXPECT_TRUE(handlePlaybackWasCalled[0]);
+	EXPECT_TRUE(handlePlaybackWasCalled[1]);
+}
+
+TEST_F(RhythmPlaybackManagerTest, All_playback_handlers_are_reset_when_playback_is_reset)
+{
+	addPlaybackHandler0();
+	addPlaybackHandler1();
+
+	playbackManager.startPlayback();
+
+	EXPECT_TRUE(resetPlaybackWasCalled[0]);
+	EXPECT_TRUE(resetPlaybackWasCalled[1]);
 }
 
 TEST_F(RhythmPlaybackManagerTest, After_handled_current_playback_step_starts_counting_next)
 {
-	EXPECT_CALL(mockTimer, playbackStepIsDue()).WillOnce(Return(true));
+	signalNextPlaybackStep();
 	EXPECT_CALL(mockTimer, startCountingNextStep());
 	playbackManager.handlePlayback();
 }
