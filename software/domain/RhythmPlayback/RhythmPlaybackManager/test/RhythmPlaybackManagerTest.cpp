@@ -72,7 +72,7 @@ TEST_F(RhythmPlaybackManagerTest, Starting_playback_clears_and_restarts_tempo_ti
 {
 	EXPECT_CALL(mockTimer, clear());
 	EXPECT_CALL(mockTimer, start());
-	playbackManager.startPlayback();
+	playbackManager.restartPlayback();
 }
 
 TEST_F(RhythmPlaybackManagerTest, Stopping_playback_stops_tempo_timer)
@@ -83,7 +83,7 @@ TEST_F(RhythmPlaybackManagerTest, Stopping_playback_stops_tempo_timer)
 
 TEST_F(RhythmPlaybackManagerTest, Playback_ongoing_if_its_been_started)
 {
-	playbackManager.startPlayback();
+	playbackManager.restartPlayback();
 	EXPECT_TRUE(playbackManager.playbackIsOngoing());
 }
 
@@ -116,7 +116,7 @@ TEST_F(RhythmPlaybackManagerTest, All_playback_handlers_are_reset_when_playback_
 	addPlaybackHandler0();
 	addPlaybackHandler1();
 
-	playbackManager.startPlayback();
+	playbackManager.restartPlayback();
 
 	EXPECT_TRUE(resetPlaybackWasCalled[0]);
 	EXPECT_TRUE(resetPlaybackWasCalled[1]);
@@ -141,4 +141,15 @@ TEST_F(RhythmPlaybackManagerTest, Playback_position_increments_during_handled_pl
 	// test that position wraps around to 0
 	EXPECT_EQ(playbackManager.getPlaybackPosition(), 0);
 	playbackManager.handlePlayback();
+}
+
+TEST_F(RhythmPlaybackManagerTest, Playback_position_reset_when_playback_reset)
+{
+	/* Move playback position forward */
+	signalNextPlaybackStep();
+	playbackManager.handlePlayback();
+
+	/* After restarting playback, position should be reset */
+	playbackManager.restartPlayback();
+	EXPECT_EQ(playbackManager.getPlaybackPosition(), 0);
 }

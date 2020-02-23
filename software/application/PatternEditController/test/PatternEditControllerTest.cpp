@@ -41,7 +41,7 @@ TEST_F(PatternEditControllerTest, Stopped_playback_can_be_queried)
 
 TEST_F(PatternEditControllerTest, Ongoing_playback_can_be_queried)
 {
-    playbackManager.startPlayback();
+    playbackManager.restartPlayback();
     EXPECT_TRUE(controller.playbackIsOngoing());
 }
 
@@ -49,7 +49,7 @@ TEST_F(PatternEditControllerTest, Ongoing_playback_can_be_queried)
 TEST_F(PatternEditControllerTest, Playback_position_can_be_accessed)
 {
     /* Move playback step forward once */
-    playbackManager.startPlayback();
+    playbackManager.restartPlayback();
     EXPECT_CALL(timerMock, playbackStepIsDue()).WillOnce(Return(true));
     playbackManager.handlePlayback(); // this should now have move forward playback position
 

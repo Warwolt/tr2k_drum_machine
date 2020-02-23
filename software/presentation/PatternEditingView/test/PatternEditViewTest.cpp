@@ -114,7 +114,7 @@ public:
 
     void startPlaybackAndMovePlaybackPositionTo(u8 position)
     {
-        playbackManager.startPlayback(); // playback is now ongoing
+        playbackManager.restartPlayback(); // playback is now ongoing
         for (int i = 0; i < position; i++)
         {
             EXPECT_CALL(mockTimer, playbackStepIsDue()).WillOnce(Return(true));

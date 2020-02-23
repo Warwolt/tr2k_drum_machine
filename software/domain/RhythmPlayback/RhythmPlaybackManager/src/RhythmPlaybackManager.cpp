@@ -13,12 +13,16 @@ RhythmPlaybackManager::RhythmPlaybackManager(TempoTimer& tempoTimer) : tempoTime
 /**
  * @brief Start playback by resetting tempo timer and all playback handlers
  */
-void RhythmPlaybackManager::startPlayback()
+void RhythmPlaybackManager::restartPlayback()
 {
-	tempoTimer.clear();
-	tempoTimer.start();
 	isPlaying = true;
 
+	/* Restart tempo timer */
+	tempoTimer.clear();
+	tempoTimer.start();
+
+	/* Reset playback position and playback handlers */
+	playbackPosition = 0;
 	for (size_t i = 0; i < currentNumHandlers; i++)
 	{
 		playbackHandlers[i].resetPlayback();
@@ -30,8 +34,8 @@ void RhythmPlaybackManager::startPlayback()
  */
 void RhythmPlaybackManager::stopPlayback()
 {
-	tempoTimer.stop();
 	isPlaying = false;
+	tempoTimer.stop();
 }
 
 /**

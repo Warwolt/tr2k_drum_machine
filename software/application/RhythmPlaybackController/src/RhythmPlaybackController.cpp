@@ -18,7 +18,7 @@ void RhythmPlaybackController::setTempo(BeatsPerMinute bpm)
 
 void RhythmPlaybackController::restartPlayback()
 {
-	playbackManager.startPlayback();
+	playbackManager.restartPlayback();
 }
 
 void RhythmPlaybackController::stopPlayback()

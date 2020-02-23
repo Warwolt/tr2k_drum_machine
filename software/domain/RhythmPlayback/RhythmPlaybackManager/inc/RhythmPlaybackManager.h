@@ -30,7 +30,7 @@ class RhythmPlaybackManager
 public:
 	RhythmPlaybackManager(TempoTimer& tempoTimer);
 	void addPlaybackHandler(PlaybackHandler handler);
-	void startPlayback();
+	void restartPlayback();
 	void continuePlayback();
 	void stopPlayback();
 	void handlePlayback();
