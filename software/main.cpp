@@ -9,44 +9,65 @@
 // TODO: clean this mess up after implementing views
 static LedGroup& stepLeds = Startup::getStepLeds();
 static ButtonGroup& stepButtons = Startup::getStepButtons();
-static CallbackScheduler& scheduler = Startup::getCallbackScheduler();
+static CallbackScheduler& callbackScheduler = Startup::getCallbackScheduler();
 static RhythmPlaybackManager& playbackManager = Startup::getRhythmPlaybackManager();
 static MatrixMappedButtonGroup<GpioPin>& transportButtons = Startup::getTransportButtons();
 static RhythmPlaybackController& playbackController = Startup::getPlaybackController();
 static GpioPin boardLed {Pin5, PortB, DataDirection::DigitalOutput};
 
-static PatternEditView& editView = Startup::getPatternEditView();
+static PatternEditView& patternEditView = Startup::getPatternEditView();
+static PlaybackControlView& playbackControlView = Startup::getPlaybackControlView();
 
-static constexpr u8 startButton = 0;
-static constexpr u8 stopButton = 1;
-static constexpr u8 clearButton = 3;
+#include "RhythmPatternManager.h"
+extern RhythmPatternManager patternManager;
+
+static void registerPlaybackHandlers();
 
 int main()
 {
 	Startup::init();
-	static u16 playbackPattern = 0x0;
+	registerPlaybackHandlers();
 
+	while (1)
+	{
+		patternEditView.update();
+		playbackControlView.update();
+		callbackScheduler.checkSchedule();
+		playbackManager.handlePlayback();
+	}
+}
+
+void registerPlaybackHandlers()
+{
 	/* Setup LED to blink according to programmed pattern */
 	static u8 playbackPosition = 0;
-	playbackManager.addPlaybackStepHandler([]() {
-		if (playbackPattern & (0x1 << playbackPosition))
+	playbackManager.addPlaybackHandler({
+		.handlePlaybackStep = []()
 		{
-			boardLed.toggle();
-			scheduler.scheduleCallback([](){ boardLed.toggle();}, 50);
+			RhythmPattern activePattern = patternManager.getPattern(0);
+			if (stepActiveInPattern(playbackPosition, activePattern))
+			{
+				boardLed.toggle();
+				callbackScheduler.scheduleCallback([](){ boardLed.toggle();}, 50);
+			}
+			playbackPosition = (playbackPosition + 1) % 16;
+		},
+		.resetPlayback = [] ()
+		{
+			playbackPosition = 0;
 		}
-		playbackPosition = (playbackPosition + 1) % 16;
 	});
 
 	/* Setup step LEDs to blink */
 	static u8 stepLedCounter = 0;
-	playbackManager.addPlaybackStepHandler([]() {
-		stepLedCounter = (stepLedCounter + 1) % 16;
+	playbackManager.addPlaybackHandler({
+		.handlePlaybackStep = []()
+		{
+			stepLedCounter = (stepLedCounter + 1) % 16;
+		},
+		.resetPlayback = [] ()
+		{
+			stepLedCounter = 0;
+		}
 	});
-
-	while (1)
-	{
-		editView.update();
-		scheduler.checkSchedule();
-		playbackManager.handlePlayback();
-	}
 }

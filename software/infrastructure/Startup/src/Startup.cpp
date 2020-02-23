@@ -32,8 +32,6 @@
 /* Application */
 #include "PatternEditController.h"
 
-
-
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Drivers and Hardware Abstraction Layer */
 static Timer0 tim0;
@@ -82,17 +80,18 @@ static Timer1 tim1;
 static TempoTimer16Bit tempoTimer {tim1};
 static RhythmPlaybackManager playbackManager {tempoTimer};
 
-// TODO: make accessor functions
-static MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 4, numStepButtons};
-static RhythmPlaybackController playbackController {tempoTimer};
+static RhythmPlaybackController playbackController {playbackManager, tempoTimer};
 
 // TODO: break this up and assign to relevant layers
 /* Pattern edit view */
-static RhythmPatternManager patternManager;
+RhythmPatternManager patternManager; // global only until PlaybackChannelManager implemented
 static PatternEditController editController {playbackManager, patternManager};
 static constexpr u8 numEditButtons = 2;
 static MatrixMappedButtonGroup<GpioPin> patternEditButtons {buttonMatrix, numEditButtons, 18};
 static PatternEditView patternEditView {editController, patternEditButtons, stepButtons, stepLeds};
+
+static MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 2, 16};
+static PlaybackControlView playbackControlView {playbackController, transportButtons};
 
 /* Private function declarations -----------------------------------------------------------------*/
 static void setupTimers();
@@ -133,6 +132,11 @@ RhythmPlaybackController& Startup::getPlaybackController()
 PatternEditView& Startup::getPatternEditView()
 {
 	return patternEditView;
+}
+
+PlaybackControlView& Startup::getPlaybackControlView()
+{
+	return playbackControlView;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function

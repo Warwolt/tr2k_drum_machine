@@ -17,7 +17,10 @@
 #include "GpioPin.h"
 #include "CallbackScheduler.h"
 #include "MatrixMappedButtonGroup.h"
+
+/* Presentation */
 #include "PatternEditView.h"
+#include "PlaybackControlView.h"
 
 namespace Startup
 {
@@ -31,6 +34,7 @@ MatrixMappedButtonGroup<GpioPin>& getTransportButtons();
 RhythmPlaybackController& getPlaybackController();
 
 PatternEditView& getPatternEditView();
+PlaybackControlView& getPlaybackControlView();
 };
 
 #endif /* STARTUP_2_H */
