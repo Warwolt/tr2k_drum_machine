@@ -25,7 +25,10 @@ void RhythmPlaybackManager::restartPlayback()
 	playbackPosition = 0;
 	for (size_t i = 0; i < currentNumHandlers; i++)
 	{
-		playbackHandlers[i].resetPlayback();
+		if (playbackHandlers[i].resetPlayback != nullptr)
+		{
+			playbackHandlers[i].resetPlayback();
+		}
 	}
 }
 
@@ -61,6 +64,19 @@ void RhythmPlaybackManager::addPlaybackHandler(PlaybackHandler handler)
 		playbackHandlers[currentNumHandlers++] = handler;
 	}
 }
+
+/**
+ * @brief Register a new playback handler with no resetter
+ */
+void RhythmPlaybackManager::addPlaybackHandler(CallbackFunction playbackStepHandler)
+{
+	if (currentNumHandlers < maxNumHandlers)
+	{
+		playbackHandlers[currentNumHandlers++] = {.handlePlaybackStep = playbackStepHandler,
+			.resetPlayback = nullptr};
+	}
+}
+
 
 /**
  * @brief Iterate handling of playback one step

@@ -57,9 +57,9 @@ TEST_F(RhythmPlaybackManagerTest, A_maximum_amount_of_callbacks_can_be_registere
 {
 	for (size_t i = 0; i < playbackManager.maxNumHandlers; i++)
 	{
-		addPlaybackHandler0();
+		playbackManager.addPlaybackHandler([]{ handlePlaybackWasCalled[0] = true; });
 	}
-	addPlaybackHandler1();
+	playbackManager.addPlaybackHandler([]{ handlePlaybackWasCalled[1] = true; });
 
 	signalNextPlaybackStep();
 	playbackManager.handlePlayback();

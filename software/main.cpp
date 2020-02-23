@@ -14,10 +14,12 @@ static RhythmPlaybackManager& playbackManager = Startup::getRhythmPlaybackManage
 static MatrixMappedButtonGroup<GpioPin>& transportButtons = Startup::getTransportButtons();
 static RhythmPlaybackController& playbackController = Startup::getPlaybackController();
 static GpioPin boardLed {Pin5, PortB, DataDirection::DigitalOutput};
+static GpioPin outputPin2 {Pin0, PortC, DataDirection::DigitalOutput};
 
 static PatternEditView& patternEditView = Startup::getPatternEditView();
 static PlaybackControlView& playbackControlView = Startup::getPlaybackControlView();
 
+// TODO: implement signal output with a class instead of directly in main, then remove this extern
 #include "RhythmPatternManager.h"
 extern RhythmPatternManager patternManager;
 
@@ -40,27 +42,30 @@ int main()
 void registerPlaybackHandlers()
 {
 	/* Setup LED to blink according to programmed pattern */
-	static u8 playbackPosition = 0;
-	playbackManager.addPlaybackHandler({
-		.handlePlaybackStep = []()
+	playbackManager.addPlaybackHandler([]()
+	{
+		RhythmPattern activePattern = patternManager.getPattern(0);
+		if (stepActiveInPattern(playbackManager.getPlaybackPosition(), activePattern))
 		{
-			RhythmPattern activePattern = patternManager.getPattern(0);
-			if (stepActiveInPattern(playbackPosition, activePattern))
-			{
-				boardLed.toggle();
-				callbackScheduler.scheduleCallback([](){ boardLed.toggle();}, 50);
-			}
-			playbackPosition = (playbackPosition + 1) % 16;
-		},
-		.resetPlayback = [] ()
+			boardLed.toggle();
+			callbackScheduler.scheduleCallback([](){ boardLed.toggle();}, 50);
+		}
+	});
+
+	playbackManager.addPlaybackHandler([]()
+	{
+		RhythmPattern activePattern = patternManager.getPattern(1);
+		if (stepActiveInPattern(playbackManager.getPlaybackPosition(), activePattern))
 		{
-			playbackPosition = 0;
+			outputPin2.toggle();
+			callbackScheduler.scheduleCallback([](){ outputPin2.toggle();}, 50);
 		}
 	});
 
 	/* Setup step LEDs to blink */
 	static u8 stepLedCounter = 0;
-	playbackManager.addPlaybackHandler({
+	playbackManager.addPlaybackHandler(
+	{
 		.handlePlaybackStep = []()
 		{
 			stepLedCounter = (stepLedCounter + 1) % 16;
