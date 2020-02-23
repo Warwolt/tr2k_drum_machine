@@ -1,0 +1,55 @@
+\hypertarget{class_gpio_matrix_test}{}\section{Gpio\+Matrix\+Test Class Reference}
+\label{class_gpio_matrix_test}\index{GpioMatrixTest@{GpioMatrixTest}}
+Inheritance diagram for Gpio\+Matrix\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_gpio_matrix_test}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a58437bf058e44d03d9db2b8ab705ccd4}\label{class_gpio_matrix_test_a58437bf058e44d03d9db2b8ab705ccd4}} 
+void {\bfseries expect\+Column\+Set} (u8 column\+Num)
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a7124e2dd6dcce6bd53a317b3b10ad6ff}\label{class_gpio_matrix_test_a7124e2dd6dcce6bd53a317b3b10ad6ff}} 
+void {\bfseries expect\+Row\+Read} (u8 column\+Num)
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a66dda83c694378b9070d4a6405dca132}\label{class_gpio_matrix_test_a66dda83c694378b9070d4a6405dca132}} 
+void {\bfseries expect\+Row\+Read\+And\+Return} (u8 column\+Num, Logic\+State state)
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_aa6f850834ef815b28421b718bca34d3c}\label{class_gpio_matrix_test_aa6f850834ef815b28421b718bca34d3c}} 
+void {\bfseries expect\+All\+Pins\+Set\+To\+Inputs} ()
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a80fa3098bcc963eda7efa34baab054e7}\label{class_gpio_matrix_test_a80fa3098bcc963eda7efa34baab054e7}} 
+void {\bfseries expect\+Timer\+Read\+And\+Return} (u16 milliseconds)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a106753c8af35abce96e9eeae4ce3d89e}\label{class_gpio_matrix_test_a106753c8af35abce96e9eeae4ce3d89e}} 
+Nice\+Mock$<$ \mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} $>$ {\bfseries column\+Pins} \mbox{[}num\+Columns\mbox{]}
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_adda14c7f120ca19100db925ed17def64}\label{class_gpio_matrix_test_adda14c7f120ca19100db925ed17def64}} 
+Nice\+Mock$<$ \mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} $>$ {\bfseries row\+Pins} \mbox{[}num\+Rows\mbox{]}
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a4ae932aba340e35f97f241349454ebe2}\label{class_gpio_matrix_test_a4ae932aba340e35f97f241349454ebe2}} 
+Nice\+Mock$<$ \mbox{\hyperlink{class_millisecond_timer_mock}{Millisecond\+Timer\+Mock}} $>$ {\bfseries timer}
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_ad26a7a03742d6d4f2674f11888e87bb6}\label{class_gpio_matrix_test_ad26a7a03742d6d4f2674f11888e87bb6}} 
+\mbox{\hyperlink{class_gpio_matrix}{Gpio\+Matrix}}$<$ \mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} $>$ {\bfseries matrix} = \mbox{\hyperlink{class_gpio_matrix}{Gpio\+Matrix}}$<$\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}}$>$(column\+Pins, num\+Columns, row\+Pins, num\+Rows, timer, debounce\+Time)
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a132450300e7274a50bb9f9df9e371146}\label{class_gpio_matrix_test_a132450300e7274a50bb9f9df9e371146}} 
+const \mbox{\hyperlink{struct_debouncable_element}{Debouncable\+Element}} {\bfseries first\+Element} = \{num\+: 1, column\+:1, row\+:0, start\+Time\+: 0\}
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_a902ab640e876d24907aefb8a1fe0d24e}\label{class_gpio_matrix_test_a902ab640e876d24907aefb8a1fe0d24e}} 
+const \mbox{\hyperlink{struct_debouncable_element}{Debouncable\+Element}} {\bfseries second\+Element} = \{num\+: 6, column\+:2, row\+:1, start\+Time\+: first\+Element.\+start\+Time + 20\}
+\item 
+\mbox{\Hypertarget{class_gpio_matrix_test_ab9d97ffb7d3abf348a62c6037d65c84a}\label{class_gpio_matrix_test_ab9d97ffb7d3abf348a62c6037d65c84a}} 
+u8 {\bfseries previous\+Column\+Num} = 0
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/drivers/\+Gpio\+Matrix/test/Gpio\+Matrix\+Test.\+cpp\end{DoxyCompactItemize}

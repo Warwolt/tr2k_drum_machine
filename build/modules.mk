@@ -10,6 +10,7 @@ PRESENTATION_DIR = $(APP_ROOT)/presentation
 # Application
 APPLICATION_DIR = $(APP_ROOT)/application
 -include $(APPLICATION_DIR)/RhythmPlaybackController/makefile.mk
+-include $(APPLICATION_DIR)/PatternEditController/makefile.mk
 
 # Domain
 DOMAIN_DIR = $(APP_ROOT)/domain

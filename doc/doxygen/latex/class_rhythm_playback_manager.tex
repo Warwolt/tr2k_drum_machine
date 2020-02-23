@@ -1,0 +1,39 @@
+\hypertarget{class_rhythm_playback_manager}{}\section{Rhythm\+Playback\+Manager Class Reference}
+\label{class_rhythm_playback_manager}\index{RhythmPlaybackManager@{RhythmPlaybackManager}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_rhythm_playback_manager_a13e96de52564f27bfb667033609c184c}\label{class_rhythm_playback_manager_a13e96de52564f27bfb667033609c184c}} 
+{\bfseries Rhythm\+Playback\+Manager} (\mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}} \&tempo\+Timer)
+\item 
+void \mbox{\hyperlink{class_rhythm_playback_manager_acd8595875b2be13a91854bc83335c9b8}{add\+Playback\+Step\+Handler}} (Playback\+Step\+Handler handler)
+\item 
+void \mbox{\hyperlink{class_rhythm_playback_manager_a281c516f6fea01db436b2ecc90dc9087}{handle\+Playback}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_rhythm_playback_manager_abd0d7a2290967cfb5b149d1e5aa998bd}\label{class_rhythm_playback_manager_abd0d7a2290967cfb5b149d1e5aa998bd}} 
+static constexpr u8 {\bfseries max\+Num\+Handlers} = 16
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_rhythm_playback_manager_acd8595875b2be13a91854bc83335c9b8}\label{class_rhythm_playback_manager_acd8595875b2be13a91854bc83335c9b8}} 
+\index{RhythmPlaybackManager@{RhythmPlaybackManager}!addPlaybackStepHandler@{addPlaybackStepHandler}}
+\index{addPlaybackStepHandler@{addPlaybackStepHandler}!RhythmPlaybackManager@{RhythmPlaybackManager}}
+\subsubsection{\texorpdfstring{addPlaybackStepHandler()}{addPlaybackStepHandler()}}
+{\footnotesize\ttfamily void Rhythm\+Playback\+Manager\+::add\+Playback\+Step\+Handler (\begin{DoxyParamCaption}\item[{Playback\+Step\+Handler}]{handler }\end{DoxyParamCaption})}
+
+Add a new callback to be called in the \mbox{\hyperlink{class_rhythm_playback_manager_a281c516f6fea01db436b2ecc90dc9087}{handle\+Playback()}} method. If maximum number of callbacks registered, this method does nothing. \mbox{\Hypertarget{class_rhythm_playback_manager_a281c516f6fea01db436b2ecc90dc9087}\label{class_rhythm_playback_manager_a281c516f6fea01db436b2ecc90dc9087}} 
+\index{RhythmPlaybackManager@{RhythmPlaybackManager}!handlePlayback@{handlePlayback}}
+\index{handlePlayback@{handlePlayback}!RhythmPlaybackManager@{RhythmPlaybackManager}}
+\subsubsection{\texorpdfstring{handlePlayback()}{handlePlayback()}}
+{\footnotesize\ttfamily void Rhythm\+Playback\+Manager\+::handle\+Playback (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks with the \mbox{\hyperlink{class_tempo_timer}{Tempo\+Timer}} if a playback step is due for execution. If it is, all registered playback step handler callbacks are called. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/domain/\+Rhythm\+Playback/\+Rhythm\+Playback\+Manager/inc/Rhythm\+Playback\+Manager.\+h\item 
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/domain/\+Rhythm\+Playback/\+Rhythm\+Playback\+Manager/src/Rhythm\+Playback\+Manager.\+cpp\end{DoxyCompactItemize}

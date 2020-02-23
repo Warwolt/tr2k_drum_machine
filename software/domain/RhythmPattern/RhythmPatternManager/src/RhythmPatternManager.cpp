@@ -14,13 +14,45 @@ RhythmPatternManager::RhythmPatternManager()
     }
 }
 
+/**
+ * @brief Select which pattern is active i.e. currently edited
+ *
+ * @param patternNum  Channel id corresponding to pattern to chose
+ */
+void RhythmPatternManager::selectActivePattern(const u8 patternNum)
+{
+    activePatternNum = patternNum;
+}
+
 RhythmPattern RhythmPatternManager::getActivePattern()
 {
     return rhythmPatterns[activePatternNum];
 }
 
-void RhythmPatternManager::toggleActivePatternStep(u8 stepNum)
+/**
+ * @brief Return the number of patterns in manager
+ */
+u8 RhythmPatternManager::getNumPatterns() const
+{
+    return rhythmPatterns.capacity();
+}
+
+/**
+ * @brief Get an image of a pattern in the manager
+ */
+RhythmPattern RhythmPatternManager::getPattern(const u8 patternNum)
+{
+    return rhythmPatterns[patternNum];
+}
+
+void RhythmPatternManager::toggleActivePatternStep(const u8 stepNum)
 {
     RhythmPattern& activePattern = rhythmPatterns[activePatternNum];
     activePattern.state ^= (0x1 << stepNum);
+}
+
+void RhythmPatternManager::clearActivePattern()
+{
+    RhythmPattern& activePattern = rhythmPatterns[activePatternNum];
+    activePattern.state = 0;
 }

@@ -20,7 +20,7 @@ MatrixMappedButtonGroup<IGpioPin>::MatrixMappedButtonGroup(GpioMatrix<IGpioPin>&
 }
 
 template<typename IGpioPin>
-u8 MatrixMappedButtonGroup<IGpioPin>::getNumButtons()
+u8 MatrixMappedButtonGroup<IGpioPin>::getNumButtons() const
 {
     return numButtons;
 }

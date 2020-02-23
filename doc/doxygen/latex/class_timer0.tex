@@ -55,15 +55,15 @@ Clears the timer counter register so that the current period is restarted.
 Implements \mbox{\hyperlink{class_timer8_bit}{Timer8\+Bit}}.
 
 \mbox{\Hypertarget{class_timer0_a8f0117cda8e82867d58725cf76a73686}\label{class_timer0_a8f0117cda8e82867d58725cf76a73686}} 
-\index{Timer0@{Timer0}!enable\+Periodic\+Interrupts@{enable\+Periodic\+Interrupts}}
-\index{enable\+Periodic\+Interrupts@{enable\+Periodic\+Interrupts}!Timer0@{Timer0}}
-\subsubsection{\texorpdfstring{enable\+Periodic\+Interrupts()}{enablePeriodicInterrupts()}}
+\index{Timer0@{Timer0}!enablePeriodicInterrupts@{enablePeriodicInterrupts}}
+\index{enablePeriodicInterrupts@{enablePeriodicInterrupts}!Timer0@{Timer0}}
+\subsubsection{\texorpdfstring{enablePeriodicInterrupts()}{enablePeriodicInterrupts()}}
 {\footnotesize\ttfamily void Timer0\+::enable\+Periodic\+Interrupts (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 Enables the timer to generate timer0\+\_\+\+C\+O\+M\+PA interrupts at a frequency determined by the last argument given to \mbox{\hyperlink{class_timer0_af19c7f55137a551a3e9ae1c6b15fd4c5}{Timer0\+::set\+Period()}}. \mbox{\Hypertarget{class_timer0_af19c7f55137a551a3e9ae1c6b15fd4c5}\label{class_timer0_af19c7f55137a551a3e9ae1c6b15fd4c5}} 
-\index{Timer0@{Timer0}!set\+Period@{set\+Period}}
-\index{set\+Period@{set\+Period}!Timer0@{Timer0}}
-\subsubsection{\texorpdfstring{set\+Period()}{setPeriod()}}
+\index{Timer0@{Timer0}!setPeriod@{setPeriod}}
+\index{setPeriod@{setPeriod}!Timer0@{Timer0}}
+\subsubsection{\texorpdfstring{setPeriod()}{setPeriod()}}
 {\footnotesize\ttfamily void Timer0\+::set\+Period (\begin{DoxyParamCaption}\item[{u8}]{period }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 Set the period for the timer before counter rolls back to to 0. If interrupts have been enabled, this period will be the time between each timer0\+\_\+\+C\+O\+M\+PA interrupt. 
@@ -71,9 +71,9 @@ Set the period for the timer before counter rolls back to to 0. If interrupts ha
 Implements \mbox{\hyperlink{class_timer8_bit}{Timer8\+Bit}}.
 
 \mbox{\Hypertarget{class_timer0_aaa42d8cd37a0f9f37d42bd4f1f6c91f8}\label{class_timer0_aaa42d8cd37a0f9f37d42bd4f1f6c91f8}} 
-\index{Timer0@{Timer0}!set\+Prescaler@{set\+Prescaler}}
-\index{set\+Prescaler@{set\+Prescaler}!Timer0@{Timer0}}
-\subsubsection{\texorpdfstring{set\+Prescaler()}{setPrescaler()}}
+\index{Timer0@{Timer0}!setPrescaler@{setPrescaler}}
+\index{setPrescaler@{setPrescaler}!Timer0@{Timer0}}
+\subsubsection{\texorpdfstring{setPrescaler()}{setPrescaler()}}
 {\footnotesize\ttfamily void Timer0\+::set\+Prescaler (\begin{DoxyParamCaption}\item[{Prescale\+Option}]{prescaler }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 Set which prescaler to divide clock source by. 
@@ -109,5 +109,5 @@ Implements \mbox{\hyperlink{class_timer8_bit}{Timer8\+Bit}}.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-..\textbackslash{}..\textbackslash{}software/drivers/timer0/inc/timer0.\+h\item 
-..\textbackslash{}..\textbackslash{}software/drivers/timer0/src/timer0.\+cpp\end{DoxyCompactItemize}
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/drivers/\+Timer0/inc/Timer0.\+h\item 
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/drivers/\+Timer0/src/Timer0.\+cpp\end{DoxyCompactItemize}

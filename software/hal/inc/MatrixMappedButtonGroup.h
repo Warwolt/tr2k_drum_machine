@@ -16,7 +16,7 @@ class MatrixMappedButtonGroup : public ButtonGroup
 {
 public:
     MatrixMappedButtonGroup(GpioMatrix<IGpioPin>& matrix, u8 numButtons, u8 elementOffset);
-    u8 getNumButtons();
+    u8 getNumButtons() const;
     bool buttonPressedNow(u8 buttonNum);
     bool buttonReleasedNow(u8 buttonNum);
     bool buttonIsUp(u8 buttonNum);

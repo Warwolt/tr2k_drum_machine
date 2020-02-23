@@ -55,15 +55,15 @@ Clears the timer counter register so that the current period is restarted.
 Implements \mbox{\hyperlink{class_timer16_bit}{Timer16\+Bit}}.
 
 \mbox{\Hypertarget{class_timer1_adffa570f7391a22de1f6ae1673cd2861}\label{class_timer1_adffa570f7391a22de1f6ae1673cd2861}} 
-\index{Timer1@{Timer1}!enable\+Periodic\+Interrupts@{enable\+Periodic\+Interrupts}}
-\index{enable\+Periodic\+Interrupts@{enable\+Periodic\+Interrupts}!Timer1@{Timer1}}
-\subsubsection{\texorpdfstring{enable\+Periodic\+Interrupts()}{enablePeriodicInterrupts()}}
+\index{Timer1@{Timer1}!enablePeriodicInterrupts@{enablePeriodicInterrupts}}
+\index{enablePeriodicInterrupts@{enablePeriodicInterrupts}!Timer1@{Timer1}}
+\subsubsection{\texorpdfstring{enablePeriodicInterrupts()}{enablePeriodicInterrupts()}}
 {\footnotesize\ttfamily void Timer1\+::enable\+Periodic\+Interrupts (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 Enables the timer to generate T\+I\+M\+E\+R1\+\_\+\+C\+O\+M\+PA interrupts at a frequency determined by the last argument given to \mbox{\hyperlink{class_timer1_a0aa1eeb582f2a3360f2cb53678c726f9}{Timer1\+::set\+Period()}}. \mbox{\Hypertarget{class_timer1_a0aa1eeb582f2a3360f2cb53678c726f9}\label{class_timer1_a0aa1eeb582f2a3360f2cb53678c726f9}} 
-\index{Timer1@{Timer1}!set\+Period@{set\+Period}}
-\index{set\+Period@{set\+Period}!Timer1@{Timer1}}
-\subsubsection{\texorpdfstring{set\+Period()}{setPeriod()}}
+\index{Timer1@{Timer1}!setPeriod@{setPeriod}}
+\index{setPeriod@{setPeriod}!Timer1@{Timer1}}
+\subsubsection{\texorpdfstring{setPeriod()}{setPeriod()}}
 {\footnotesize\ttfamily void Timer1\+::set\+Period (\begin{DoxyParamCaption}\item[{u16}]{period }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 Set the period for the timer before counter rolls back to to 0. If interrupts have been enabled, this period will be the time between each T\+I\+M\+E\+R1\+\_\+\+C\+O\+M\+PA interrupt. 
@@ -71,9 +71,9 @@ Set the period for the timer before counter rolls back to to 0. If interrupts ha
 Implements \mbox{\hyperlink{class_timer16_bit}{Timer16\+Bit}}.
 
 \mbox{\Hypertarget{class_timer1_a4e841a09f12c8de397440cf6cd74fa4b}\label{class_timer1_a4e841a09f12c8de397440cf6cd74fa4b}} 
-\index{Timer1@{Timer1}!set\+Prescaler@{set\+Prescaler}}
-\index{set\+Prescaler@{set\+Prescaler}!Timer1@{Timer1}}
-\subsubsection{\texorpdfstring{set\+Prescaler()}{setPrescaler()}}
+\index{Timer1@{Timer1}!setPrescaler@{setPrescaler}}
+\index{setPrescaler@{setPrescaler}!Timer1@{Timer1}}
+\subsubsection{\texorpdfstring{setPrescaler()}{setPrescaler()}}
 {\footnotesize\ttfamily void Timer1\+::set\+Prescaler (\begin{DoxyParamCaption}\item[{Prescale\+Option}]{prescaler }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
 
 Set which prescaler to divide clock source by. 
@@ -109,5 +109,5 @@ Implements \mbox{\hyperlink{class_timer16_bit}{Timer16\+Bit}}.
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-..\textbackslash{}..\textbackslash{}software/drivers/timer1/inc/timer1.\+h\item 
-..\textbackslash{}..\textbackslash{}software/drivers/timer1/src/timer1.\+cpp\end{DoxyCompactItemize}
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/drivers/\+Timer1/inc/Timer1.\+h\item 
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/drivers/\+Timer1/src/Timer1.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,103 @@
+\hypertarget{class_charlieplex_mapped_led_group_test}{}\section{Charlieplex\+Mapped\+Led\+Group\+Test Class Reference}
+\label{class_charlieplex_mapped_led_group_test}\index{CharlieplexMappedLedGroupTest@{CharlieplexMappedLedGroupTest}}
+Inheritance diagram for Charlieplex\+Mapped\+Led\+Group\+Test\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_charlieplex_mapped_led_group_test}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a990bed5744ed670f73e744ae748de98d}\label{class_charlieplex_mapped_led_group_test_a990bed5744ed670f73e744ae748de98d}} 
+void {\bfseries expect\+Matrix\+Led\+On} (u8 led\+Num)
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a0c8fd09121b8be03514061456b22215e}\label{class_charlieplex_mapped_led_group_test_a0c8fd09121b8be03514061456b22215e}} 
+void {\bfseries expect\+Matrix\+Led\+Off} (u8 led\+Num)
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a21287f89f59d8abcf3b76cfd3e4a1e30}\label{class_charlieplex_mapped_led_group_test_a21287f89f59d8abcf3b76cfd3e4a1e30}} 
+void {\bfseries expect\+Matrix\+Led\+On\+And\+Output\+Next\+Led\+In\+Range} (u8 led\+Num\+Low, u8 led\+Num\+High)
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_aee0c9669c2b5e9104f46c11f28aecc7b}\label{class_charlieplex_mapped_led_group_test_aee0c9669c2b5e9104f46c11f28aecc7b}} 
+void {\bfseries expect\+Matrix\+Led\+Off\+And\+Output\+Next\+Led\+In\+Range} (u8 led\+Num\+Low, u8 led\+Num\+High)
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a404081bb86aceeef5fd9398c1af063bf}\label{class_charlieplex_mapped_led_group_test_a404081bb86aceeef5fd9398c1af063bf}} 
+void {\bfseries expect\+Matrix\+Pin\+Set\+High} (\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} \&pin)
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a5aa6af44591e31ab1b3dc5ac00453708}\label{class_charlieplex_mapped_led_group_test_a5aa6af44591e31ab1b3dc5ac00453708}} 
+void {\bfseries expect\+Matrix\+Pin\+Set\+Low} (\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} \&pin)
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_af51a44ded91de1a2b1e39bc1cccdb141}\label{class_charlieplex_mapped_led_group_test_af51a44ded91de1a2b1e39bc1cccdb141}} 
+void {\bfseries expect\+Matrix\+Pin\+Set\+Tristate} (\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} \&pin)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a0531246d5c1fccddc4457f44100d45e8}\label{class_charlieplex_mapped_led_group_test_a0531246d5c1fccddc4457f44100d45e8}} 
+\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} {\bfseries mock\+Pins} \mbox{[}num\+Pins\mbox{]}
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_afebc2ca864f0792662bfa54f6bf6beef}\label{class_charlieplex_mapped_led_group_test_afebc2ca864f0792662bfa54f6bf6beef}} 
+\mbox{\hyperlink{struct_pin_state_pair}{Pin\+State\+Pair}} {\bfseries three\+Pin\+Lut} \mbox{[}6\mbox{]} = \{\{0,1\},\{1,0\},\{1,2\},\{2,1\},\{0,2\},\{2,0\}\}
+\item 
+\mbox{\hyperlink{class_charlieplex_matrix}{Charlieplex\+Matrix}}$<$ \mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} $>$ {\bfseries matrix}
+\item 
+\mbox{\hyperlink{class_charlieplex_mapped_led_group}{Charlieplex\+Mapped\+Led\+Group}}$<$ \mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} $>$ {\bfseries mapped\+Led\+Group1}
+\item 
+\mbox{\hyperlink{class_charlieplex_mapped_led_group}{Charlieplex\+Mapped\+Led\+Group}}$<$ \mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}} $>$ {\bfseries mapped\+Led\+Group2}
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_ae47eae15d58a483cd49180fe2f609fff}\label{class_charlieplex_mapped_led_group_test_ae47eae15d58a483cd49180fe2f609fff}} 
+\mbox{\hyperlink{class_led_group}{Led\+Group}} \& {\bfseries led\+Group1} = mapped\+Led\+Group1
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_aa6346416348ffefeab418e136f65435a}\label{class_charlieplex_mapped_led_group_test_aa6346416348ffefeab418e136f65435a}} 
+\mbox{\hyperlink{class_led_group}{Led\+Group}} \& {\bfseries led\+Group2} = mapped\+Led\+Group2
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a3b4b10b62585243c8b58b98ad01b9158}\label{class_charlieplex_mapped_led_group_test_a3b4b10b62585243c8b58b98ad01b9158}} 
+static constexpr u8 {\bfseries num\+Pins} = 3
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_ad9312b7b8a62a816b5ac758b5bb5273d}\label{class_charlieplex_mapped_led_group_test_ad9312b7b8a62a816b5ac758b5bb5273d}} 
+\index{CharlieplexMappedLedGroupTest@{CharlieplexMappedLedGroupTest}!mappedLedGroup1@{mappedLedGroup1}}
+\index{mappedLedGroup1@{mappedLedGroup1}!CharlieplexMappedLedGroupTest@{CharlieplexMappedLedGroupTest}}
+\subsubsection{\texorpdfstring{mappedLedGroup1}{mappedLedGroup1}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_charlieplex_mapped_led_group}{Charlieplex\+Mapped\+Led\+Group}}$<$\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}}$>$ Charlieplex\+Mapped\+Led\+Group\+Test\+::mapped\+Led\+Group1}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{        \mbox{\hyperlink{class_charlieplex_mapped_led_group}{CharlieplexMappedLedGroup<GpioPinMock>}}(numLedsGroup1, ledOffsetGroup1, matrix)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_a4052e4682656895a7e24455aabd95afb}\label{class_charlieplex_mapped_led_group_test_a4052e4682656895a7e24455aabd95afb}} 
+\index{CharlieplexMappedLedGroupTest@{CharlieplexMappedLedGroupTest}!mappedLedGroup2@{mappedLedGroup2}}
+\index{mappedLedGroup2@{mappedLedGroup2}!CharlieplexMappedLedGroupTest@{CharlieplexMappedLedGroupTest}}
+\subsubsection{\texorpdfstring{mappedLedGroup2}{mappedLedGroup2}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_charlieplex_mapped_led_group}{Charlieplex\+Mapped\+Led\+Group}}$<$\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}}$>$ Charlieplex\+Mapped\+Led\+Group\+Test\+::mapped\+Led\+Group2}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{        \mbox{\hyperlink{class_charlieplex_mapped_led_group}{CharlieplexMappedLedGroup<GpioPinMock>}}(numLedsGroup2, ledOffsetGroup2, matrix)}
+
+\end{DoxyCode}
+\mbox{\Hypertarget{class_charlieplex_mapped_led_group_test_ab7b5173f33a21ef43c0b4bf658c3276e}\label{class_charlieplex_mapped_led_group_test_ab7b5173f33a21ef43c0b4bf658c3276e}} 
+\index{CharlieplexMappedLedGroupTest@{CharlieplexMappedLedGroupTest}!matrix@{matrix}}
+\index{matrix@{matrix}!CharlieplexMappedLedGroupTest@{CharlieplexMappedLedGroupTest}}
+\subsubsection{\texorpdfstring{matrix}{matrix}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_charlieplex_matrix}{Charlieplex\+Matrix}}$<$\mbox{\hyperlink{class_gpio_pin_mock}{Gpio\+Pin\+Mock}}$>$ Charlieplex\+Mapped\+Led\+Group\+Test\+::matrix}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{        \mbox{\hyperlink{class_charlieplex_matrix}{CharlieplexMatrix<GpioPinMock>}}(numPins, mockPins, threePinLut)}
+
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/hal/test/Charlieplex\+Mapped\+Led\+Group\+Test.\+cpp\end{DoxyCompactItemize}

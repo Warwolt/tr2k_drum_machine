@@ -1,25 +1,8 @@
 var searchData=
 [
-  ['tempocontrolview',['TempoControlView',['../class_tempo_control_view.html',1,'']]],
-  ['tempocontrolviewtest',['TempoControlViewTest',['../class_tempo_control_view_test.html',1,'']]],
-  ['tempoknob',['TempoKnob',['../class_tempo_knob.html',1,'']]],
-  ['tempoknobmock',['TempoKnobMock',['../class_tempo_knob_mock.html',1,'']]],
-  ['tempotimer',['TempoTimer',['../class_tempo_timer.html',1,'']]],
-  ['tempotimer16bit',['TempoTimer16Bit',['../class_tempo_timer16_bit.html',1,'']]],
-  ['tempotimermock',['TempoTimerMock',['../class_tempo_timer_mock.html',1,'']]],
-  ['tempotimingmanager',['TempoTimingManager',['../class_tempo_timing_manager.html',1,'']]],
-  ['testbeatsperminute',['TestBeatsPerMinute',['../class_test_beats_per_minute.html',1,'']]],
-  ['testgpiopin',['TestGpioPin',['../class_test_gpio_pin.html',1,'']]],
-  ['testinterrupts',['TestInterrupts',['../class_test_interrupts.html',1,'']]],
-  ['testrhythmplaybackcontroller',['TestRhythmPlaybackController',['../class_test_rhythm_playback_controller.html',1,'']]],
-  ['testsegmentdisplay74hc595',['TestSegmentDisplay74HC595',['../class_test_segment_display74_h_c595.html',1,'']]],
-  ['testtempotimer16bit',['TestTempoTimer16Bit',['../class_test_tempo_timer16_bit.html',1,'']]],
-  ['testtempotimingmanager',['TestTempoTimingManager',['../class_test_tempo_timing_manager.html',1,'']]],
-  ['testtimer0',['TestTimer0',['../class_test_timer0.html',1,'']]],
-  ['testtimer1',['TestTimer1',['../class_test_timer1.html',1,'']]],
-  ['timer0',['Timer0',['../class_timer0.html',1,'']]],
-  ['timer1',['Timer1',['../class_timer1.html',1,'']]],
-  ['timer16bit',['Timer16Bit',['../class_timer16_bit.html',1,'']]],
-  ['timer16bitmock',['Timer16BitMock',['../class_timer16_bit_mock.html',1,'']]],
-  ['timer8bit',['Timer8Bit',['../class_timer8_bit.html',1,'']]]
+  ['matrixmappedbuttongroup',['MatrixMappedButtonGroup',['../class_matrix_mapped_button_group.html',1,'']]],
+  ['microsecondperiodmillisecondtimer',['MicrosecondPeriodMillisecondTimer',['../class_microsecond_period_millisecond_timer.html',1,'']]],
+  ['microsecondperiodmillisecondtimertest',['MicrosecondPeriodMillisecondTimerTest',['../class_microsecond_period_millisecond_timer_test.html',1,'']]],
+  ['millisecondtimer',['MillisecondTimer',['../class_millisecond_timer.html',1,'']]],
+  ['millisecondtimermock',['MillisecondTimerMock',['../class_millisecond_timer_mock.html',1,'']]]
 ];

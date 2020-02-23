@@ -14,6 +14,26 @@ RhythmPlaybackManager::RhythmPlaybackManager(TempoTimer& tempoTimer) : tempoTime
 }
 
 /**
+ * @brief Start playback by resetting tempo timer and all playback handlers
+ */
+void RhythmPlaybackManager::startPlayback()
+{
+	tempoTimer.clear();
+	tempoTimer.start();
+	isPlaying = true;
+	// TODO: write test for resetting all playback handlers
+}
+
+/**
+ * @brief Stops playback by halting the tempo timer
+ */
+void RhythmPlaybackManager::stopPlayback()
+{
+	tempoTimer.stop();
+	isPlaying = false;
+}
+
+/**
  * Add a new callback to be called in the handlePlayback() method.
  * If maximum number of callbacks registered, this method does nothing.
  */
@@ -35,6 +55,8 @@ void RhythmPlaybackManager::handlePlayback()
 	{
 		callPlaybackStephandlers();
 		tempoTimer.startCountingNextStep();
+		// TODO: wrap this around the length of the active pattern instead of 16
+		playbackPosition = (playbackPosition + 1) % 16;
 	}
 }
 
@@ -45,4 +67,20 @@ inline void RhythmPlaybackManager::callPlaybackStephandlers()
 		auto& handlePlaybackStep = playbackStepHandlers[i];
 		handlePlaybackStep();
 	}
+}
+
+/**
+ * @brief Return the playback position of the active pattern
+ */
+u8 RhythmPlaybackManager::getPlaybackPosition() const
+{
+	return playbackPosition;
+}
+
+/**
+ * @brief  Used to query if playback is stopped or not
+ */
+bool RhythmPlaybackManager::playbackIsOngoing()
+{
+	return isPlaying;
 }

@@ -22,16 +22,22 @@ class RhythmPlaybackManager
 public:
 	RhythmPlaybackManager(TempoTimer& tempoTimer);
 	void addPlaybackStepHandler(PlaybackStepHandler handler);
+	void startPlayback();
+	void stopPlayback();
 	void handlePlayback();
+	u8 getPlaybackPosition() const;
+	bool playbackIsOngoing();
 
 	static constexpr u8 maxNumHandlers = 16;
 
 private:
-	void callPlaybackStephandlers();
-
 	TempoTimer& tempoTimer;
+	bool isPlaying = false;
 	u8 currentNumHandlers = 0;
+	u8 playbackPosition = 0;
 	PlaybackStepHandler playbackStepHandlers[maxNumHandlers];
+
+	void callPlaybackStephandlers();
 };
 
 #endif /* RHYTHM_PLAYBACK_MANAGER */

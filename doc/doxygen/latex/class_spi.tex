@@ -38,9 +38,9 @@ Constructor used in unit tests.
 
 \subsection{Member Function Documentation}
 \mbox{\Hypertarget{class_spi_af95597dbf2ad61755808ea6d87e587f1}\label{class_spi_af95597dbf2ad61755808ea6d87e587f1}} 
-\index{Spi@{Spi}!send\+Byte@{send\+Byte}}
-\index{send\+Byte@{send\+Byte}!Spi@{Spi}}
-\subsubsection{\texorpdfstring{send\+Byte()}{sendByte()}}
+\index{Spi@{Spi}!sendByte@{sendByte}}
+\index{sendByte@{sendByte}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{sendByte()}{sendByte()}}
 {\footnotesize\ttfamily void Spi\+::send\+Byte (\begin{DoxyParamCaption}\item[{u8}]{tx\+Byte }\end{DoxyParamCaption})}
 
 Sends single byte over S\+PI in blocking mode, returns after transfer\textquotesingle{}s done. 
@@ -49,15 +49,15 @@ Sends single byte over S\+PI in blocking mode, returns after transfer\textquotes
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_spi_ad356e46ffdf7cc7d674eb871f05e8b0d}\label{class_spi_ad356e46ffdf7cc7d674eb871f05e8b0d}} 
-\index{Spi@{Spi}!send\+Next\+Byte\+In\+Buffer@{send\+Next\+Byte\+In\+Buffer}}
-\index{send\+Next\+Byte\+In\+Buffer@{send\+Next\+Byte\+In\+Buffer}!Spi@{Spi}}
-\subsubsection{\texorpdfstring{send\+Next\+Byte\+In\+Buffer()}{sendNextByteInBuffer()}}
+\index{Spi@{Spi}!sendNextByteInBuffer@{sendNextByteInBuffer}}
+\index{sendNextByteInBuffer@{sendNextByteInBuffer}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{sendNextByteInBuffer()}{sendNextByteInBuffer()}}
 {\footnotesize\ttfamily void Spi\+::send\+Next\+Byte\+In\+Buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
 Sends the next byte in the tx\+Buffer and updates the byte index if buffer none-\/empty, otherwise sends a zero. \mbox{\Hypertarget{class_spi_aee3ca300877494f2c66be7c99d831ee1}\label{class_spi_aee3ca300877494f2c66be7c99d831ee1}} 
-\index{Spi@{Spi}!set\+Bit\+Order@{set\+Bit\+Order}}
-\index{set\+Bit\+Order@{set\+Bit\+Order}!Spi@{Spi}}
-\subsubsection{\texorpdfstring{set\+Bit\+Order()}{setBitOrder()}}
+\index{Spi@{Spi}!setBitOrder@{setBitOrder}}
+\index{setBitOrder@{setBitOrder}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{setBitOrder()}{setBitOrder()}}
 {\footnotesize\ttfamily void Spi\+::set\+Bit\+Order (\begin{DoxyParamCaption}\item[{Spi\+Bit\+Order}]{order }\end{DoxyParamCaption})}
 
 Determines what order to transmit bits, least significant bit first or most significant bit first. 
@@ -66,9 +66,9 @@ Determines what order to transmit bits, least significant bit first or most sign
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_spi_af36b174c9f4ab3dcd3d1b24587d396c8}\label{class_spi_af36b174c9f4ab3dcd3d1b24587d396c8}} 
-\index{Spi@{Spi}!set\+Clock\+Speed@{set\+Clock\+Speed}}
-\index{set\+Clock\+Speed@{set\+Clock\+Speed}!Spi@{Spi}}
-\subsubsection{\texorpdfstring{set\+Clock\+Speed()}{setClockSpeed()}}
+\index{Spi@{Spi}!setClockSpeed@{setClockSpeed}}
+\index{setClockSpeed@{setClockSpeed}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{setClockSpeed()}{setClockSpeed()}}
 {\footnotesize\ttfamily void Spi\+::set\+Clock\+Speed (\begin{DoxyParamCaption}\item[{Spi\+Clock\+Speed}]{clock\+Speed }\end{DoxyParamCaption})}
 
 Sets the speed of the serial clock used to drive the S\+PI slave by writing a number from a table to designated register bits.
@@ -79,9 +79,9 @@ Sets the speed of the serial clock used to drive the S\+PI slave by writing a nu
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_spi_a11ab7b1a91e22d08a43ae08d94ca447d}\label{class_spi_a11ab7b1a91e22d08a43ae08d94ca447d}} 
-\index{Spi@{Spi}!set\+Tx\+Buffer@{set\+Tx\+Buffer}}
-\index{set\+Tx\+Buffer@{set\+Tx\+Buffer}!Spi@{Spi}}
-\subsubsection{\texorpdfstring{set\+Tx\+Buffer()}{setTxBuffer()}}
+\index{Spi@{Spi}!setTxBuffer@{setTxBuffer}}
+\index{setTxBuffer@{setTxBuffer}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{setTxBuffer()}{setTxBuffer()}}
 {\footnotesize\ttfamily void Spi\+::set\+Tx\+Buffer (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classr2k_1_1ivector}{r2k\+::ivector}}$<$ u8 $>$ \&}]{buffer }\end{DoxyParamCaption})}
 
 Set a buffer of bytes to use for transferring data.
@@ -94,9 +94,9 @@ Note Bene\+: Use the \char`\"{}tx\+Buffer\+Is\+Empty\char`\"{}-\/method to check
 \hline
 \end{DoxyParams}
 \mbox{\Hypertarget{class_spi_a8cf0289f4aaa9298b479a48de1dd6cb8}\label{class_spi_a8cf0289f4aaa9298b479a48de1dd6cb8}} 
-\index{Spi@{Spi}!tx\+Buffer\+Is\+Empty@{tx\+Buffer\+Is\+Empty}}
-\index{tx\+Buffer\+Is\+Empty@{tx\+Buffer\+Is\+Empty}!Spi@{Spi}}
-\subsubsection{\texorpdfstring{tx\+Buffer\+Is\+Empty()}{txBufferIsEmpty()}}
+\index{Spi@{Spi}!txBufferIsEmpty@{txBufferIsEmpty}}
+\index{txBufferIsEmpty@{txBufferIsEmpty}!Spi@{Spi}}
+\subsubsection{\texorpdfstring{txBufferIsEmpty()}{txBufferIsEmpty()}}
 {\footnotesize\ttfamily bool Spi\+::tx\+Buffer\+Is\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
 
 \begin{DoxyReturn}{Returns}
@@ -106,5 +106,5 @@ true if all bytes in tx buffer have ben transferred
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
 \item 
-..\textbackslash{}..\textbackslash{}software/drivers/spi/inc/spi.\+h\item 
-..\textbackslash{}..\textbackslash{}software/drivers/spi/src/spi.\+cpp\end{DoxyCompactItemize}
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/drivers/\+Spi/inc/Spi.\+h\item 
+C\+:/\+Development/code/proj/tr2k\+\_\+drum\+\_\+machine/software/drivers/\+Spi/src/Spi.\+cpp\end{DoxyCompactItemize}
