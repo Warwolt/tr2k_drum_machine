@@ -34,23 +34,20 @@ void PatternEditView::update()
     outputViewToLeds(mode);
 }
 
+/**
+ * @brief If user has pushed any step button, handle update accordingly
+ */
 inline void PatternEditView::handleStateUpdate(ViewMode mode)
 {
-    if (mode == ViewMode::PatternEdit)
+    for (int i = 0; i < numStepButtons; i++)
     {
-        for (int i = 0; i < numStepButtons; i++)
+        if (stepButtons.buttonPressedNow(i))
         {
-            if (stepButtons.buttonPressedNow(i))
+            if (mode == ViewMode::PatternEdit)
             {
                 editController.toggleActivePatternStep(i);
             }
-        }
-    }
-    if (mode == ViewMode::ChannelSelect)
-    {
-        for (int i = 0; i < numStepButtons; i++)
-        {
-            if (stepButtons.buttonPressedNow(i))
+            if (mode == ViewMode::ChannelSelect)
             {
                 editController.selectActivePattern(i);
             }
@@ -58,6 +55,9 @@ inline void PatternEditView::handleStateUpdate(ViewMode mode)
     }
 }
 
+/**
+ * @brief Draws the state of the selected view mode on the LEDs
+ */
 inline void PatternEditView::outputViewToLeds(ViewMode mode)
 {
     /* Draw current view to buffer */
@@ -73,6 +73,9 @@ inline void PatternEditView::outputViewToLeds(ViewMode mode)
     }
 }
 
+/**
+ * @brief Calculates what to display for Pattern Edit mode
+ */
 inline u16 PatternEditView::calculateEditModeDrawBuffer()
 {
     u16 drawBuffer = 0;
@@ -100,6 +103,10 @@ inline u16 PatternEditView::calculateEditModeDrawBuffer()
     return drawBuffer;
 }
 
+
+/**
+ * @brief Calculates what to display for Channel Select mode
+ */
 inline u16 PatternEditView::calculateSelectModeDrawBuffer()
 {
     u16 drawBuffer = 0x1 << editController.getActivePatternNum();
