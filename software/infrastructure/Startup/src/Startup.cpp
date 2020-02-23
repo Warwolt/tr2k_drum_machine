@@ -14,6 +14,8 @@
 #include "CharlieplexMappedLedGroup.h"
 #include "MicrosecondPeriodMillisecondTimer.h"
 #include "MatrixMappedButtonGroup.h"
+#include "Timer1.h"
+#include "TempoTimer16Bit.h"
 
 /* Drivers */
 #include "GpioPin.h"
@@ -23,10 +25,14 @@
 /* Infrastructure */
 #include "Interrupts.h"
 
-// debugging
-#include "Timer1.h"
-#include "TempoTimer16Bit.h"
+/* Domain */
+#include "RhythmPatternManager.h"
 #include "RhythmPlaybackManager.h"
+
+/* Application */
+#include "PatternEditController.h"
+
+
 
 /* Instantiations --------------------------------------------------------------------------------*/
 /* Drivers and Hardware Abstraction Layer */
@@ -74,11 +80,19 @@ static MatrixMappedButtonGroup<GpioPin> stepButtons {buttonMatrix, numStepButton
 /* Rhythm Playback */
 static Timer1 tim1;
 static TempoTimer16Bit tempoTimer {tim1};
-static RhythmPlaybackManager timingManager {tempoTimer};
+static RhythmPlaybackManager playbackManager {tempoTimer};
 
-// todo make accessor functions
-MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 4, numStepButtons};
-RhythmPlaybackController playbackController {tempoTimer};
+// TODO: make accessor functions
+static MatrixMappedButtonGroup<GpioPin> transportButtons {buttonMatrix, 4, numStepButtons};
+static RhythmPlaybackController playbackController {tempoTimer};
+
+// TODO: break this up and assign to relevant layers
+/* Pattern edit view */
+static RhythmPatternManager patternManager;
+static PatternEditController editController {playbackManager, patternManager};
+static constexpr u8 numEditButtons = 2;
+static MatrixMappedButtonGroup<GpioPin> patternEditButtons {buttonMatrix, numEditButtons, 18};
+static PatternEditView patternEditView {editController, patternEditButtons, stepButtons, stepLeds};
 
 /* Private function declarations -----------------------------------------------------------------*/
 static void setupTimers();
@@ -103,7 +117,7 @@ CallbackScheduler& Startup::getCallbackScheduler()
 
 RhythmPlaybackManager& Startup::getRhythmPlaybackManager()
 {
-	return timingManager;
+	return playbackManager;
 }
 
 MatrixMappedButtonGroup<GpioPin>& Startup::getTransportButtons()
@@ -114,6 +128,11 @@ MatrixMappedButtonGroup<GpioPin>& Startup::getTransportButtons()
 RhythmPlaybackController& Startup::getPlaybackController()
 {
 	return playbackController;
+}
+
+PatternEditView& Startup::getPatternEditView()
+{
+	return patternEditView;
 }
 
 /* Configure all objects instantiated by the Startup module. NB: this function

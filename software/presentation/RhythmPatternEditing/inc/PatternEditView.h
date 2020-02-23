@@ -31,8 +31,8 @@ private:
 
     inline void handleStateUpdate(ViewMode mode);
     inline void outputViewToLeds(ViewMode mode);
-    inline u8 calculateEditModeDrawBuffer();
-    inline u8 calculateSelectModeDrawBuffer();
+    inline u16 calculateEditModeDrawBuffer();
+    inline u16 calculateSelectModeDrawBuffer();
 };
 
 #endif /* PATTERN_EDIT_VIEW */

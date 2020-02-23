@@ -8,6 +8,7 @@
 #ifndef STARTUP_2_H
 #define STARTUP_2_H
 
+// TODO: clean this up when views implemented
 #include "TempoControlView.h"
 #include "RhythmPlaybackManager.h"
 #include "LedGroup.h"
@@ -16,6 +17,7 @@
 #include "GpioPin.h"
 #include "CallbackScheduler.h"
 #include "MatrixMappedButtonGroup.h"
+#include "PatternEditView.h"
 
 namespace Startup
 {
@@ -28,6 +30,7 @@ RhythmPlaybackManager& getRhythmPlaybackManager();
 MatrixMappedButtonGroup<GpioPin>& getTransportButtons();
 RhythmPlaybackController& getPlaybackController();
 
+PatternEditView& getPatternEditView();
 };
 
 #endif /* STARTUP_2_H */

@@ -83,9 +83,9 @@ TEST_F(PatternEditViewTest, Sets_leds_corresponding_to_active_steps_during_edit_
 {
     patternManager.selectActivePattern(3); // just making sure active pattern isn't just pattern 0
     patternManager.toggleActivePatternStep(0);
-    patternManager.toggleActivePatternStep(2);
+    patternManager.toggleActivePatternStep(9);
     EXPECT_CALL(stepLedMock, setLed(0));
-    EXPECT_CALL(stepLedMock, setLed(2));
+    EXPECT_CALL(stepLedMock, setLed(9));
     editView.update();
 }
 

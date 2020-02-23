@@ -61,7 +61,7 @@ inline void PatternEditView::handleStateUpdate(ViewMode mode)
 inline void PatternEditView::outputViewToLeds(ViewMode mode)
 {
     /* Draw current view to buffer */
-    u8 drawBuffer;
+    u16 drawBuffer;
     if (mode == ViewMode::PatternEdit)   drawBuffer = calculateEditModeDrawBuffer();
     if (mode == ViewMode::ChannelSelect) drawBuffer = calculateSelectModeDrawBuffer();
 
@@ -73,7 +73,7 @@ inline void PatternEditView::outputViewToLeds(ViewMode mode)
     }
 }
 
-inline u8 PatternEditView::calculateEditModeDrawBuffer()
+inline u16 PatternEditView::calculateEditModeDrawBuffer()
 {
     u16 drawBuffer = 0;
     RhythmPattern activePattern = editController.getActivePattern();
@@ -100,8 +100,8 @@ inline u8 PatternEditView::calculateEditModeDrawBuffer()
     return drawBuffer;
 }
 
-inline u8 PatternEditView::calculateSelectModeDrawBuffer()
+inline u16 PatternEditView::calculateSelectModeDrawBuffer()
 {
-    u8 drawBuffer = 0x1 << editController.getActivePatternNum();
+    u16 drawBuffer = 0x1 << editController.getActivePatternNum();
     return drawBuffer;
 }
