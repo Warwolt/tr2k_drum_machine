@@ -7,26 +7,65 @@
 #include "PatternEditView.h"
 #include "traceprint.h"
 
-PatternEditView::PatternEditView(PatternEditController& editController, ButtonGroup& buttons,
-    LedGroup& leds) : editController(editController), controlButtons(buttons), stepLeds(leds) {}
+PatternEditView::PatternEditView(PatternEditController& editController, ButtonGroup& controlButtons,
+    ButtonGroup& stepButtons, LedGroup& leds) : editController(editController),
+    controlButtons(controlButtons), stepButtons(stepButtons), stepLeds(leds) {}
 
+/**
+ * @brief Iterate the view
+ *
+ * There are two modes for this view, editing the current pattern and selecting
+ * which pattern to edit. The mode is selected with the Channel Select button.
+ *
+ * During edit mode, the current pattern is viewed on the LEDs and the step
+ * states can be edited using the step buttons.
+ *i
+ * During channel select mode, the LED corresponding to the active channel
+ * number lights up, and a channel can be selected by pushing any step button.
+ */
 void PatternEditView::update()
 {
+    /* Decide view mode */
     bool selectButtonPressed = controlButtons.buttonIsDown(channelSelectButton);
     ViewMode mode = selectButtonPressed ? ViewMode::ChannelSelect : ViewMode::PatternEdit;
 
-    /* Draw to buffer */
-    u8 drawBuffer;
+    /* Handle update */
+    handleStateUpdate(mode);
+    outputViewToLeds(mode);
+}
+
+inline void PatternEditView::handleStateUpdate(ViewMode mode)
+{
     if (mode == ViewMode::PatternEdit)
     {
-        drawBuffer = calculateEditModeDrawBuffer();
+        for (int i = 0; i < numStepButtons; i++)
+        {
+            if (stepButtons.buttonPressedNow(i))
+            {
+                editController.toggleActivePatternStep(i);
+            }
+        }
     }
     if (mode == ViewMode::ChannelSelect)
     {
-        drawBuffer = calculateSelectModeDrawBuffer();
+        for (int i = 0; i < numStepButtons; i++)
+        {
+            if (stepButtons.buttonPressedNow(i))
+            {
+                editController.selectActivePattern(i);
+            }
+        }
     }
+}
 
-    /* Draw buffer to LEDs */
+inline void PatternEditView::outputViewToLeds(ViewMode mode)
+{
+    /* Draw current view to buffer */
+    u8 drawBuffer;
+    if (mode == ViewMode::PatternEdit)   drawBuffer = calculateEditModeDrawBuffer();
+    if (mode == ViewMode::ChannelSelect) drawBuffer = calculateSelectModeDrawBuffer();
+
+    /* Output buffer to LEDs */
     for (int i = 0; i < numStepLeds; i++)
     {
         bool currentBitSet = (drawBuffer & 0x1 << i);
@@ -38,6 +77,8 @@ inline u8 PatternEditView::calculateEditModeDrawBuffer()
 {
     u16 drawBuffer = 0;
     RhythmPattern activePattern = editController.getActivePattern();
+
+    /* Add pattern state to draw buffer */
     for (int i = 0; i < activePattern.length; i++)
     {
         if (stepActiveInPattern(i, activePattern))
@@ -48,9 +89,9 @@ inline u8 PatternEditView::calculateEditModeDrawBuffer()
         {
             drawBuffer &= ~(0x1 << i);
         }
-
     }
 
+    /* Add playback position to draw buffer */
     if (editController.playbackIsOngoing())
     {
         drawBuffer ^= 0x1 << editController.getPlaybackPosition();
@@ -61,14 +102,6 @@ inline u8 PatternEditView::calculateEditModeDrawBuffer()
 
 inline u8 PatternEditView::calculateSelectModeDrawBuffer()
 {
-    u8 drawBuffer = 0;
-    for (int i = 0; i < numStepLeds; i++)
-    {
-        RhythmPattern currentPattern = editController.getPattern(i);
-        if (currentPattern.state != 0)
-        {
-            drawBuffer |= 0x1 << i;
-        }
-    }
+    u8 drawBuffer = 0x1 << editController.getActivePatternNum();
     return drawBuffer;
 }

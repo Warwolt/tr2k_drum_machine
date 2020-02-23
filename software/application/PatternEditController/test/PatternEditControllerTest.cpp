@@ -30,8 +30,7 @@ TEST_F(PatternEditControllerTest, Active_rhythm_pattern_can_be_accessed)
 {
     patternManager.selectActivePattern(1);
     patternManager.toggleActivePatternStep(3);
-    RhythmPattern activePattern = controller.getActivePattern();
-    EXPECT_EQ(activePattern.state, 0x8);
+    EXPECT_EQ(controller.getActivePattern().state, 0x8);
 }
 
 TEST_F(PatternEditControllerTest, Stopped_playback_can_be_queried)
@@ -62,7 +61,12 @@ TEST_F(PatternEditControllerTest, Patterns_can_be_accessed)
 {
     patternManager.selectActivePattern(2);
     patternManager.toggleActivePatternStep(4);
-    RhythmPattern activePattern = controller.getPattern(2);
-    EXPECT_EQ(activePattern.state, 0x10);
+    EXPECT_EQ(controller.getPattern(2).state, 0x10);
+}
 
+TEST_F(PatternEditControllerTest, Active_pattern_steps_can_be_toggled)
+{
+    patternManager.selectActivePattern(1);
+    controller.toggleActivePatternStep(2);
+    EXPECT_EQ(controller.getPattern(1).state, 0x4);
 }

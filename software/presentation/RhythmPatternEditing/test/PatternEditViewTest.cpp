@@ -14,6 +14,7 @@
 
 using ::testing::Return;
 using ::testing::NiceMock;
+using ::testing::_;
 
 class PatternEditViewTest : public ::testing::Test
 {
@@ -25,6 +26,7 @@ public:
     // mocks
     NiceMock<LedGroupMock> stepLedMock;
     NiceMock<ButtonGroupMock> editControlButtons;
+    NiceMock<ButtonGroupMock> stepButtons;
     NiceMock<TempoTimerMock> timerMock;
     // concretes
     RhythmPlaybackManager playbackManager {timerMock};
@@ -32,7 +34,7 @@ public:
     PatternEditController editController {playbackManager, patternManager};
 
     /* Class under test */
-    PatternEditView editView {editController, editControlButtons, stepLedMock};
+    PatternEditView editView {editController, editControlButtons, stepButtons, stepLedMock};
 
     void expectAllLedsCleared()
     {
@@ -51,6 +53,15 @@ public:
                 EXPECT_CALL(stepLedMock, setLed(i));
             else
                 EXPECT_CALL(stepLedMock, clearLed(i));
+        }
+    }
+
+    void setButtonStates(u8 state)
+    {
+        for (int i = 0; i < numStepLeds; i++)
+        {
+            bool isPressed = (state & (0x1 << i));
+            EXPECT_CALL(stepButtons, buttonPressedNow(i)).WillOnce(Return(isPressed));
         }
     }
 
@@ -94,19 +105,40 @@ TEST_F(PatternEditViewTest, Inverts_led_for_playback_position_if_playback_ongoin
     editView.update();
 }
 
+TEST_F(PatternEditViewTest, Step_buttons_toggle_state_in_active_pattern_during_edit_mode)
+{
+    patternManager.selectActivePattern(2); // just making sure active pattern isn't just pattern 0
+
+    /* Press buttons to toggle pattern state*/
+    setButtonStates(0x5);
+
+    /* Check that pattern state was changed */
+    editView.update();
+    EXPECT_EQ(patternManager.getActivePattern().state, 0x5);
+}
+
 /* Pattern select mode tests ---------------------------------------------------------------------*/
-TEST_F(PatternEditViewTest, Lights_up_leds_for_non_empty_patterns_during_channel_select_mode)
+TEST_F(PatternEditViewTest, Lights_up_led_for_active_pattern)
+{
+    patternManager.selectActivePattern(1);
+    holdDownChannelSelectButton();
+    expectLedState(0x2);
+    editView.update();
+}
+
+TEST_F(PatternEditViewTest, Channel_can_be_selected_with_step_buttons_during_channel_select_mode)
 {
     /* Setup patterns */
     // pattern 0
     patternManager.selectActivePattern(0);
-    patternManager.toggleActivePatternStep(0);
+    patternManager.toggleActivePatternStep(1); // 0x2
     // pattern 1
     patternManager.selectActivePattern(1);
-    patternManager.toggleActivePatternStep(0);
+    patternManager.toggleActivePatternStep(2); // 0x4
 
-    /* Check output */
+    /* Check that pattern 1 is selected */
     holdDownChannelSelectButton();
-    expectLedState(0x3); // first two leds should be set
+    setButtonStates(0x1 << 1); // press button 1 to select channel 1
     editView.update();
+    EXPECT_EQ(patternManager.getActivePattern().state, 0x4); // pattern 1 state
 }

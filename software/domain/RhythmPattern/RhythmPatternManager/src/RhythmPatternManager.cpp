@@ -24,9 +24,20 @@ void RhythmPatternManager::selectActivePattern(const u8 patternNum)
     activePatternNum = patternNum;
 }
 
+/**
+ * @brief Get image of currently selected pattern
+ */
 RhythmPattern RhythmPatternManager::getActivePattern()
 {
     return rhythmPatterns[activePatternNum];
+}
+
+/**
+ * @brief Get id of currently selected pattern
+ */
+u8 RhythmPatternManager::getActivePatternNum() const
+{
+    return activePatternNum;
 }
 
 /**

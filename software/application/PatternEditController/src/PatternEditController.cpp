@@ -20,9 +20,24 @@ RhythmPattern PatternEditController::getActivePattern()
     return patternManager.getActivePattern();
 }
 
+void PatternEditController::selectActivePattern(u8 patternNum)
+{
+    patternManager.selectActivePattern(patternNum);
+}
+
+u8 PatternEditController::getActivePatternNum() const
+{
+    return patternManager.getActivePatternNum();
+}
+
 RhythmPattern PatternEditController::getPattern(u8 patternNum)
 {
     return patternManager.getPattern(patternNum);
+}
+
+void PatternEditController::toggleActivePatternStep(u8 stepNum)
+{
+    return patternManager.toggleActivePatternStep(stepNum);
 }
 
 u8 PatternEditController::getPlaybackPosition()
