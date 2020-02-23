@@ -11,6 +11,8 @@
 #include "TempoTimerMock.h"
 #include "LedGroupMock.h"
 #include "ButtonGroupMock.h"
+#include <vector>
+#include <algorithm>
 
 using ::testing::Return;
 using ::testing::NiceMock;
@@ -20,7 +22,8 @@ class PatternEditViewTest : public ::testing::Test
 {
 public:
     static constexpr u8 channelSelectButton = 0;
-    static constexpr u8 numStepLeds = 16;
+    static constexpr u8 patternClearButton = 1;
+    static constexpr u8 maxNumPatternSteps = 16;
 
     /* Dependencies */
     // mocks
@@ -36,6 +39,13 @@ public:
     /* Class under test */
     PatternEditView editView {editController, editControlButtons, stepButtons, stepLedMock};
 
+
+    template <typename T>
+    bool numberIsInVector(int num, std::vector<T>& vec)
+    {
+        return std::any_of(vec.begin(), vec.end(), [=](int x){ return x == num; });
+    }
+
     void expectAllLedsCleared()
     {
         const u8 numSteps = patternManager.getActivePattern().length;
@@ -45,29 +55,71 @@ public:
         }
     }
 
-    void expectLedState(u8 state)
+    /**
+     * @brief Expects these leds to be set and all others to be cleared
+     */
+    template <typename... Args>
+    void expectLedsToBeSet(Args... ledNums)
     {
-        for (int i = 0; i < numStepLeds; i++)
+        auto ledsToSet = std::vector<int>({ledNums...});
+        for (int num = 0; num < maxNumPatternSteps; num++)
         {
-            if (state & (0x1 << i))
-                EXPECT_CALL(stepLedMock, setLed(i));
+            if (numberIsInVector(num, ledsToSet))
+            {
+                EXPECT_CALL(stepLedMock, setLed(num));
+            }
             else
-                EXPECT_CALL(stepLedMock, clearLed(i));
+            {
+                EXPECT_CALL(stepLedMock, clearLed(num));
+            }
         }
     }
 
-    void setButtonStates(u8 state)
+    /**
+     * @brief Toggle a number of steps in active pattern at same time
+     */
+    template <typename... Args>
+    void toggleActivePatternSteps(Args... stepNums)
     {
-        for (int i = 0; i < numStepLeds; i++)
+        for (auto& stepNum : std::vector<int>({stepNums...}))
         {
-            bool isPressed = (state & (0x1 << i));
-            EXPECT_CALL(stepButtons, buttonPressedNow(i)).WillOnce(Return(isPressed));
+            patternManager.toggleActivePatternStep(stepNum);
+        }
+
+    }
+
+    /**
+     * @brief Set which buttons to press using variadic args
+     */
+    template <typename... Args>
+    void setStepButtons(Args... stepButtonNums)
+    {
+        auto buttonsToPress = std::vector<int>({stepButtonNums...});
+        for (int num = 0; num < maxNumPatternSteps; num++)
+        {
+            bool isPressed = (numberIsInVector(num, buttonsToPress));
+            EXPECT_CALL(stepButtons, buttonPressedNow(num)).WillOnce(Return(isPressed));
         }
     }
 
-    void holdDownChannelSelectButton()
+    void holdDownChannelSelectButton(bool isDown)
     {
-        EXPECT_CALL(editControlButtons, buttonIsDown(channelSelectButton)).WillOnce(Return(true));
+        EXPECT_CALL(editControlButtons, buttonIsDown(channelSelectButton)).WillOnce(Return(isDown));
+    }
+
+    void holdDownClearPatternButton(bool isDown)
+    {
+        EXPECT_CALL(editControlButtons, buttonIsDown(patternClearButton)).WillOnce(Return(isDown));
+    }
+
+    void startPlaybackAndMovePlaybackPositionTo(u8 position)
+    {
+        playbackManager.startPlayback(); // playback is now ongoing
+        for (int i = 0; i < position; i++)
+        {
+            EXPECT_CALL(timerMock, playbackStepIsDue()).WillOnce(Return(true));
+            playbackManager.handlePlayback(); // moves playback forward once
+        }
     }
 };
 
@@ -81,48 +133,76 @@ TEST_F(PatternEditViewTest, Clears_all_leds_if_pattern_empty_during_edit_mode)
 
 TEST_F(PatternEditViewTest, Sets_leds_corresponding_to_active_steps_during_edit_mode)
 {
+    /* Toggle some pattern steps */
     patternManager.selectActivePattern(3); // just making sure active pattern isn't just pattern 0
-    patternManager.toggleActivePatternStep(0);
-    patternManager.toggleActivePatternStep(9);
-    EXPECT_CALL(stepLedMock, setLed(0));
-    EXPECT_CALL(stepLedMock, setLed(9));
+    toggleActivePatternSteps(0, 9);
+
+    /* Expect corresponding leds to be lit */
+    expectLedsToBeSet(0, 9);
     editView.update();
 }
 
 TEST_F(PatternEditViewTest, Inverts_led_for_playback_position_if_playback_ongoing_during_edit_mode)
 {
-    /* Start playback, and move playback position forward once */
-    playbackManager.startPlayback(); // playback is now ongoing
-    EXPECT_CALL(timerMock, playbackStepIsDue()).WillOnce(Return(true));
-    playbackManager.handlePlayback(); // playback step is now 1
+    /* Set playback position to 1 and toggle pattern setps */
+    startPlaybackAndMovePlaybackPositionTo(1);
+    toggleActivePatternSteps(0, 1, 2);
 
-    /* Setup pattern state to be drawn on LEDs */
-    patternManager.toggleActivePatternStep(0);
-    patternManager.toggleActivePatternStep(1); // same as playback position, so will be inverted
-
-    /* Update with view with playback ongoing */
-    expectLedState(0x1); // not 0x3 since step 1 is inverted
+    /* Expect playback position to invert step 1 led state */
+    expectLedsToBeSet(0, 2);
     editView.update();
 }
 
 TEST_F(PatternEditViewTest, Step_buttons_toggle_state_in_active_pattern_during_edit_mode)
 {
-    patternManager.selectActivePattern(2); // just making sure active pattern isn't just pattern 0
+    /* Push some step buttons */
+    patternManager.selectActivePattern(2);
+    setStepButtons(0, 2);
 
-    /* Press buttons to toggle pattern state*/
-    setButtonStates(0x5);
-
-    /* Check that pattern state was changed */
+    /* Pattern state should've set accordingly */
     editView.update();
     EXPECT_EQ(patternManager.getActivePattern().state, 0x5);
 }
+
+TEST_F(PatternEditViewTest, Clear_button_clears_current_step_if_playback_ongoing_during_edit_mode)
+{
+    /* Write to pattern */
+    patternManager.selectActivePattern(5);
+    toggleActivePatternSteps(0, 1, 2, 3); // 0xF
+
+    /* Move playback position forward and press clear button */
+    startPlaybackAndMovePlaybackPositionTo(3);
+    holdDownChannelSelectButton(false); // don't press channel select
+    holdDownClearPatternButton(true); // should clear bit 3 in active pattern state
+
+    /* After update, step should've been cleared */
+    editView.update();
+    EXPECT_EQ(patternManager.getActivePattern().state, 0x7);
+}
+
+TEST_F(PatternEditViewTest, Clear_button_clears_whole_pattern_if_playback_stopped_during_edit_mode)
+{
+    /* Write to pattern */
+    patternManager.selectActivePattern(5);
+    toggleActivePatternSteps(0, 1, 2, 3); // 0xF
+
+    /* Move playback position forward and press clear button */
+    playbackManager.stopPlayback();
+    holdDownChannelSelectButton(false); // don't press channel select
+    holdDownClearPatternButton(true); // should clear bit 3 in active pattern state
+
+    /* After update, step should've been cleared */
+    editView.update();
+    EXPECT_EQ(patternManager.getActivePattern().state, 0x0);
+}
+
 
 /* Pattern select mode tests ---------------------------------------------------------------------*/
 TEST_F(PatternEditViewTest, Lights_up_led_for_active_pattern)
 {
     patternManager.selectActivePattern(1);
-    holdDownChannelSelectButton();
-    expectLedState(0x2);
+    holdDownChannelSelectButton(true);
+    expectLedsToBeSet(1);
     editView.update();
 }
 
@@ -137,8 +217,8 @@ TEST_F(PatternEditViewTest, Channel_can_be_selected_with_step_buttons_during_cha
     patternManager.toggleActivePatternStep(2); // 0x4
 
     /* Check that pattern 1 is selected */
-    holdDownChannelSelectButton();
-    setButtonStates(0x1 << 1); // press button 1 to select channel 1
+    holdDownChannelSelectButton(true);
+    setStepButtons(1);
     editView.update();
     EXPECT_EQ(patternManager.getActivePattern().state, 0x4); // pattern 1 state
 }

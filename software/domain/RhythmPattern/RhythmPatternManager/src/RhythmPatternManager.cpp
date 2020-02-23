@@ -62,6 +62,12 @@ void RhythmPatternManager::toggleActivePatternStep(const u8 stepNum)
     activePattern.state ^= (0x1 << stepNum);
 }
 
+void RhythmPatternManager::clearActivePatternStep(const u8 stepNum)
+{
+    RhythmPattern& activePattern = rhythmPatterns[activePatternNum];
+    activePattern.state &= ~(0x1 << stepNum);
+}
+
 void RhythmPatternManager::clearActivePattern()
 {
     RhythmPattern& activePattern = rhythmPatterns[activePatternNum];

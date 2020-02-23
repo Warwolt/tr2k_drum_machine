@@ -41,6 +41,7 @@ public:
     u8 getActivePatternNum() const;
     void selectActivePattern(const u8 patternNum);
     void toggleActivePatternStep(const u8 stepNum);
+    void clearActivePatternStep(const u8 stepNum);
     void clearActivePattern();
 
 private:

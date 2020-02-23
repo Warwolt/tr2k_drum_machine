@@ -19,10 +19,12 @@ public:
     void update();
 
 private:
+    enum class ViewMode {PatternEdit, ChannelSelect};
+
     static constexpr u8 numStepLeds = 16;
     static constexpr u8 numStepButtons = 16;
     static constexpr u8 channelSelectButton = 0;
-    enum class ViewMode {PatternEdit, ChannelSelect};
+    static constexpr u8 patternClearButton = 1;
 
     PatternEditController& editController;
     ButtonGroup& controlButtons;
@@ -30,6 +32,8 @@ private:
     LedGroup& stepLeds;
 
     inline void handleStateUpdate(ViewMode mode);
+    inline void handlePatternEdit();
+    inline void handlePatternClear();
     inline void outputViewToLeds(ViewMode mode);
     inline u16 calculateEditModeDrawBuffer();
     inline u16 calculateSelectModeDrawBuffer();

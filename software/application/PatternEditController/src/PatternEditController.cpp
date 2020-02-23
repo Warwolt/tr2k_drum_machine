@@ -37,7 +37,17 @@ RhythmPattern PatternEditController::getPattern(u8 patternNum)
 
 void PatternEditController::toggleActivePatternStep(u8 stepNum)
 {
-    return patternManager.toggleActivePatternStep(stepNum);
+    patternManager.toggleActivePatternStep(stepNum);
+}
+
+void PatternEditController::clearActivePatternStep(u8 stepNum)
+{
+    patternManager.clearActivePatternStep(stepNum);
+}
+
+void PatternEditController::clearActivePattern()
+{
+    patternManager.clearActivePattern();
 }
 
 u8 PatternEditController::getPlaybackPosition()

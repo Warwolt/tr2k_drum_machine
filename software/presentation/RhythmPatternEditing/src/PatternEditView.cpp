@@ -19,7 +19,7 @@ PatternEditView::PatternEditView(PatternEditController& editController, ButtonGr
  *
  * During edit mode, the current pattern is viewed on the LEDs and the step
  * states can be edited using the step buttons.
- *i
+ *
  * During channel select mode, the LED corresponding to the active channel
  * number lights up, and a channel can be selected by pushing any step button.
  */
@@ -39,18 +39,58 @@ void PatternEditView::update()
  */
 inline void PatternEditView::handleStateUpdate(ViewMode mode)
 {
+    if (mode == ViewMode::PatternEdit)
+    {
+        if (controlButtons.buttonIsDown(patternClearButton))
+        {
+            handlePatternClear();
+        }
+        else
+        {
+            handlePatternEdit();
+        }
+    }
+
+    if (mode == ViewMode::ChannelSelect)
+    {
+        for (int i = 0; i < numStepButtons; i++)
+        {
+            if (stepButtons.buttonPressedNow(i))
+            {
+                editController.selectActivePattern(i);
+            }
+        }
+    }
+}
+
+/**
+ * @brief Clear pattern step if playing or whole pattern if stopped
+ */
+inline void PatternEditView::handlePatternClear()
+{
+    if (editController.playbackIsOngoing())
+    {
+        /* Clear current step */
+        u8 playbackPosition = editController.getPlaybackPosition();
+        editController.clearActivePatternStep(playbackPosition);
+    }
+    else
+    {
+        /* Clear whole pattern */
+        editController.clearActivePattern();
+    }
+}
+
+/**
+ * @brief Toggle pattern states with step buttons
+ */
+inline void PatternEditView::handlePatternEdit()
+{
     for (int i = 0; i < numStepButtons; i++)
     {
         if (stepButtons.buttonPressedNow(i))
         {
-            if (mode == ViewMode::PatternEdit)
-            {
-                editController.toggleActivePatternStep(i);
-            }
-            if (mode == ViewMode::ChannelSelect)
-            {
-                editController.selectActivePattern(i);
-            }
+            editController.toggleActivePatternStep(i);
         }
     }
 }

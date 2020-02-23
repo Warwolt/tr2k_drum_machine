@@ -16,12 +16,15 @@ class PatternEditController
 public:
     PatternEditController(RhythmPlaybackManager& playbackManager,
         RhythmPatternManager& patternManager);
-    bool playbackIsOngoing();
-    RhythmPattern getActivePattern();
-    u8 getActivePatternNum() const;
     void selectActivePattern(u8 patternNum);
-    RhythmPattern getPattern(u8 patternNum);
+    u8 getActivePatternNum() const;
+    RhythmPattern getActivePattern();
     void toggleActivePatternStep(u8 stepNum);
+    void clearActivePatternStep(u8 stepNum);
+    void clearActivePattern();
+
+    RhythmPattern getPattern(u8 patternNum);
+    bool playbackIsOngoing();
     u8 getPlaybackPosition();
 
 private:
