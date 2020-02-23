@@ -40,3 +40,6 @@
 # Visual Studio Code workspaces
 *.code-workspace
 .vscode/*
+
+# Doxygen
+doc/doxygen/*
