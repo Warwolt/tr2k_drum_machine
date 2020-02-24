@@ -23,12 +23,9 @@ void RhythmPlaybackManager::restartPlayback()
 
 	/* Reset playback position and playback handlers */
 	playbackPosition = 0;
-	for (size_t i = 0; i < currentNumHandlers; i++)
+	for (auto& resetPlayback : resetPlaybackHandlers)
 	{
-		if (playbackHandlers[i].resetPlayback != nullptr)
-		{
-			playbackHandlers[i].resetPlayback();
-		}
+		resetPlayback();
 	}
 }
 
@@ -51,29 +48,24 @@ void RhythmPlaybackManager::continuePlayback()
 }
 
 /**
- * @brief Register a new playback handler
- *
- * Add a pair of callbacks to be called in the handlePlayback() method and
- * startPlayback() method respectively.
- * If maximum number of callbacks registered, this method does nothing.
+ * @brief Register function to be called once every playback step
  */
-void RhythmPlaybackManager::addPlaybackHandler(PlaybackHandler handler)
+void RhythmPlaybackManager::addPlaybackStepHandler(PlaybackStepHandler handler)
 {
-	if (currentNumHandlers < maxNumHandlers)
+	if (playbackStepHandlers.size() < playbackStepHandlers.capacity())
 	{
-		playbackHandlers[currentNumHandlers++] = handler;
+		playbackStepHandlers.push_back(handler);
 	}
 }
 
 /**
- * @brief Register a new playback handler with no resetter
+ * @brief Register function to be called when playback restarts
  */
-void RhythmPlaybackManager::addPlaybackHandler(CallbackFunction playbackStepHandler)
+void RhythmPlaybackManager::addPlaybackResetHandler(ResetPlaybackHandler handler)
 {
-	if (currentNumHandlers < maxNumHandlers)
+	if (resetPlaybackHandlers.size() < resetPlaybackHandlers.capacity())
 	{
-		playbackHandlers[currentNumHandlers++] = {.handlePlaybackStep = playbackStepHandler,
-			.resetPlayback = nullptr};
+		resetPlaybackHandlers.push_back(handler);
 	}
 }
 
@@ -97,9 +89,9 @@ void RhythmPlaybackManager::handlePlayback()
 
 inline void RhythmPlaybackManager::callPlaybackStephandlers()
 {
-	for (size_t i = 0; i < currentNumHandlers; i++)
+	for (auto& handlePlayback : playbackStepHandlers)
 	{
-		playbackHandlers[i].handlePlaybackStep();
+		handlePlayback();
 	}
 }
 

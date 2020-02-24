@@ -42,7 +42,7 @@ int main()
 void registerPlaybackHandlers()
 {
 	/* Setup LED to blink according to programmed pattern */
-	playbackManager.addPlaybackHandler([]()
+	playbackManager.addPlaybackStepHandler([]()
 	{
 		RhythmPattern activePattern = patternManager.getPattern(0);
 		if (stepActiveInPattern(playbackManager.getPlaybackPosition(), activePattern))
@@ -52,7 +52,7 @@ void registerPlaybackHandlers()
 		}
 	});
 
-	playbackManager.addPlaybackHandler([]()
+	playbackManager.addPlaybackStepHandler([]()
 	{
 		RhythmPattern activePattern = patternManager.getPattern(1);
 		if (stepActiveInPattern(playbackManager.getPlaybackPosition(), activePattern))
@@ -64,15 +64,12 @@ void registerPlaybackHandlers()
 
 	/* Setup step LEDs to blink */
 	static u8 stepLedCounter = 0;
-	playbackManager.addPlaybackHandler(
+	playbackManager.addPlaybackStepHandler([]()
 	{
-		.handlePlaybackStep = []()
-		{
-			stepLedCounter = (stepLedCounter + 1) % 16;
-		},
-		.resetPlayback = [] ()
-		{
-			stepLedCounter = 0;
-		}
+		stepLedCounter = (stepLedCounter + 1) % 16;
+	});
+	playbackManager.addPlaybackResetHandler([]()
+	{
+		stepLedCounter = 0;
 	});
 }

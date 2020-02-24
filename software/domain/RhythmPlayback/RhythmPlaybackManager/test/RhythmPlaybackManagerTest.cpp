@@ -31,22 +31,6 @@ public:
 		}
 	}
 
-	void addPlaybackHandler0()
-	{
-		playbackManager.addPlaybackHandler({
-			.handlePlaybackStep = []{ handlePlaybackWasCalled[0] = true; },
-			.resetPlayback = []{ resetPlaybackWasCalled[0] = true; },
-		});
-	}
-
-	void addPlaybackHandler1()
-	{
-		playbackManager.addPlaybackHandler({
-			.handlePlaybackStep = []{ handlePlaybackWasCalled[1] = true; },
-			.resetPlayback = []{ resetPlaybackWasCalled[1] = true; },
-		});
-	}
-
 	void signalNextPlaybackStep()
 	{
 		EXPECT_CALL(mockTimer, playbackStepIsDue()).WillOnce(Return(true));
@@ -57,9 +41,9 @@ TEST_F(RhythmPlaybackManagerTest, A_maximum_amount_of_callbacks_can_be_registere
 {
 	for (size_t i = 0; i < playbackManager.maxNumHandlers; i++)
 	{
-		playbackManager.addPlaybackHandler([]{ handlePlaybackWasCalled[0] = true; });
+		playbackManager.addPlaybackStepHandler([]{ handlePlaybackWasCalled[0] = true; });
 	}
-	playbackManager.addPlaybackHandler([]{ handlePlaybackWasCalled[1] = true; });
+	playbackManager.addPlaybackStepHandler([]{ handlePlaybackWasCalled[1] = true; });
 
 	signalNextPlaybackStep();
 	playbackManager.handlePlayback();
@@ -101,8 +85,8 @@ TEST_F(RhythmPlaybackManagerTest, If_playback_step_not_due_then_handling_playbac
 
 TEST_F(RhythmPlaybackManagerTest, If_playback_step_is_due_then_all_callbacks_are_called)
 {
-	addPlaybackHandler0();
-	addPlaybackHandler1();
+	playbackManager.addPlaybackStepHandler([]{ handlePlaybackWasCalled[0] = true; });
+	playbackManager.addPlaybackStepHandler([]{ handlePlaybackWasCalled[1] = true; });
 
 	signalNextPlaybackStep();
 	playbackManager.handlePlayback();
@@ -113,8 +97,8 @@ TEST_F(RhythmPlaybackManagerTest, If_playback_step_is_due_then_all_callbacks_are
 
 TEST_F(RhythmPlaybackManagerTest, All_playback_handlers_are_reset_when_playback_is_reset)
 {
-	addPlaybackHandler0();
-	addPlaybackHandler1();
+	playbackManager.addPlaybackResetHandler([]{ resetPlaybackWasCalled[0] = true; });
+	playbackManager.addPlaybackResetHandler([]{ resetPlaybackWasCalled[1] = true; });
 
 	playbackManager.restartPlayback();
 

@@ -10,27 +10,24 @@
 
 #include "linuxtypes.h"
 #include "TempoTimer.h"
-
+#include "r2k/vector.h"
 
 /**
- * @brief Represents an image of a rhythm pattern
- *
- * @param handlePlaybackStep  Called once every playback step (16th note)
- * @param resetPlayback       Called when playback is reset, i.e. start button pressed
+ * @brief Called once every playback step (16th note)
  */
-using CallbackFunction = void(*)();
-struct PlaybackHandler
-{
-	CallbackFunction handlePlaybackStep;
-	CallbackFunction resetPlayback;
-};
+using PlaybackStepHandler = void(*)();
+
+/**
+ * @brief Called when playback is reset, i.e. start button pressed
+ */
+using ResetPlaybackHandler = void(*)();
 
 class RhythmPlaybackManager
 {
 public:
 	RhythmPlaybackManager(TempoTimer& tempoTimer);
-	void addPlaybackHandler(PlaybackHandler handler);
-	void addPlaybackHandler(CallbackFunction handlePlaybackStep);
+	void addPlaybackStepHandler(PlaybackStepHandler handler);
+	void addPlaybackResetHandler(ResetPlaybackHandler handler);
 	void restartPlayback();
 	void continuePlayback();
 	void stopPlayback();
@@ -45,7 +42,8 @@ private:
 	bool isPlaying = false;
 	u8 currentNumHandlers = 0;
 	u8 playbackPosition = 0;
-	PlaybackHandler playbackHandlers[maxNumHandlers]; // TODO: test if r2k::vector based version works on-target
+	r2k::vector<PlaybackStepHandler, maxNumHandlers> playbackStepHandlers;
+	r2k::vector<ResetPlaybackHandler, maxNumHandlers> resetPlaybackHandlers;
 
 	void callPlaybackStephandlers();
 };
