@@ -47,8 +47,8 @@ void registerPlaybackHandlers()
 		RhythmPattern activePattern = patternManager.getPattern(0);
 		if (stepActiveInPattern(playbackManager.getPlaybackPosition(), activePattern))
 		{
-			boardLed.toggle();
-			callbackScheduler.scheduleCallback([](){ boardLed.toggle();}, 50);
+			boardLed.set();
+			callbackScheduler.scheduleCallback([](){ boardLed.clear();}, 50);
 		}
 	});
 
@@ -58,8 +58,8 @@ void registerPlaybackHandlers()
 		RhythmPattern activePattern = patternManager.getPattern(1);
 		if (stepActiveInPattern(playbackManager.getPlaybackPosition(), activePattern))
 		{
-			outputPin2.toggle();
-			callbackScheduler.scheduleCallback([](){ outputPin2.toggle();}, 50);
+			outputPin2.set();
+			callbackScheduler.scheduleCallback([](){ outputPin2.clear();}, 50);
 		}
 	});
 }
