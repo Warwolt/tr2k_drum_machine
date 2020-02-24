@@ -41,7 +41,7 @@ int main()
 
 void registerPlaybackHandlers()
 {
-	/* Setup LED to blink according to programmed pattern */
+	/* Register channel 0 trig pulse output */
 	playbackManager.addPlaybackStepHandler([]()
 	{
 		RhythmPattern activePattern = patternManager.getPattern(0);
@@ -52,6 +52,7 @@ void registerPlaybackHandlers()
 		}
 	});
 
+	/* Register channel 1 trig pulse output */
 	playbackManager.addPlaybackStepHandler([]()
 	{
 		RhythmPattern activePattern = patternManager.getPattern(1);
@@ -60,16 +61,5 @@ void registerPlaybackHandlers()
 			outputPin2.toggle();
 			callbackScheduler.scheduleCallback([](){ outputPin2.toggle();}, 50);
 		}
-	});
-
-	/* Setup step LEDs to blink */
-	static u8 stepLedCounter = 0;
-	playbackManager.addPlaybackStepHandler([]()
-	{
-		stepLedCounter = (stepLedCounter + 1) % 16;
-	});
-	playbackManager.addPlaybackResetHandler([]()
-	{
-		stepLedCounter = 0;
 	});
 }
